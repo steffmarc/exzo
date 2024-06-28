@@ -139,27 +139,48 @@ document.addEventListener("DOMContentLoaded", () => {
     const realizarVenta = (event) => {
         event.preventDefault();
         const cantidad = parseFloat(document.getElementById("cantidadVenta").value);
-
-        const cotizacion = 48000; 
-
-        const usuarioActual = JSON.parse(localStorage.getItem("usuarioActual"));
-        if (usuarioActual) {
+        const metodoPago = document.getElementById("metodoPagoVenta").value;
+    
+        const cotizacion = 48000; // Simulación de la cotización
+    
+        if (!isNaN(cantidad) && cantidad > 0) {
             const total = cotizacion * cantidad;
-
-            const nuevoMovimiento = {
+    
+            const nuevaVenta = {
                 fecha: new Date().toLocaleString(),
                 tipo: 'Venta',
                 cantidad,
                 precioUnitario: cotizacion,
                 total,
-                criptomoneda: 'Bitcoin' 
+                metodoPago,
+                criptomoneda: 'Bitcoin'
             };
-
-            usuarioActual.movimientos.push(nuevoMovimiento);
-            localStorage.setItem("usuarioActual", JSON.stringify(usuarioActual));
-
-            mostrarCompraConfirmada(nuevoMovimiento);
+    
+            document.getElementById("home").classList.add('invisible');
+            document.getElementById("detalleCompra").classList.remove('invisible');
+            mostrarVentaConfirmada(nuevaVenta);
+        } else {
+            console.error("Error: Cantidad inválida.");
         }
+    };
+
+    const mostrarVentaConfirmada = (detalleVenta) => {
+        const homeContainer = document.getElementById("detalleCompra");
+    
+        const innerHTMLContent = `
+            <h2>Venta Confirmada</h2>
+            <div class="detalleCompraContent">
+                <p><strong>Fecha:</strong> ${detalleVenta.fecha}</p>
+                <p><strong>Tipo:</strong> ${detalleVenta.tipo}</p>
+                <p><strong>Cantidad:</strong> ${detalleVenta.cantidad}</p>
+                <p><strong>Precio Unitario:</strong> $${detalleVenta.precioUnitario.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                <p><strong>Total:</strong> $${detalleVenta.total.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                <p><strong>Método de Pago:</strong> ${detalleVenta.metodoPago}</p>
+                <p><strong>Criptomoneda:</strong> ${detalleVenta.criptomoneda}</p>
+            </div>
+        `;
+    
+        homeContainer.innerHTML = innerHTMLContent;
     };
 
     document.getElementById("formComprar").addEventListener("submit", realizarCompra);

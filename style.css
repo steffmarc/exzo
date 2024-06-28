@@ -180,3 +180,37 @@ button[type="submit"]:hover {
     font-size: 16px;
     margin: 10px 0;
 }
+
+#formVender {
+    display: flex;
+    flex-direction: column;
+}
+
+#formVender label,
+#formVender select {
+    margin-bottom: 8px;
+    color: #555555;
+}
+
+#formVender input[type="number"],
+#formVender select {
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#formVender button[type="submit"] {
+    padding: 12px 20px;
+    background-color: #007a80;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#formVender button[type="submit"]:hover {
+    background-color: #005c60;
+}
