@@ -1,0 +1,182 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+}
+
+.designBase{
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+
+}
+
+.loginForm, .registroForm {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.loginForm h1, .registroForm h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-bottom: 8px;
+    color: #555555;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="number"] {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button[type="submit"] {
+    padding: 12px 20px;
+    background-color: #007A80;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button[type="submit"]:hover {
+    background-color: #005C60 ;
+}
+
+.registroLink {
+    margin-top: 20px;
+    text-align: center;
+    color: #888888;
+}
+
+.registroLink a {
+    color: #007A80;
+    text-decoration: none;
+}
+
+.registroLink a:hover {
+    text-decoration: underline;
+}
+
+.invisible {
+    display: none;
+}
+
+
+.comprar, .vender {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.comprar h2, .vender h2 {
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+.comprar form, .vender form {
+    display: flex;
+    flex-direction: column;
+}
+
+.comprar label, .vender label {
+    margin-bottom: 8px;
+    color: #555555;
+}
+
+.comprar input[type="number"],
+.vender input[type="number"] {
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.comprar select,
+.vender select {
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.comprar button[type="submit"],
+.vender button[type="submit"] {
+    padding: 12px 20px;
+    background-color: #007A80;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.comprar button[type="submit"]:hover,
+.vender button[type="submit"]:hover {
+    background-color: #005C60;
+}
+
+.totalEstimado {
+    font-size: 14px;
+    color: #888888;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.detalleCompra {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.detalleCompra h2 {
+    color: #007A80; /* Color secundario */
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.detalleCompraContent p {
+    font-size: 16px;
+    margin: 10px 0;
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Exzo - Invierte en el futuro con confianza</title>
+</head>
+<body>
+    <main class="container">
+    <!-- Formulario de inicio de sesión -->
+    <section class="loginForm" id="loginForm">
+        <h1>Iniciar sesión</h1>
+        <form id="formLogin">
+        <label for="nombre">Usuario</label>
+        <input type="text" id="nombre" name="nombre" required />
+
+        <label for="pass">Contraseña</label>
+        <input type="password" id="pass" name="pass" required />
+
+        <button type="submit" id="btnLogin">Ingresar</button>
+        </form>
+        <div class="registroLink">
+        <p>¿No tenés cuenta? <a href="#" id="btnRegistro">Registrate</a></p>
+        </div>
+    </section>
+
+    <!-- Formulario de registro -->
+    <section class="registroForm invisible" id="registroForm">
+        <h1>Registro</h1>
+        <form id="formRegistro">
+        <label for="nombreReg">Usuario</label>
+        <input type="text" id="nombreReg" name="nombreReg" required />
+
+        <label for="passReg">Contraseña</label>
+        <input type="password" id="passReg" name="passReg" required />
+
+        <label for="edad">Edad</label>
+        <input type="number" id="edad" name="edad" required />
+
+        <label for="localidad">Localidad</label>
+        <input type="text" id="localidad" name="localidad" required />
+
+        <button type="submit" id="btnRegistrar">Registrarme</button>
+        </form>
+    </section>
+
+    <section id="home" class="designBase invisible">
+        <h1 id="tituloHome">Bienvenido</h1>
+        <!-- Sección para Comprar Bitcoin -->
+        <div class="comprar">
+        <h2>Comprar Bitcoin</h2>
+        <p id="cotizacionCompra" class="cotizacion">
+            Cotización actual: $50,000
+    </p>
+    <form id="formComprar">
+            <label for="cantidadCompra">Cantidad</label>
+            <input
+            type="number"
+            id="cantidadCompra"
+            name="cantidadCompra"
+            required
+            />
+
+            <p id="totalEstimadoCompra" class="totalEstimado"></p>
+
+            <label for="metodoPagoCompra">Método de Pago:</label>
+            <select id="metodoPagoCompra">
+            <option value="transferencia">Transferencia</option>
+            <option value="mercadoPago">MercadoPago</option>
+            </select>
+
+            <button type="submit" id="btnComprar">Comprar</button>
+    </form>
+        </div>
+
+        <!-- Sección para Vender Bitcoin -->
+        <div class="vender">
+    <h2>Vender Bitcoin</h2>
+    <p id="cotizacionVenta" class="cotizacion">
+            Cotización actual: $48,000
+    </p>
+    <form id="formVender">
+            <label for="cantidadVenta">Cantidad</label>
+            <input
+            type="number"
+            id="cantidadVenta"
+            name="cantidadVenta"
+            required
+            />
+
+            <p id="totalEstimadoVenta" class="totalEstimado"></p>
+
+            <label for="medioPagoVenta">Medio de Pago</label>
+            <select id="medioPagoVenta" name="medioPagoVenta" required>
+            <option value="transferencia">Transferencia</option>
+            <option value="mercadopago">MercadoPago</option>
+            </select>
+
+            <button type="submit" id="btnVender">Vender</button>
+        </form>
+        </div>
+    </section>
+
+    <section id="detalleCompra" class="detalleCompra invisible">
+        <h2>Compra Confirmada</h2>
+        <div class="detalleCompraContent">
+        <p id="detalleFecha">Fecha:</p>
+        <p id="detalleTipo">Tipo:</p>
+        <p id="detalleCantidad">Cantidad:</p>
+        <p id="detallePrecioUnitario">Precio Unitario:</p>
+        <p id="detalleTotal">Total:</p>
+        <p id="detalleCriptomoneda">Criptomoneda:</p>
+        </div>
+    </section>
+    </main>
+
+    <script src="tercerEntrega.js"></script>
+</body>
+</html>
