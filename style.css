@@ -214,3 +214,12 @@ button[type="submit"]:hover {
 #formVender button[type="submit"]:hover {
     background-color: #005c60;
 }
+
+.cotizacion {
+    display: block; 
+    margin-bottom: 10px;
+}
+
+.cotizacion span {
+    display: block; 
+}

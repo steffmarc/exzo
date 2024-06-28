@@ -69,51 +69,73 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const actualizarTotal = () => {
-        const cotizacionTextoCompra = document.getElementById("cotizacionCompra").innerText;
-        const cotizacionCompra = parseFloat(cotizacionTextoCompra.replace('Cotización actual: $', '').replace(',', ''));
-    
-        const cotizacionTextoVenta = document.getElementById("cotizacionVenta").innerText;
-        const cotizacionVenta = parseFloat(cotizacionTextoVenta.replace('Cotización actual: $', '').replace(',', ''));
-    
         const cantidadCompra = parseFloat(document.getElementById("cantidadCompra").value) || 0;
         const cantidadVenta = parseFloat(document.getElementById("cantidadVenta").value) || 0;
-    
+        
+        let cotizacionCompra = 0;
+        let cotizacionVenta = 0;
+
+        const criptoSeleccionadaCompra = document.getElementById("criptoCompra").value;
+        const criptoSeleccionadaVenta = document.getElementById("criptoVenta").value;
+
+        if (criptoSeleccionadaCompra === "bitcoin") {
+            cotizacionCompra = 50000; 
+        } else if (criptoSeleccionadaCompra === "ethereum") {
+            cotizacionCompra = 40000; 
+        }
+
+        if (criptoSeleccionadaVenta === "bitcoin") {
+            cotizacionVenta = 48000; 
+        } else if (criptoSeleccionadaVenta === "ethereum") {
+            cotizacionVenta = 38000; 
+        }
+
         if (!isNaN(cotizacionCompra) && !isNaN(cotizacionVenta)) {
             const totalCompra = cotizacionCompra * cantidadCompra;
             const totalVenta = cotizacionVenta * cantidadVenta;
     
             actualizarTotalesEstimados(totalCompra, totalVenta);
         } else {
-            console.error('Error: No se pudo obtener la cotización.');
+            console.error("Error: Cantidad inválida o cotización no definida.");
         }
     };
 
-    actualizarTotal();
-
     const realizarCompra = (event) => {
         event.preventDefault();
+    
         const cantidad = parseFloat(document.getElementById("cantidadCompra").value);
+        const criptoSeleccionada = document.getElementById("criptoCompra").value;
         const metodoPago = document.getElementById("metodoPagoCompra").value;
     
-        const cotizacion = 50000; 
+        let cotizacion;
+        if (criptoSeleccionada === "bitcoin") {
+            cotizacion = 50000; 
+        } else if (criptoSeleccionada === "ethereum") {
+            cotizacion = 40000; 
+        } else {
+            cotizacion = 0; 
+        }
     
-        if (!isNaN(cantidad) && cantidad > 0) {
+        if (!isNaN(cantidad) && cantidad > 0 && cotizacion > 0) {
             const total = cotizacion * cantidad;
+    
+            document.getElementById("totalEstimadoCompra").textContent = `Total Estimado: $${total.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     
             const nuevoMovimiento = {
                 fecha: new Date().toLocaleString(),
                 tipo: 'Compra',
                 cantidad,
                 precioUnitario: cotizacion,
-                total, metodoPago,
-                criptomoneda: 'Bitcoin'
+                total,
+                metodoPago,
+                criptomoneda: criptoSeleccionada.charAt(0).toUpperCase() + criptoSeleccionada.slice(1) // Formatear nombre de la criptomoneda
             };
     
             document.getElementById("home").classList.add('invisible');
             document.getElementById("detalleCompra").classList.remove('invisible');
             mostrarCompraConfirmada(nuevoMovimiento);
         } else {
-            console.error("Error: Cantidad inválida.");
+            console.error("Error: Cantidad inválida o cotización no definida.");
         }
     };
 
@@ -141,10 +163,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const cantidad = parseFloat(document.getElementById("cantidadVenta").value);
         const metodoPago = document.getElementById("metodoPagoVenta").value;
     
-        const cotizacion = 48000; // Simulación de la cotización
+        let cotizacion;
+        const criptoSeleccionada = document.getElementById("criptoVenta").value;
+
+        if (criptoSeleccionada === "bitcoin") {
+            cotizacion = 48000; 
+        } else if (criptoSeleccionada === "ethereum") {
+            cotizacion = 38000; 
+        } else {
+            cotizacion = 0; 
+        }
     
-        if (!isNaN(cantidad) && cantidad > 0) {
+        if (!isNaN(cantidad) && cantidad > 0 && cotizacion > 0) {
             const total = cotizacion * cantidad;
+    
+            document.getElementById("totalEstimadoVenta").textContent = `Total Estimado: $${total.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     
             const nuevaVenta = {
                 fecha: new Date().toLocaleString(),
@@ -153,14 +186,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 precioUnitario: cotizacion,
                 total,
                 metodoPago,
-                criptomoneda: 'Bitcoin'
+                criptomoneda: criptoSeleccionada.charAt(0).toUpperCase() + criptoSeleccionada.slice(1) // Formatear nombre de la criptomoneda
             };
     
             document.getElementById("home").classList.add('invisible');
             document.getElementById("detalleCompra").classList.remove('invisible');
             mostrarVentaConfirmada(nuevaVenta);
         } else {
-            console.error("Error: Cantidad inválida.");
+            console.error("Error: Cantidad inválida o cotización no definida.");
         }
     };
 
@@ -184,7 +217,9 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     document.getElementById("formComprar").addEventListener("submit", realizarCompra);
-    document.getElementById("formVender").addEventListener("submit", realizarVenta);
-    document.getElementById("cantidadCompra").addEventListener("input", () => actualizarTotal('cotizacionCompra', 'cantidadCompra', 'totalEstimadoCompra'));
-    document.getElementById("cantidadVenta").addEventListener("input", () => actualizarTotal('cotizacionVenta', 'cantidadVenta', 'totalEstimadoVenta'));
+    document.getElementById("formVenta").addEventListener("submit", realizarVenta);
+    document.getElementById("cantidadCompra").addEventListener("input", actualizarTotal);
+    document.getElementById("cantidadVenta").addEventListener("input", actualizarTotal);
+
+    actualizarTotal();
 });

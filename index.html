@@ -53,57 +53,72 @@
         <h1 id="tituloHome">Bienvenido</h1>
         <!-- Sección para Comprar Bitcoin -->
         <div class="comprar">
-        <h2>Comprar Bitcoin</h2>
-        <p id="cotizacionCompra" class="cotizacion">
-            Cotización actual: $50,000
-    </p>
-    <form id="formComprar">
-            <label for="cantidadCompra">Cantidad</label>
-            <input
-            type="number"
-            id="cantidadCompra"
-            name="cantidadCompra"
-            required
-            />
-
-            <p id="totalEstimadoCompra" class="totalEstimado"></p>
-
-            <label for="metodoPagoCompra">Método de Pago:</label>
-            <select id="metodoPagoCompra">
-            <option value="transferencia">Transferencia</option>
-            <option value="mercadoPago">MercadoPago</option>
-            </select>
-
-            <button type="submit" id="btnComprar">Comprar</button>
-    </form>
+            <h2>Comprar Crypto</h2>
+            <p id="cotizacionCompra" class="cotizacion">
+                <span>Cotización Bitcoin: $50,000</span>
+                <span>Cotización Ethereum: $40,000</span>
+            </p>
+            <form id="formComprar">
+                <label for="criptoCompra">Criptomoneda:</label>
+                <select id="criptoCompra" name="criptoCompra">
+                    <option value="bitcoin">Bitcoin</option>
+                    <option value="ethereum">Ethereum</option>
+                </select>
+        
+                <label for="cantidadCompra">Cantidad:</label>
+                <input
+                    type="number"
+                    id="cantidadCompra"
+                    name="cantidadCompra"
+                    required
+                />
+        
+                <p id="totalEstimadoCompra" class="totalEstimado"></p>
+        
+                <label for="metodoPagoCompra">Método de Pago:</label>
+                <select id="metodoPagoCompra" name="metodoPagoCompra">
+                    <option value="transferencia">Transferencia</option>
+                    <option value="mercadoPago">MercadoPago</option>
+                </select>
+        
+                <button type="submit" id="btnComprar">Comprar</button>
+            </form>
         </div>
 
         <!-- Sección para Vender Bitcoin -->
-<div class="vender">
-    <h2>Vender Bitcoin</h2>
-    <p id="cotizacionVenta" class="cotizacion">
-        Cotización actual: $48,000
-    </p>
-    <form id="formVender">
-        <label for="cantidadVenta">Cantidad</label>
-        <input
-            type="number"
-            id="cantidadVenta"
-            name="cantidadVenta"
-            required
-        />
-
-        <p id="totalEstimadoVenta" class="totalEstimado"></p>
-
-        <label for="metodoPagoVenta">Método de Pago:</label>
-        <select id="metodoPagoVenta">
-            <option value="transferencia">Transferencia</option>
-            <option value="mercadoPago">MercadoPago</option>
-        </select>
-
-        <button type="submit" id="btnVender">Vender</button>
-    </form>
-</div>
+        <div class="vender">
+            <h2>Vender Crypto</h2>
+            <p id="cotizacionVenta" class="cotizacion">
+                <span>Cotización Bitcoin: $48,000</span>
+                <span>Cotización Ethereum: $38,000</span>
+                <span>Cotización NuevaMoneda: $35,000</span>
+            </p>
+            <form id="formVenta">
+                <label for="criptoVenta">Criptomoneda:</label>
+                <select id="criptoVenta" name="criptoVenta">
+                    <option value="bitcoin">Bitcoin</option>
+                    <option value="ethereum">Ethereum</option>
+                </select>
+        
+                <label for="cantidadVenta">Cantidad:</label>
+                <input
+                    type="number"
+                    id="cantidadVenta"
+                    name="cantidadVenta"
+                    required
+                />
+        
+                <p id="totalEstimadoVenta" class="totalEstimado"></p>
+        
+                <label for="metodoPagoVenta">Método de Pago:</label>
+                <select id="metodoPagoVenta" name="metodoPagoVenta">
+                    <option value="transferencia">Transferencia</option>
+                    <option value="mercadoPago">MercadoPago</option>
+                </select>
+        
+                <button type="submit" id="btnVender">Vender</button>
+            </form>
+        </div>
 
     </section>
 
