@@ -7,9 +7,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const edad = document.getElementById("edad").value;
         const localidad = document.getElementById("localidad").value;
 
+        if (nombre.length < 4) {
+            alert("El nombre de usuario debe tener al menos 4 caracteres.");
+            return; 
+        }
+    
         const usuario = { nombre, contraseña, edad, localidad };
         nuevoUsuario.push(usuario);
-
+    
         localStorage.setItem("nuevoUsuario", JSON.stringify(nuevoUsuario));
         mostrarMensajeBienvenida(usuario.nombre);
     };
