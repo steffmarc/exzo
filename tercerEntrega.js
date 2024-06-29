@@ -1,15 +1,34 @@
 document.addEventListener("DOMContentLoaded", () => {
-    let nuevoUsuario = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
+    let nuevoUsuario = JSON.parse(localStorage.getItem("nuevoUsuario")) || []; 
 
     const registroUsuarios = () => {
         const nombre = document.getElementById("nombreReg").value;
         const contraseña = document.getElementById("passReg").value;
-        const edad = document.getElementById("edad").value;
+        const edad = parseInt(document.getElementById("edad").value); 
         const localidad = document.getElementById("localidad").value;
-
+        const mensajeErrorNombre = document.getElementById("mensajeErrorNombre"); 
+        const mensajeErrorPass = document.getElementById("mensajeErrorPass");
+        const mensajeErrorEdad = document.getElementById("mensajeErrorEdad"); 
+    
         if (nombre.length < 4) {
-            alert("El nombre de usuario debe tener al menos 4 caracteres.");
+            mensajeErrorNombre.classList.remove('invisible');
             return; 
+        } else {
+            mensajeErrorNombre.classList.add('invisible');
+        }
+    
+        if (contraseña.length <= 8) {
+            mensajeErrorPass.classList.remove('invisible');
+            return;
+        } else {
+            mensajeErrorPass.classList.add('invisible');
+        }
+    
+        if (edad < 18) {
+            mensajeErrorEdad.classList.remove('invisible');
+            return;
+        } else {
+            mensajeErrorEdad.classList.add('invisible');
         }
     
         const usuario = { nombre, contraseña, edad, localidad };

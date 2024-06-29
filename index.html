@@ -34,12 +34,16 @@
         <h1>Registro</h1>
         <form id="formRegistro">
         <label for="nombreReg">Usuario</label>
+        <span id="mensajeErrorNombre" class="error invisible">*El nombre debe tener mínimo 4 caracteres.</span>
         <input type="text" id="nombreReg" name="nombreReg" required />
+        
 
         <label for="passReg">Contraseña</label>
+        <span id="mensajeErrorPass" class="error invisible">*La contraseña debe tener mínimo 8 caracteres.</span>
         <input type="password" id="passReg" name="passReg" required />
 
         <label for="edad">Edad</label>
+        <span id="mensajeErrorEdad" class="error invisible">*Debes ser mayor de 18 años para registrarte.</span>
         <input type="number" id="edad" name="edad" required />
 
         <label for="localidad">Localidad</label>
