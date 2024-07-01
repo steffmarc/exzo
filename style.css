@@ -8,16 +8,97 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: #f0f0f0;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
+    flex-direction: column;
 }
 
 .container {
     width: 100%;
-    max-width: 800px;
     padding: 20px;
+}
+
+
+header {
+    background-color: #007A80;
+    padding: 10px 0;
+    width: 100%;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    height: auto;
+    margin: 0;
+}
+
+.logo img {
+    max-height: 25px;
+}
+
+.navLinks {
+    display: flex;
+    list-style-type: none;
+}
+
+.navLinks li {
+    margin-right: 20px;
+}
+
+.navLinks a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+    padding: 10px 20px;
+    border-radius: 50px;
+}
+
+.navLinks a:hover {
+    background-color: #f0f0f0;
+    color: #007A80;
+}
+
+.btnDepositar {
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: #007A80;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btnDepositar:hover {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.btnIniciarSesion {
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #007A80;
+    border: none;
+    border-radius: 50px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.btnIniciarSesion:hover{
+    background-color: white;
+    color: #007A80;
+}
+
+.tooltip {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    z-index: 1;
 }
 
 .designBase {
@@ -100,6 +181,50 @@ button[type="submit"]:hover {
     display: none;
 }
 
+
+#home {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    margin: 20px auto;
+}
+
+#home h2 {
+    color: #333333;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 24px;
+}
+
+#listaCriptomonedas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.criptomoneda {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.criptomoneda h3 {
+    color: #007A80;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.criptomoneda p {
+    color: #333333;
+    font-size: 16px;
+    margin-bottom: 0;
+}
+
+
 .comprar, .vender {
     background-color: #ffffff;
     padding: 20px;
@@ -114,6 +239,7 @@ button[type="submit"]:hover {
     color: #333333;
     margin-bottom: 10px;
     text-align: center;
+    font-size: 16px;
 }
 
 .comprar form, .vender form {
@@ -134,7 +260,7 @@ button[type="submit"]:hover {
     border: 1px solid #dddddd;
     border-radius: 4px;
     font-size: 16px;
-    width: 100%; /* Añadido para ocupar todo el ancho disponible */
+    width: 100%; 
 }
 
 .comprar select,
@@ -144,7 +270,7 @@ button[type="submit"]:hover {
     border: 1px solid #dddddd;
     border-radius: 4px;
     font-size: 16px;
-    width: 100%; /* Añadido para ocupar todo el ancho disponible */
+    width: 100%;
 }
 
 .comprar button[type="submit"],
@@ -156,8 +282,8 @@ button[type="submit"]:hover {
     border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
-    width: 50%; /* Ajustado según preferencia, puedes modificar el ancho */
-    margin: 10px auto; /* Centrado horizontal y separación entre botones */
+    width: 50%; 
+    margin: 10px auto; 
 }
 
 .comprar button[type="submit"]:hover,
@@ -220,11 +346,6 @@ button[type="submit"]:hover {
     margin: 20px auto;
 }
 
-.homeContent h2 {
-    color: #333333;
-    margin-bottom: 10px;
-    text-align: center;
-}
 
 .homeContent p {
     color: #555555;

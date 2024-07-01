@@ -11,51 +11,52 @@
     <title>Exzo - Invierte en el futuro con confianza</title>
 </head>
 <body>
+    <header id="header">
+            <nav>
+                <div class="logo">
+                    <img src="./multimedia/logoBlanco.png" alt="Logo Exzo">
+                </div>
+                <ul class="navLinks">
+                    <li><a href="#home" id="navHome">Home</a></li>
+                    <li><a href="#comprarSec" id="navComprar">Comprar</a></li>
+                    <li><a href="#venderSec" id="navVender">Vender</a></li>
+                    <li><a href="#perfil" id="navPerfil">Perfil</a></li>
+                </ul>
+                <div >
+                    <button id="depositar" class="btnDepositar">Depositar</button>
+                    <button id="iniciarSesion" class="btnIniciarSesion">Iniciar Sesión</button>
+                </div>
+            </nav>
+    </header>
     <main class="container">
-    <!-- Formulario de inicio de sesión -->
-    <section class="loginForm" id="loginForm">
-        <h1>Iniciar sesión</h1>
-        <form id="formLogin">
-        <label for="nombre">Usuario</label>
-        <input type="text" id="nombre" name="nombre" required />
 
-        <label for="pass">Contraseña</label>
-        <input type="password" id="pass" name="pass" required />
-
-        <button type="submit" id="btnLogin">Ingresar</button>
-        </form>
-        <div class="registroLink">
-        <p>¿No tenés cuenta? <a href="#" id="btnRegistro">Registrate</a></p>
+    <section id="home">
+        <h2>Cotizaciones</h2>
+        <div id="listaCriptomonedas">
+            <div class="criptomoneda">
+                <h3>Bitcoin (BTC)</h3>
+                <p>Precio: $30,000</p>
+            </div>
+            <div class="criptomoneda">
+                <h3>Ethereum (ETH)</h3>
+                <p>Precio: $1,800</p>
+            </div>
+            <div class="criptomoneda">
+                <h3>Binance Coin (BNB)</h3>
+                <p>Precio: $250</p>
+            </div>
+            <div class="criptomoneda">
+                <h3>Cardano (ADA)</h3>
+                <p>Precio: $0.30</p>
+            </div>
+            <div class="criptomoneda">
+                <h3>Solana (SOL)</h3>
+                <p>Precio: $20</p>
+            </div>
         </div>
     </section>
 
-    <!-- Formulario de registro -->
-    <section class="registroForm invisible" id="registroForm">
-        <h1>Registro</h1>
-        <form id="formRegistro">
-        <label for="nombreReg">Usuario</label>
-        <span id="mensajeErrorNombre" class="error invisible">*El nombre debe tener mínimo 4 caracteres.</span>
-        <input type="text" id="nombreReg" name="nombreReg" required />
-        
-
-        <label for="passReg">Contraseña</label>
-        <span id="mensajeErrorPass" class="error invisible">*La contraseña debe tener mínimo 8 caracteres.</span>
-        <input type="password" id="passReg" name="passReg" required />
-
-        <label for="edad">Edad</label>
-        <span id="mensajeErrorEdad" class="error invisible">*Debes ser mayor de 18 años para registrarte.</span>
-        <input type="number" id="edad" name="edad" required />
-
-        <label for="localidad">Localidad</label>
-        <input type="text" id="localidad" name="localidad" required />
-
-        <button type="submit" id="btnRegistrar">Registrarme</button>
-        </form>
-    </section>
-
-    <section id="home" class="designBase invisible">
-        <h1 id="tituloHome">Bienvenido</h1>
-        <!-- Sección para Comprar Bitcoin -->
+    <section id="comprarSec" class="designBase invisible">
         <div class="comprar">
             <h2>Comprar Crypto</h2>
             <p id="cotizacionCompra" class="cotizacion">
@@ -88,7 +89,9 @@
                 <button type="submit" id="btnComprar">Comprar</button>
             </form>
         </div>
+    </section>
 
+    <section id="venderSec" class="designBase invisible">
         <!-- Sección para Vender Bitcoin -->
         <div class="vender">
             <h2>Vender Crypto</h2>
@@ -122,7 +125,6 @@
                 <button type="submit" id="btnVender">Vender</button>
             </form>
         </div>
-
     </section>
 
     <section id="detalleCompra" class="detalleCompra invisible">
@@ -135,6 +137,50 @@
         <p id="detalleTotal">Total:</p>
         <p id="detalleCriptomoneda">Criptomoneda:</p>
         </div>
+    </section>
+
+    <!-- Formulario de inicio de sesión -->
+    <section class="loginForm invisible" id="loginForm">
+        <h1>Iniciar sesión</h1>
+        <form id="formLogin">
+        <label for="nombre">Usuario</label>
+        <span id="mensajeErrorUsuario" class="error invisible">*El nombre de usuario no existe o esta mal escrito</span>
+        <input type="text" id="nombre" name="nombre" required />
+
+        <label for="pass">Contraseña</label>
+        <span id="mensajeErrorCont" class="error invisible">*Contraseña incorrecta</span>
+        <input type="password" id="pass" name="pass" required autocomplete="current-password" />
+
+        <button type="submit" id="btnLogin">Ingresar</button>
+        </form>
+        <div class="registroLink">
+        <p>¿No tenés cuenta? <a href="#" id="btnRegistro">Registrate</a></p>
+        </div>
+    </section>
+
+    <!-- Formulario de registro -->
+    <section class="registroForm invisible" id="registroForm">
+        <h1>Registro</h1>
+        <form id="formRegistro">
+        <label for="nombreReg">Usuario</label>
+        <span id="mensajeErrorNombre" class="error invisible">*El nombre debe tener mínimo 4 caracteres.</span>
+        <input type="text" id="nombreReg" name="nombreReg" required />
+        
+
+        <label for="passReg">Contraseña</label>
+        <span id="mensajeErrorPass" class="error invisible">*La contraseña debe tener mínimo 8 caracteres.</span>
+        <input type="password" id="passReg" name="passReg" required autocomplete="current-password" />
+
+        <label for="edad">Edad</label>
+        <span id="mensajeErrorEdad" class="error invisible">*Debes ser mayor de 18 años para registrarte.</span>
+        <input type="number" id="edad" name="edad" required />
+
+        <label for="localidad">Localidad</label>
+        <span id="mensajeErrorLocalidad" class="error invisible">*Por favor ingrese una Localidad válida.</span>
+        <input type="text" id="localidad" name="localidad" required />
+
+        <button type="submit" id="btnRegistrar">Registrarme</button>
+        </form>
     </section>
     </main>
 
