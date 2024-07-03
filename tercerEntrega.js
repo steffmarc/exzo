@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let nuevoUsuario = JSON.parse(localStorage.getItem("nuevoUsuario")) || {};
 
     const mostrarSeccion = (seccion) => {
-        const secciones = ["home", "comprarSec", "venderSec", "loginForm", "registroForm","detalleCompra", "perfil"];
+        const secciones = ["home", "loginForm", "registroForm", "detalleCompra", "detalleVenta"];
         secciones.forEach(s => {
             const el = document.getElementById(s);
             if (el) {
@@ -16,7 +16,30 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    mostrarSeccion("home");
+    const actualizarBotonInicioSesion = () => {
+        const botonInicioSesion = document.getElementById("iniciarSesion");
+        const btnPerfilNav = document.getElementById("navPerfil");
+    
+        if (loggedInUser.nombre) {
+            botonInicioSesion.classList.add("invisible");
+            btnPerfilNav.classList.remove("invisible");
+    
+            btnPerfilNav.onclick = (event) => {
+                event.preventDefault();
+                mostrarSeccion("perfilSec"); 
+            };
+        } else {
+            botonInicioSesion.classList.remove("invisible");
+            btnPerfilNav.classList.add("invisible");
+    
+            botonInicioSesion.onclick = (event) => {
+                event.preventDefault();
+                mostrarSeccion("loginForm"); 
+            };
+        }
+    };
+
+    actualizarBotonInicioSesion();
 
     const registroForm = () => {
         const nombre = document.getElementById("nombreReg").value;
@@ -112,7 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const section = link.dataset.section;
             const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
-            if ((section === "perfil" || section === "depositar" || section === "loginForm") && !loggedInUser) {
+            if ((section === "perfilSec" || section === "depositar" || section === "loginForm") && !loggedInUser) {
                 mostrarSeccion("loginForm"); 
             } else {
                 mostrarSeccion(section); 
@@ -129,10 +152,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let cotizacion;
         if (criptoSeleccionada === "bitcoin") {
-            cotizacion = 50000;
-        } else if (criptoSeleccionada === "ethereum") {
-            cotizacion = 40000;
-        } else {
+            cotizacion = 59337;
+        } 
+        else if (criptoSeleccionada === "ethereum") {
+            cotizacion = 3253;
+        } 
+        else if (criptoSeleccionada === "binance coin") {
+            cotizacion = 542.55;
+        }
+        else if (criptoSeleccionada === "solana") {
+            cotizacion = 0.69;
+        }
+        else if (criptoSeleccionada === "ripple") {
+            cotizacion = 0.446;
+        }
+        else {
             cotizacion = 0;
         }
 
@@ -171,6 +205,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 <p><strong>Método de Pago:</strong> ${detalleCompra.metodoPago}</p>
                 <p><strong>Criptomoneda:</strong> ${detalleCompra.criptomoneda}</p>
             </div>
+            <div>
+            <div id="btnComprobante">
+            <button id="btnVolver">Volver</button>
+            <button id="btnPerfil">Perfil</button>
+        </div>
+        </div>
         `;
         mostrarSeccion("detalleCompra");
         comprarContainer.innerHTML = innerHTMLContent;
@@ -185,10 +225,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const criptoSeleccionada = document.getElementById("criptoVenta").value;
 
         if (criptoSeleccionada === "bitcoin") {
-            cotizacion = 48000;
-        } else if (criptoSeleccionada === "ethereum") {
-            cotizacion = 38000;
-        } else {
+            cotizacion = 59337;
+        } 
+        else if (criptoSeleccionada === "ethereum") {
+            cotizacion = 3253;
+        } 
+        else if (criptoSeleccionada === "binance coin") {
+            cotizacion = 3253;
+        }
+        else {
             cotizacion = 0;
         }
 
@@ -206,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 metodoPago,
                 criptomoneda: criptoSeleccionada.charAt(0).toUpperCase() + criptoSeleccionada.slice(1)
             };
-            mostrarSeccion("detalleCompra");
+            mostrarSeccion("detalleVenta");
             mostrarVentaConfirmada(nuevoMovimiento);
         } else {
             console.error("Error: Cantidad inválida o cotización no definida.");
@@ -227,6 +272,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 <p><strong>Método de Pago:</strong> ${detalleVenta.metodoPago}</p>
                 <p><strong>Criptomoneda:</strong> ${detalleVenta.criptomoneda}</p>
             </div>
+            <div id="btnComprobante">
+            <button id="btnVolver">Volver</button>
+            <button id="btnPerfil">Perfil</button>
+        </div>
         `;
 
         ventaContainer.innerHTML = innerHTMLContent;
@@ -249,9 +298,19 @@ document.addEventListener("DOMContentLoaded", () => {
         const criptoSeleccionadaVenta = document.getElementById("criptoVenta").value;
 
         if (criptoSeleccionadaCompra === "bitcoin") {
-            cotizacionCompra = 50000;
-        } else if (criptoSeleccionadaCompra === "ethereum") {
-            cotizacionCompra = 40000;
+            cotizacionCompra = 59337;
+        } 
+        else if (criptoSeleccionadaCompra === "ethereum") {
+            cotizacionCompra = 3253;
+        } 
+        else if (criptoSeleccionadaCompra === "binance coin") {
+            cotizacionCompra = 542.55;
+        }
+        else if (criptoSeleccionadaCompra === "solana") {
+            cotizacionCompra = 0.69;
+        }
+        else if (criptoSeleccionadaCompra === "ripple") {
+            cotizacionCompra = 0.446;
         }
 
         if (criptoSeleccionadaVenta === "bitcoin") {
@@ -292,38 +351,52 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("btnRegistro").addEventListener("click", (event) => {
         event.preventDefault();
         mostrarSeccion("registroForm");
-        registroForm(); 
+        registroForm();
     });
     
     document.getElementById("btnLogin").addEventListener("click", (event) => {
         event.preventDefault();
-        mostrarSeccion("home"); 
-    });
-
-    document.getElementById("navHome").addEventListener("click", (event) => {
-        event.preventDefault();
         mostrarSeccion("home");
+        loginForm();
     });
     
-    document.getElementById("navComprar").addEventListener("click", (event) => {
-        event.preventDefault();
-        mostrarSeccion("comprarSec");
-    });
-    
-    document.getElementById("navVender").addEventListener("click", (event) => {
-        event.preventDefault();
-        mostrarSeccion("venderSec");
-    });
+    document.getElementById("navHome").addEventListener("click", (event) => {
+    event.preventDefault();
+    mostrarSeccion("home");
+});
+
+document.getElementById("navVender").addEventListener("click", (event) => {
+    event.preventDefault();
+    mostrarSeccion("venderSec");
+});
     
     document.getElementById("btnComprar").addEventListener("click", (event) => {
         event.preventDefault();
         realizarCompra(event);
+        mostrarSeccion("detalleCompra")
     });
     
     document.getElementById("btnVender").addEventListener("click", (event) => {
         event.preventDefault();
         realizarVenta(event);
+        mostrarSeccion("detalleVenta")
     });
+    
+    document.getElementById("btnPerfil").addEventListener("click", (event) => {
+        event.preventDefault();
+        mostrarSeccion("perfilSec");
+    });
+
+    document.getElementById("navPerfil").addEventListener("click", (event) => {
+        event.preventDefault();
+        mostrarSeccion("perfilSec");
+    });
+    
+    document.getElementById("btnVolver").addEventListener("click", (event) => {
+        event.preventDefault();
+        mostrarSeccion("home");
+    });
+    
 
     document.getElementById("cantidadCompra").addEventListener("input", actualizarTotal);
     document.getElementById("cantidadVenta").addEventListener("input", actualizarTotal);

@@ -2,114 +2,87 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f0f0f0;
     display: flex;
     flex-direction: column;
 }
 
-.container {
-    width: 100%;
-    padding: 20px;
-}
-
-
-header {
-    background-color: #007A80;
-    padding: 10px 0;
-    width: 100%;
-}
-
+/* Barra de navegaciín */
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
     width: 100%;
-    height: auto;
-    margin: 0;
+    height: 60px;
+    background-color: #ffffff;
 }
-
-.logo img {
-    max-height: 25px;
+.logo img{
+    height: 25px;
 }
 
 .navLinks {
     display: flex;
+    text-align: center;
     list-style-type: none;
+    margin-bottom: 0;
 }
 
 .navLinks li {
-    margin-right: 20px;
+    margin: 0 20px;
 }
 
 .navLinks a {
-    color: #ffffff;
+    color: #333333;
     text-decoration: none;
     font-size: 16px;
     transition: color 0.3s ease;
     padding: 10px 20px;
     border-radius: 50px;
+    font-weight: 600;
 }
 
 .navLinks a:hover {
-    background-color: #f0f0f0;
-    color: #007A80;
+    background-color: #FDCE8B;
+    color: #333333;
 }
 
-.btnDepositar {
+.btnInSesion {
+    margin: 0 20px;
     padding: 10px 20px;
+    background-color: #FDCE8B;
+    color: #333333;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btnInSesion:hover, .btnRegist:hover{
+    background-color: #D56A15;
+    color: #ffffff;
+}
+
+.btnRegist {
+    color: #D56A15;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
     background-color: #ffffff;
-    color: #007A80;
     border: none;
     border-radius: 50px;
-    cursor: pointer;
-    font-size: 14px;
+    box-shadow: 0px 0px 2px #b5b5b5;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btnDepositar:hover {
-    background-color: #333333;
-    color: #ffffff;
-}
 
-.btnIniciarSesion {
-    color: #ffffff;
-    padding: 10px 20px;
-    font-size: 14px;
-    cursor: pointer;
-    background-color: #007A80;
-    border: none;
-    border-radius: 50px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-.btnIniciarSesion:hover{
-    background-color: white;
-    color: #007A80;
-}
-
-.tooltip {
-    display: none;
-    position: absolute;
-    background-color: #333;
-    color: #fff;
-    padding: 5px;
-    border-radius: 3px;
-    z-index: 1;
-}
-
-.designBase {
-    background-color: #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-}
+/* Formularios */
 
 .loginForm, .registroForm {
     background-color: #ffffff;
@@ -134,7 +107,7 @@ form {
 
 form label {
     margin-bottom: 8px;
-    color: #555555;
+    color: #FFF0DE;
 }
 
 form input[type="text"],
@@ -147,10 +120,10 @@ form input[type="number"] {
     font-size: 16px;
 }
 
-button[type="submit"] {
+#btnLogin {
     padding: 12px 20px;
-    background-color: #007A80;
-    color: #ffffff;
+    background-color: #FDCE8B;
+    color: #333333;
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -158,8 +131,9 @@ button[type="submit"] {
     margin-top: 10px;
 }
 
-button[type="submit"]:hover {
-    background-color: #005C60;
+#btnLogin:hover {
+    background-color: #D56A15;
+    color: #ffffff;
 }
 
 .registroLink {
@@ -169,7 +143,7 @@ button[type="submit"]:hover {
 }
 
 .registroLink a {
-    color: #007A80;
+    color: #D56A15;
     text-decoration: none;
 }
 
@@ -181,136 +155,98 @@ button[type="submit"]:hover {
     display: none;
 }
 
-
-#home {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    width: 100%;
-    margin: 20px auto;
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
 }
 
-#home h2 {
+/* Home */
+.newCrypto{
+    background-color: #FFF0DE;
+    padding: 20px 20px 10px 20px;
+    border-radius: 16px;
+}
+
+.tituloTable{
+    color: #919191 !important;
+    font-weight: 500 !important;
+}
+
+.subtituloTable{
+    color: #333333 !important;
+}
+
+h2 {
     color: #333333;
-    margin-bottom: 10px;
-    text-align: center;
-    font-size: 24px;
+    margin: 10px;
+    text-align: left;
+    border-radius: 50px;
+    font-size: 20px;
+    font-weight: 600;
 }
-
-#listaCriptomonedas {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-}
-
-.criptomoneda {
-    background-color: #f0f0f0;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.criptomoneda h3 {
-    color: #007A80;
-    font-size: 18px;
-    margin-bottom: 5px;
-}
-
-.criptomoneda p {
+h4 {
     color: #333333;
     font-size: 16px;
+}
+
+p{
     margin-bottom: 0;
 }
 
-
-.comprar, .vender {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    width: 100%;
-    margin: 20px auto;
-}
-
-.comprar h2, .vender h2 {
+.mercado td{
     color: #333333;
-    margin-bottom: 10px;
-    text-align: center;
-    font-size: 16px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
-.comprar form, .vender form {
+.porcentage{
+    color: #31a231 !important; 
+}
+
+.porcentageRed{
+    color: #d01111 !important;
+}
+
+.criptomoneda{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.infoCrypto {
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
-.comprar label, .vender label {
-    margin-bottom: 8px;
-    color: #555555;
+.btn{
+    border-radius: 50px !important;
+    background-color: #FDCE8B !important;
+    color: #333333 !important;
+    padding: 5px 20px !important;
 }
 
-.comprar input[type="number"],
-.vender input[type="number"] {
-    padding: 10px;
-    margin-bottom: 16px;
-    border: 1px solid #dddddd;
-    border-radius: 4px;
-    font-size: 16px;
-    width: 100%; 
+.btn:hover{
+    background-color: #D56A15 !important;
+    color: #ffffff !important;
 }
 
-.comprar select,
-.vender select {
-    padding: 10px;
-    margin-bottom: 16px;
-    border: 1px solid #dddddd;
-    border-radius: 4px;
-    font-size: 16px;
-    width: 100%;
-}
 
-.comprar button[type="submit"],
-.vender button[type="submit"] {
-    padding: 12px 20px;
-    background-color: #007A80;
-    color: #ffffff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    width: 50%; 
-    margin: 10px auto; 
-}
-
-.comprar button[type="submit"]:hover,
-.vender button[type="submit"]:hover {
-    background-color: #005C60;
-}
-
-.totalEstimado {
-    font-size: 14px;
-    color: #888888;
-    text-align: center;
-    margin-top: 8px;
-}
-
+/* Comprobante */
 .detalleCompra {
-    background-color: white;
+    background-color: #FFF0DE;
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 20px;
-    max-width: 600px;
+    width: 40%;
     margin: 20px auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     color: #333;
 }
 
 .detalleCompra h2 {
-    color: #007A80;
+    color: #333333;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -320,57 +256,114 @@ button[type="submit"]:hover {
     margin: 10px 0;
 }
 
-.cotizacion {
+#btnComprobante{
+    margin-top: 20px;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: #ffffff;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    justify-content: right;
+
 }
 
-.cotizacion span {
+#btnVolver {
+    background-color: #33333300;
     color: #333333;
-    margin: 0 10px;
-}
-
-.homeContent {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    width: 100%;
-    margin: 20px auto;
-}
-
-
-.homeContent p {
-    color: #555555;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50px;
+    font-weight: 500;
     font-size: 16px;
-    margin-bottom: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#btnVolver:hover, #btnPerfil:hover{
+    background-color: #333333;
+    color: #FFF0DE;
+}
+
+/* Perfil */
+
+.perfilFoto {
+    display: flex;
+    flex-direction: row;
+    margin: 20px 0 50px 0;
     text-align: center;
 }
 
-@media (max-width: 768px) {
-    .container {
-        padding: 20px;
-    }
-
-    .comprar, .vender {
-        padding: 15px;
-    }
-
-    button[type="submit"] {
-        padding: 10px 16px;
-        font-size: 14px;
-    }
+.perfilFoto img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffffff; 
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
 }
 
-.error {
-    color: red;
+.perfilFoto input[type="file"] {
+    margin-top: 10px;
+}
+
+#balanceSec {
+    background-color: #ffffff; 
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+}
+
+#balanceSec, #perfilSec, #movimientosCompra, #movimientosVenta, h2 {
+    color: #333333; 
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+}
+
+#balanceSec p {
+    color: #555555;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.btnDepositar, .btnRetirar {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 20px;
     font-size: 14px;
-    margin-top: 5px;
+    font-weight: 600;
+    background-color: #FDCE8B; 
+    color: #333333;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: 10px;
 }
+
+.btnDepositar:hover, .btnRetirar:hover {
+    background-color: #D56A15; 
+    color: #ffffff;
+}
+
+#movimientosCompra, #movimientosVenta {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); 
+    margin-bottom: 20px;
+}
+
+#movimientosCompra ul, #movimientosVenta ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#movimientosCompra ul li, #movimientosVenta ul li {
+    color: #555555; 
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+
+
+
+

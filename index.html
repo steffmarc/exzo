@@ -1,189 +1,254 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Font -->
     <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
     />
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <!-- Style -->
     <link rel="stylesheet" href="style.css" />
     <title>Exzo - Invierte en el futuro con confianza</title>
-</head>
-<body>
+  </head>
+  <body>
     <header id="header">
-            <nav>
-                <div class="logo">
-                    <img src="./multimedia/logoBlanco.png" alt="Logo Exzo">
-                </div>
-                <ul class="navLinks">
-                    <li><a href="#home" id="navHome">Home</a></li>
-                    <li><a href="#comprarSec" id="navComprar">Comprar</a></li>
-                    <li><a href="#venderSec" id="navVender">Vender</a></li>
-                    <li><a href="#perfil" id="navPerfil">Perfil</a></li>
-                </ul>
-                <div >
-                    <button id="depositar" class="btnDepositar">Depositar</button>
-                    <button id="iniciarSesion" class="btnIniciarSesion">Iniciar Sesión</button>
-                </div>
-            </nav>
+      <nav>
+        <div class="logo">
+          <img src="../multimedia/logoMostaza.png" alt="Logo Exzo" />
+        </div>
+        <ul class="navLinks">
+          <li><a href="./index.html" id="navHome">Home</a></li>
+          <li><a href="./pages/informacion.html" id="navComprar">Información</a></li>
+          <li><a href="./pages/perfil.html" id="navVender">Perfil</a></li>
+        </ul>
+        <div>
+          <button id="depositar" class="btnInSesion">Iniciar Sesión</button>
+          <button id="iniciarSesion" class="btnRegist">Registrarse</button>
+          <button id="navPerfil" class="btnIniciarSesion invisible">
+            Perfil
+          </button>
+        </div>
+      </nav>
     </header>
-    <main class="container">
-
-    <section id="home">
-        <h2>Cotizaciones</h2>
-        <div id="listaCriptomonedas">
-            <div class="criptomoneda">
-                <h3>Bitcoin (BTC)</h3>
-                <p>Precio: $30,000</p>
-            </div>
-            <div class="criptomoneda">
-                <h3>Ethereum (ETH)</h3>
-                <p>Precio: $1,800</p>
-            </div>
-            <div class="criptomoneda">
-                <h3>Binance Coin (BNB)</h3>
-                <p>Precio: $250</p>
-            </div>
-            <div class="criptomoneda">
-                <h3>Cardano (ADA)</h3>
-                <p>Precio: $0.30</p>
-            </div>
-            <div class="criptomoneda">
-                <h3>Solana (SOL)</h3>
-                <p>Precio: $20</p>
-            </div>
+    <main class="container-fluid">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="main-container">
+            <table class="table table-hover mercado">
+                <thead>
+                    <h2>Mercado</h2>
+                  <tr>
+                    <th scope="col" class="tituloTable">Nombre</th>
+                    <th scope="col" class="tituloTable">Precio</th>
+                    <th scope="col" class="tituloTable">Variación</th>
+                    <th scope="col" class="tituloTable">Capitalización</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="align-middle">
+                    <th scope="row" class="subtituloTable">Bitcoin (BTC)</th>
+                    <td class="precio">$55.196.843,89 ARS</td>
+                    <td class="porcentage">+3,9%</td>
+                    <td class="capMercado">$1,092.2 BARS</td>
+                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                  </tr>
+                  <tr class="align-middle">
+                    <th scope="row" class="subtituloTable">Ethereum (ETH)</th>
+                    <td class="precio">$3.061.165,93 ARS</td>
+                    <td class="porcentageRed">-2,80%</td>
+                    <td class="capMercado">$364,7 BARS</td>
+                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                  </tr>
+                  <tr class="align-middle">
+                    <th scope="row" class="subtituloTable">Theather (USDT)</th>
+                    <td class="precio">$913,93 ARS</td>
+                    <td class="porcentageRed">-0,03%</td>
+                    <td class="capMercado">$103,0 BARS</td>
+                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                  </tr>
+                  <tr class="align-middle">
+                    <th scope="row" class="subtituloTable">BNB (BNB)</th>
+                    <td class="precio">$511.294,48 ARS</td>
+                    <td class="porcentageRed">-2,97%</td>
+                    <td class="capMercado">$75,4 BARS</td>
+                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                  </tr>
+                  <tr class="align-middle">
+                    <th scope="row" class="subtituloTable">Solana (SOL)</th>
+                    <td class="precio">$130.052,05 ARS</td>
+                    <td class="porcentageRed">-3,80%</td>
+                    <td class="capMercado">$60,4 BARS</td>
+                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                  </tr>
+                  <tr class="align-middle">
+                    <th scope="row" class="subtituloTable">USDC (USDC)</th>
+                    <td class="precio">$915,25 ARS</td>
+                    <td></td>
+                    <td class="capMercado">$29,8 BARS</td>
+                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                  </tr>
+                  <tr class="align-middle">
+                    <th scope="row" class="subtituloTable">XRP (XRP)</th>
+                    <td class="precio">$428,38 ARS</td>
+                    <td class="porcentageRed">-2,80%</td>
+                    <td class="capMercado">$23,9 BARS</td>
+                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                  </tr>
+                  <tr class="align-middle">
+                    <th scope="row" class="subtituloTable">Toncoin (TON)</th>
+                    <td class="precio">$7.201,75 ARS</td>
+                    <td class="porcentageRed">-2,28%</td>
+                    <td class="capMercado">$17,7 BARS</td>
+                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
         </div>
-    </section>
 
-    <section id="comprarSec" class="designBase invisible">
-        <div class="comprar">
-            <h2>Comprar Crypto</h2>
-            <p id="cotizacionCompra" class="cotizacion">
-                <span>Bitcoin: $50,000</span>
-                <span>Ethereum: $40,000</span>
-            </p>
-            <form id="formComprar">
-                <label for="criptoCompra">Criptomoneda:</label>
-                <select id="criptoCompra" name="criptoCompra">
-                    <option value="bitcoin">Bitcoin</option>
-                    <option value="ethereum">Ethereum</option>
-                </select>
-        
-                <label for="cantidadCompra">Cantidad:</label>
-                <input
-                    type="number"
-                    id="cantidadCompra"
-                    name="cantidadCompra"
-                    required
-                />
-        
-                <p id="totalEstimadoCompra" class="totalEstimado"></p>
-        
-                <label for="metodoPagoCompra">Método de Pago:</label>
-                <select id="metodoPagoCompra" name="metodoPagoCompra">
-                    <option value="transferencia">Transferencia</option>
-                    <option value="mercadoPago">MercadoPago</option>
-                </select>
-        
-                <button type="submit" id="btnComprar">Comprar</button>
-            </form>
+        <div class="col-md-4">
+          <div class="aside-container mt-4 mb-4">
+            <section class="newCrypto">
+                <h2>Nuevo</h2>
+                  <div class="criptomoneda">
+                    <h4>EURC</h4>
+                    <div class="infoCripto">
+                      <p>$986.17</p>
+                    </div>
+                  </div>
+                  <div class="criptomoneda">
+                    <h4>BLAST</h4>
+                    <div class="infoCripto">
+                      <p>$16.81</p>
+                    </div>
+                  </div>
+                  <div class="criptomoneda">
+                    <h4>CORE</h4>
+                    <div class="infoCripto">
+                      <p>$1,142.22</p>
+                    </div>
+                  </div>
+              </section>
+          </div>
+          <div class="aside-container mb-3">
+            <section class="newCrypto">
+                <h2>En alza</h2>
+                  <div class="criptomoneda">
+                    <h4>Cryptex Finance</h4>
+                    <div class="infoCripto">
+                      <p>$3,203.37</p>
+                      <p class="porcentage">+49,57%</p>
+                    </div>
+                  </div>
+                  <div class="criptomoneda">
+                    <h4>Hivemapper</h4>
+                    <div class="infoCripto">
+                      <p>$66.81</p>
+                      <p class="porcentage">+32,62%</p>
+                    </div>
+                  </div>
+                  <div class="criptomoneda">
+                    <h4>Horizen</h4>
+                    <div class="infoCripto">
+                      <p>$7,450.11</p>
+                      <p class="porcentage">+13,41%</p>
+                    </div>
+                  </div>
+              </section>
+          </div>
+
+          </div>
         </div>
-    </section>
+      </div>
 
-    <section id="venderSec" class="designBase invisible">
-        <!-- Sección para Vender Bitcoin -->
-        <div class="vender">
-            <h2>Vender Crypto</h2>
-            <p id="cotizacionVenta" class="cotizacion">
-                <span>Bitcoin: $48,000</span>
-                <span>Ethereum: $38,000</span>
-            </p>
-            <form id="formVenta">
-                <label for="criptoVenta">Criptomoneda:</label>
-                <select id="criptoVenta" name="criptoVenta">
-                    <option value="bitcoin">Bitcoin</option>
-                    <option value="ethereum">Ethereum</option>
-                </select>
-        
-                <label for="cantidadVenta">Cantidad:</label>
-                <input
-                    type="number"
-                    id="cantidadVenta"
-                    name="cantidadVenta"
-                    required
-                />
-        
-                <p id="totalEstimadoVenta" class="totalEstimado"></p>
-        
-                <label for="metodoPagoVenta">Método de Pago:</label>
-                <select id="metodoPagoVenta" name="metodoPagoVenta">
-                    <option value="transferencia">Transferencia</option>
-                    <option value="mercadoPago">MercadoPago</option>
-                </select>
-        
-                <button type="submit" id="btnVender">Vender</button>
-            </form>
-        </div>
-    </section>
-
-    <section id="detalleCompra" class="detalleCompra invisible">
-        <h2>Compra Confirmada</h2>
-        <div class="detalleCompraContent">
-        <p id="detalleFecha">Fecha:</p>
-        <p id="detalleTipo">Tipo:</p>
-        <p id="detalleCantidad">Cantidad:</p>
-        <p id="detallePrecioUnitario">Precio Unitario:</p>
-        <p id="detalleTotal">Total:</p>
-        <p id="detalleCriptomoneda">Criptomoneda:</p>
-        </div>
-    </section>
-
-    <!-- Formulario de inicio de sesión -->
-    <section class="loginForm invisible" id="loginForm">
+      <!-- Formulario de inicio de sesión -->
+      <section class="loginForm invisible" id="loginForm">
         <h1>Iniciar sesión</h1>
         <form id="formLogin">
-        <label for="nombre">Usuario</label>
-        <span id="mensajeErrorUsuario" class="error invisible">*El nombre de usuario no existe o esta mal escrito</span>
-        <input type="text" id="nombre" name="nombre" required />
+          <label for="nombre">Usuario</label>
+          <span id="mensajeErrorUsuario" class="error invisible"
+            >*El nombre de usuario no existe o esta mal escrito</span
+          >
+          <input type="text" id="nombre" name="nombre" required />
 
-        <label for="pass">Contraseña</label>
-        <span id="mensajeErrorCont" class="error invisible">*Contraseña incorrecta</span>
-        <input type="password" id="pass" name="pass" required autocomplete="current-password" />
+          <label for="pass">Contraseña</label>
+          <span id="mensajeErrorCont" class="error invisible"
+            >*Contraseña incorrecta</span
+          >
+          <input
+            type="password"
+            id="pass"
+            name="pass"
+            required
+            autocomplete="current-password"
+          />
 
-        <button type="submit" id="btnLogin">Ingresar</button>
+          <button type="submit" id="btnLogin">Ingresar</button>
         </form>
         <div class="registroLink">
-        <p>¿No tenés cuenta? <a href="#" id="btnRegistro">Registrate</a></p>
+          <p>¿No tenés cuenta? <a href="#" id="btnRegistro">Registrate</a></p>
         </div>
-    </section>
+      </section>
 
-    <!-- Formulario de registro -->
-    <section class="registroForm invisible" id="registroForm">
+      <!-- Formulario de registro -->
+      <section class="registroForm invisible" id="registroForm">
         <h1>Registro</h1>
         <form id="formRegistro">
-        <label for="nombreReg">Usuario</label>
-        <span id="mensajeErrorNombre" class="error invisible">*El nombre debe tener mínimo 4 caracteres.</span>
-        <input type="text" id="nombreReg" name="nombreReg" required />
-        
+          <label for="nombreReg">Usuario</label>
+          <span id="mensajeErrorNombre" class="error invisible"
+            >*El nombre debe tener mínimo 4 caracteres.</span
+          >
+          <input type="text" id="nombreReg" name="nombreReg" required />
 
-        <label for="passReg">Contraseña</label>
-        <span id="mensajeErrorPass" class="error invisible">*La contraseña debe tener mínimo 8 caracteres.</span>
-        <input type="password" id="passReg" name="passReg" required autocomplete="current-password" />
+          <label for="passReg">Contraseña</label>
+          <span id="mensajeErrorPass" class="error invisible"
+            >*La contraseña debe tener mínimo 8 caracteres.</span
+          >
+          <input
+            type="password"
+            id="passReg"
+            name="passReg"
+            required
+            autocomplete="current-password"
+          />
 
-        <label for="edad">Edad</label>
-        <span id="mensajeErrorEdad" class="error invisible">*Debes ser mayor de 18 años para registrarte.</span>
-        <input type="number" id="edad" name="edad" required />
+          <label for="edad">Edad</label>
+          <span id="mensajeErrorEdad" class="error invisible"
+            >*Debes ser mayor de 18 años para registrarte.</span
+          >
+          <input type="number" id="edad" name="edad" required />
 
-        <label for="localidad">Localidad</label>
-        <span id="mensajeErrorLocalidad" class="error invisible">*Por favor ingrese una Localidad válida.</span>
-        <input type="text" id="localidad" name="localidad" required />
+          <label for="localidad">Localidad</label>
+          <span id="mensajeErrorLocalidad" class="error invisible"
+            >*Por favor ingrese una Localidad válida.</span
+          >
+          <input type="text" id="localidad" name="localidad" required />
 
-        <button type="submit" id="btnRegistrar">Registrarme</button>
+          <button type="submit" id="btnRegistrar">Registrarme</button>
         </form>
-    </section>
+      </section>
     </main>
 
-    <script src="tercerEntrega.js"></script>
-</body>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./tercerEntrega.js"></script>
+  </body>
 </html>
