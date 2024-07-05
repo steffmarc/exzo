@@ -63,18 +63,18 @@ nav {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btnInSesion:hover, .btnRegist:hover{
+.btnInSesion:hover, .btnRegist:hover, #btnRegistrar:hover{
     background-color: #D56A15;
     color: #ffffff;
 }
 
-.btnRegist {
+.btnRegist, #btnRegistrar {
     color: #D56A15;
     padding: 10px 20px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    background-color: #ffffff;
+    background-color: #FFF0DE;
     border: none;
     border-radius: 50px;
     box-shadow: 0px 0px 2px #b5b5b5;
@@ -89,7 +89,7 @@ nav {
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+    max-width: 500px;
     width: 100%;
     margin: 20px auto;
 }
@@ -98,6 +98,7 @@ nav {
     text-align: center;
     margin-bottom: 20px;
     color: #333333;
+    font-size: 24px;
 }
 
 form {
@@ -107,7 +108,7 @@ form {
 
 form label {
     margin-bottom: 8px;
-    color: #FFF0DE;
+    color: #333333;
 }
 
 form input[type="text"],
@@ -151,9 +152,6 @@ form input[type="number"] {
     text-decoration: underline;
 }
 
-.invisible {
-    display: none;
-}
 
 .error {
     color: red;
@@ -162,6 +160,7 @@ form input[type="number"] {
 }
 
 /* Home */
+
 .newCrypto{
     background-color: #FFF0DE;
     padding: 20px 20px 10px 20px;

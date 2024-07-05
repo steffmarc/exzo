@@ -21,7 +21,7 @@
   </head>
   <body>
     <header id="header">
-      <nav>
+      <nav id="nav">
         <div class="logo">
           <img src="../multimedia/logoMostaza.png" alt="Logo Exzo" />
         </div>
@@ -31,16 +31,13 @@
           <li><a href="./pages/perfil.html" id="navPerfil">Perfil</a></li>
         </ul>
         <div>
-          <button class="btnInSesion">Iniciar Sesión</button>
-          <button class="btnRegist">Registrarse</button>
-          <button class="btnIniciarSesion invisible">
-            Perfil
-          </button>
+          <button class="btnInSesion" id="btnIniciarSesion">Iniciar Sesión</button>
+          <button class="btnRegist" id="btnRegist">Registrate</button>
         </div>
       </nav>
     </header>
     <main class="container-fluid">
-      <div class="row">
+      <div class="row" id="home">
         <div class="col-md-8">
           <div class="main-container">
             <table class="table table-hover mercado">
@@ -172,18 +169,16 @@
       </div>
 
       <!-- Formulario de inicio de sesión -->
-      <section class="loginForm invisible" id="loginForm">
+      <section class="loginForm" id="loginForm" style="display: none;">
         <h1>Iniciar sesión</h1>
         <form id="formLogin">
           <label for="nombre">Usuario</label>
-          <span id="mensajeErrorUsuario" class="error invisible"
-            >*El nombre de usuario no existe o esta mal escrito</span
+          <span id="mensajeErrorUsuario" style="display: none;" class="error">*El nombre de usuario no existe o esta mal escrito</span
           >
           <input type="text" id="nombre" name="nombre" required />
 
           <label for="pass">Contraseña</label>
-          <span id="mensajeErrorCont" class="error invisible"
-            >*Contraseña incorrecta</span
+          <span id="mensajeErrorCont" style="display: none;" class="error">*Contraseña incorrecta</span
           >
           <input
             type="password"
@@ -201,18 +196,16 @@
       </section>
 
       <!-- Formulario de registro -->
-      <section class="registroForm invisible" id="registroForm">
-        <h1>Registro</h1>
+      <section class="registroForm" id="registroForm" style="display: none;">
+        <h1>¡A un paso de tu futuro financiero!</h1>
         <form id="formRegistro">
           <label for="nombreReg">Usuario</label>
-          <span id="mensajeErrorNombre" class="error invisible"
-            >*El nombre debe tener mínimo 4 caracteres.</span
+          <span id="mensajeErrorNombre" style="display: none;" class="error">*El nombre debe tener mínimo 4 caracteres.</span
           >
           <input type="text" id="nombreReg" name="nombreReg" required />
 
           <label for="passReg">Contraseña</label>
-          <span id="mensajeErrorPass" class="error invisible"
-            >*La contraseña debe tener mínimo 8 caracteres.</span
+          <span id="mensajeErrorPass" style="display: none;" class="error">*La contraseña debe tener mínimo 8 caracteres.</span
           >
           <input
             type="password"
@@ -223,14 +216,12 @@
           />
 
           <label for="edad">Edad</label>
-          <span id="mensajeErrorEdad" class="error invisible"
-            >*Debes ser mayor de 18 años para registrarte.</span
+          <span id="mensajeErrorEdad" style="display: none;" class="error">*Debes ser mayor de 18 años para registrarte.</span
           >
           <input type="number" id="edad" name="edad" required />
 
           <label for="localidad">Localidad</label>
-          <span id="mensajeErrorLocalidad" class="error invisible"
-            >*Por favor ingrese una Localidad válida.</span
+          <span id="mensajeErrorLocalidad" style="display: none;" class="error">*Por favor ingrese una Localidad válida.</span
           >
           <input type="text" id="localidad" name="localidad" required />
 
@@ -238,6 +229,99 @@
         </form>
       </section>
     </main>
+    <!-- Pagina de compra -->
+    <section id="comprarSec" style="display: none;">
+      <div class="comprar">
+          <h2>Comprar Crypto</h2>
+          <p id="cotizacionCompra" class="cotizacion">
+              <span>Bitcoin: $50,000</span>
+              <span>Ethereum: $40,000</span>
+          </p>
+          <form id="formComprar">
+              <label for="criptoCompra">Criptomoneda:</label>
+              <select id="criptoCompra" name="criptoCompra">
+                  <option value="bitcoin">Bitcoin</option>
+                  <option value="ethereum">Ethereum</option>
+              </select>
+      
+              <label for="cantidadCompra">Cantidad:</label>
+              <input
+                  type="number"
+                  id="cantidadCompra"
+                  name="cantidadCompra"
+                  required
+              />
+      
+              <p id="totalEstimadoCompra" class="totalEstimado"></p>
+      
+              <label for="metodoPagoCompra">Método de Pago:</label>
+              <select id="metodoPagoCompra" name="metodoPagoCompra">
+                  <option value="transferencia">Transferencia</option>
+                  <option value="mercadoPago">MercadoPago</option>
+              </select>
+      
+              <button type="submit" id="btnComprar">Comprar</button>
+          </form>
+      </div>
+  </section>
+
+  <!-- Pagina de venta -->
+  <section id="venderSec" style="display: none;">
+      <!-- Sección para Vender Bitcoin -->
+      <div class="vender">
+          <h2>Vender Crypto</h2>
+          <p id="cotizacionVenta" class="cotizacion">
+              <span>Bitcoin: $48,000</span>
+              <span>Ethereum: $38,000</span>
+          </p>
+          <form id="formVenta">
+              <label for="criptoVenta">Criptomoneda:</label>
+              <select id="criptoVenta" name="criptoVenta">
+                  <option value="bitcoin">Bitcoin</option>
+                  <option value="ethereum">Ethereum</option>
+              </select>
+      
+              <label for="cantidadVenta">Cantidad:</label>
+              <input
+                  type="number"
+                  id="cantidadVenta"
+                  name="cantidadVenta"
+                  required
+              />
+      
+              <p id="totalEstimadoVenta" class="totalEstimado"></p>
+      
+              <label for="metodoPagoVenta">Método de Pago:</label>
+              <select id="metodoPagoVenta" name="metodoPagoVenta">
+                  <option value="transferencia">Transferencia</option>
+                  <option value="mercadoPago">MercadoPago</option>
+              </select>
+      
+              <button type="submit" id="btnVender">Vender</button>
+          </form>
+      </div>
+  </section>
+
+  <!-- Comprobante de compra/venta -->
+  <section id="detalleCompra" style="display: none;">
+      <h2>Compra Confirmada</h2>
+      <div class="detalleCompraContent">
+      <p id="detalleFecha">Fecha:</p>
+      <p id="detalleTipo">Tipo:</p>
+      <p id="detalleCantidad">Cantidad:</p>
+      <p id="detallePrecioUnitario">Precio Unitario:</p>
+      <p id="detalleTotal">Total:</p>
+      <p id="detalleCriptomoneda">Criptomoneda:</p>
+      </div>
+      <div id="btnComprobante">
+          <button id="btnVolver">Volver</button>
+          <button id="btnPerfil">Perfil</button>
+      </div>
+  </section>
+
+
+
+
 
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
