@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
   let nuevoUsuario = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
 
-  const loginUsuario = () => {
-    const nombre = document.getElementById("nombre").value;
-    const contraseña = document.getElementById("pass").value;
+  let loginUsuario = () => {
+    let nombre = document.getElementById("nombre").value;
+    let contraseña = document.getElementById("pass").value;
 
-    const getDatos = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
+    let getDatos = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
 
-    const usuario = getDatos.find(
+    let usuario = getDatos.find(
       (usuario) =>
         usuario.nombre === nombre && usuario.contraseña === contraseña
     );
 
-    const mensajeErrorUsuario = document.getElementById("mensajeErrorUsuario");
-    const mensajeErrorCont = document.getElementById("mensajeErrorCont");
+    let mensajeErrorUsuario = document.getElementById("mensajeErrorUsuario");
+    let mensajeErrorCont = document.getElementById("mensajeErrorCont");
 
     if (usuario) {
       mostrarHome(usuario);
@@ -22,20 +22,56 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  const registroUsuarios = () => {
-    const nombre = document.getElementById("nombreReg").value;
-    const contraseña = document.getElementById("passReg").value;
-    const edad = document.getElementById("edad").value;
-    const localidad = document.getElementById("localidad").value;
+  let registroUsuarios = () => {
+    let nombre = document.getElementById("nombreReg").value;
+    let contraseña = document.getElementById("passReg").value;
+    let edad = document.getElementById("edad").value;
+    let localidad = document.getElementById("localidad").value;
 
-    const usuario = { nombre, contraseña, edad, localidad };
+    let mensajeErrorNombre = document.getElementById("mensajeErrorNombre");
+    let mensajeErrorPass = document.getElementById("mensajeErrorPass");
+    let mensajeErrorEdad = document.getElementById("mensajeErrorEdad");
+    let mensajeErrorLocalidad = document.getElementById(
+      "mensajeErrorLocalidad"
+    );
+
+    if (nombre.length < 4) {
+      mensajeErrorNombre.style.display = "block";
+      return;
+    } else {
+      mensajeErrorNombre.style.display = "none";
+    }
+
+    if (contraseña.length < 8) {
+      mensajeErrorPass.style.display = "block";
+      return;
+    } else {
+      mensajeErrorPass.style.display = "none";
+    }
+
+    let edadNum = parseInt(edad);
+    if (isNaN(edadNum) || edadNum <= 18) {
+      mensajeErrorEdad.style.display = "block";
+      return;
+    } else {
+      mensajeErrorEdad.style.display = "none";
+    }
+
+    if (!localidad.match(/^[a-zA-Z\s]*$/)) {
+      mensajeErrorLocalidad.style.display = "block";
+      return;
+    } else {
+      mensajeErrorLocalidad.style.display = "none";
+    }
+
+    let usuario = { nombre, contraseña, edad, localidad };
     nuevoUsuario.push(usuario);
 
     localStorage.setItem("nuevoUsuario", JSON.stringify(nuevoUsuario));
     mostrarHome(usuario);
   };
 
-  const mostrarHome = () => {
+  let mostrarHome = () => {
     registroForm.style.display = "none";
     loginForm.style.display = "none";
     home.style.display = "block";
@@ -58,16 +94,16 @@ document.addEventListener("DOMContentLoaded", () => {
       </nav>`;
   };
 
-  const mostrarMensajeError = (mensajeErrorUsuario, mensajeErrorCont) => {
-    const nombre = document.getElementById("nombre").value;
-    const contraseña = document.getElementById("pass").value;
+  let mostrarMensajeError = (mensajeErrorUsuario, mensajeErrorCont) => {
+    let nombre = document.getElementById("nombre").value;
+    let contraseña = document.getElementById("pass").value;
 
     if (!nombre || !contraseña) {
       return;
     }
 
-    const getDatos = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
-    const usuario = getDatos.find((usuario) => usuario.nombre === nombre);
+    let getDatos = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
+    let usuario = getDatos.find((usuario) => usuario.nombre === nombre);
 
     if (!usuario) {
       mensajeErrorUsuario.style.display = "block";
