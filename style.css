@@ -19,6 +19,7 @@ nav {
     width: 100%;
     height: 60px;
     background-color: #ffffff;
+    margin-bottom: 15px;
 }
 .logo img{
     height: 25px;
@@ -233,50 +234,12 @@ p{
 
 
 /* Comprobante */
-.detalleCompra {
-    background-color: #FFF0DE;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 20px;
-    width: 40%;
-    margin: 20px auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    color: #333;
-}
-
-.detalleCompra h2 {
-    color: #333333;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.detalleCompraContent p {
-    font-size: 16px;
-    margin: 10px 0;
-}
-
-#btnComprobante{
-    margin-top: 20px;
-    display: flex;
-    justify-content: right;
-
-}
-
-#btnVolver {
-    background-color: #33333300;
-    color: #333333;
-    padding: 10px 20px;
+.btn-secondary, .btn-primary{
     border: none;
-    cursor: pointer;
-    border-radius: 50px;
-    font-weight: 500;
-    font-size: 16px;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-#btnVolver:hover, #btnPerfil:hover{
-    background-color: #333333;
-    color: #FFF0DE;
+.swal2-popup {
+    background-color: #D56A15; 
 }
 
 /* Perfil */

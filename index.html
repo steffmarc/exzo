@@ -16,6 +16,7 @@
       crossorigin="anonymous"
     />
     <!-- Style -->
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
     <title>Exzo - Invierte en el futuro con confianza</title>
   </head>
@@ -28,7 +29,6 @@
         <ul class="navLinks">
           <li><a href="./index.html" id="navHome">Home</a></li>
           <li><a href="./pages/informacion.html" id="navInfo">Información</a></li>
-          <li><a href="./pages/perfil.html" id="navPerfil">Perfil</a></li>
         </ul>
         <div>
           <button class="btnInSesion" id="btnIniciarSesion">Iniciar Sesión</button>
@@ -57,56 +57,56 @@
                     <td class="precio">$55.196.843,89 ARS</td>
                     <td class="porcentage">+3,9%</td>
                     <td class="capMercado">$1,092.2 BARS</td>
-                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                    <th><button type="button" class="btn btn-light btnComprar" data-swal-template="#my-template">Comprar</button></th>
                   </tr>
                   <tr class="align-middle">
                     <th scope="row" class="subtituloTable">Ethereum (ETH)</th>
                     <td class="precio">$3.061.165,93 ARS</td>
                     <td class="porcentageRed">-2,80%</td>
                     <td class="capMercado">$364,7 BARS</td>
-                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
                   </tr>
                   <tr class="align-middle">
                     <th scope="row" class="subtituloTable">Theather (USDT)</th>
                     <td class="precio">$913,93 ARS</td>
                     <td class="porcentageRed">-0,03%</td>
                     <td class="capMercado">$103,0 BARS</td>
-                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
                   </tr>
                   <tr class="align-middle">
                     <th scope="row" class="subtituloTable">BNB (BNB)</th>
                     <td class="precio">$511.294,48 ARS</td>
                     <td class="porcentageRed">-2,97%</td>
                     <td class="capMercado">$75,4 BARS</td>
-                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
                   </tr>
                   <tr class="align-middle">
                     <th scope="row" class="subtituloTable">Solana (SOL)</th>
                     <td class="precio">$130.052,05 ARS</td>
                     <td class="porcentageRed">-3,80%</td>
                     <td class="capMercado">$60,4 BARS</td>
-                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
                   </tr>
                   <tr class="align-middle">
                     <th scope="row" class="subtituloTable">USDC (USDC)</th>
                     <td class="precio">$915,25 ARS</td>
                     <td></td>
                     <td class="capMercado">$29,8 BARS</td>
-                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
                   </tr>
                   <tr class="align-middle">
                     <th scope="row" class="subtituloTable">XRP (XRP)</th>
                     <td class="precio">$428,38 ARS</td>
                     <td class="porcentageRed">-2,80%</td>
                     <td class="capMercado">$23,9 BARS</td>
-                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
                   </tr>
                   <tr class="align-middle">
                     <th scope="row" class="subtituloTable">Toncoin (TON)</th>
                     <td class="precio">$7.201,75 ARS</td>
                     <td class="porcentageRed">-2,28%</td>
                     <td class="capMercado">$17,7 BARS</td>
-                    <th><button type="button" class="btn btn-light">Comprar</button></th>
+                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
                   </tr>
                 </tbody>
               </table>
@@ -229,110 +229,57 @@
         </form>
       </section>
     </main>
-    <!-- Pagina de compra -->
-    <section id="comprarSec" style="display: none;">
-      <div class="comprar">
-          <h2>Comprar Crypto</h2>
-          <p id="cotizacionCompra" class="cotizacion">
-              <span>Bitcoin: $50,000</span>
-              <span>Ethereum: $40,000</span>
-          </p>
-          <form id="formComprar">
-              <label for="criptoCompra">Criptomoneda:</label>
-              <select id="criptoCompra" name="criptoCompra">
-                  <option value="bitcoin">Bitcoin</option>
-                  <option value="ethereum">Ethereum</option>
-              </select>
-      
-              <label for="cantidadCompra">Cantidad:</label>
-              <input
-                  type="number"
-                  id="cantidadCompra"
-                  name="cantidadCompra"
-                  required
-              />
-      
-              <p id="totalEstimadoCompra" class="totalEstimado"></p>
-      
-              <label for="metodoPagoCompra">Método de Pago:</label>
-              <select id="metodoPagoCompra" name="metodoPagoCompra">
-                  <option value="transferencia">Transferencia</option>
-                  <option value="mercadoPago">MercadoPago</option>
-              </select>
-      
-              <button type="submit" id="btnComprar">Comprar</button>
-          </form>
+
+<!-- Modal de Compra (Oculto) -->
+<div id="modal-compra" class="modal" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-titulo"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-  </section>
-
-  <!-- Pagina de venta -->
-  <section id="venderSec" style="display: none;">
-      <!-- Sección para Vender Bitcoin -->
-      <div class="vender">
-          <h2>Vender Crypto</h2>
-          <p id="cotizacionVenta" class="cotizacion">
-              <span>Bitcoin: $48,000</span>
-              <span>Ethereum: $38,000</span>
-          </p>
-          <form id="formVenta">
-              <label for="criptoVenta">Criptomoneda:</label>
-              <select id="criptoVenta" name="criptoVenta">
-                  <option value="bitcoin">Bitcoin</option>
-                  <option value="ethereum">Ethereum</option>
-              </select>
-      
-              <label for="cantidadVenta">Cantidad:</label>
-              <input
-                  type="number"
-                  id="cantidadVenta"
-                  name="cantidadVenta"
-                  required
-              />
-      
-              <p id="totalEstimadoVenta" class="totalEstimado"></p>
-      
-              <label for="metodoPagoVenta">Método de Pago:</label>
-              <select id="metodoPagoVenta" name="metodoPagoVenta">
-                  <option value="transferencia">Transferencia</option>
-                  <option value="mercadoPago">MercadoPago</option>
-              </select>
-      
-              <button type="submit" id="btnVender">Vender</button>
-          </form>
+      <div class="modal-body">
+        <p id="modal-precio"></p>
+        <div class="mb-3">
+          <label for="cantidadCompra" class="form-label">Cantidad a Comprar</label>
+          <input type="number" class="form-control" id="cantidadCompra" min="1" value="1" required>
+        </div>
+        <p id="cotizacionEstimada" class="mb-3">Cotización Estimada: <span id="cotizacionValor"></span></p>
+        <label for="formaPago" class="form-label">Forma de Pago</label>
+        <select class="form-select" id="formaPago" required>
+          <option value="" selected disabled>Seleccionar forma de pago</option>
+          <option value="transferencia">Transferencia</option>
+          <option value="mercadopago">MercadoPago</option>
+        </select>
       </div>
-  </section>
-
-  <!-- Comprobante de compra/venta -->
-  <section id="detalleCompra" style="display: none;">
-      <h2>Compra Confirmada</h2>
-      <div class="detalleCompraContent">
-      <p id="detalleFecha">Fecha:</p>
-      <p id="detalleTipo">Tipo:</p>
-      <p id="detalleCantidad">Cantidad:</p>
-      <p id="detallePrecioUnitario">Precio Unitario:</p>
-      <p id="detalleTotal">Total:</p>
-      <p id="detalleCriptomoneda">Criptomoneda:</p>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" id="confirmarCompra" class="btn btn-primary">Confirmar Compra</button>
       </div>
-      <div id="btnComprobante">
-          <button id="btnVolver">Volver</button>
-          <button id="btnPerfil">Perfil</button>
-      </div>
-  </section>
+    </div>
+  </div>
+</div>
 
 
 
 
 
-    <script
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
       crossorigin="anonymous"
     ></script>
-    <script
+  <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
       integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
       crossorigin="anonymous"
     ></script>
+
     <script src="./tercerEntrega.js"></script>
   </body>
 </html>
