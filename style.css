@@ -5,6 +5,10 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.invisible{
+    display: none;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -20,6 +24,7 @@ nav {
     height: 60px;
     background-color: #ffffff;
     margin-bottom: 15px;
+    box-shadow: 1px 1px 4px #33333370;
 }
 .logo img{
     height: 25px;
@@ -262,6 +267,13 @@ p{
 
 .perfilFoto input[type="file"] {
     margin-top: 10px;
+}
+
+.datosUsuario{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left;
 }
 
 #balanceSec {

@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let mensajeErrorCont = document.getElementById("mensajeErrorCont");
 
     if (usuario) {
+      localStorage.setItem("loggedInUser", JSON.stringify(usuario));
       mostrarHome(usuario);
     } else {
       mostrarMensajeError(mensajeErrorUsuario, mensajeErrorCont);
@@ -24,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let registroUsuarios = () => {
     let nombre = document.getElementById("nombreReg").value;
+    let apellido = document.getElementById("apellidoReg").value;
     let contraseña = document.getElementById("passReg").value;
     let edad = document.getElementById("edad").value;
     let localidad = document.getElementById("localidad").value;
@@ -64,10 +66,11 @@ document.addEventListener("DOMContentLoaded", () => {
       mensajeErrorLocalidad.style.display = "none";
     }
 
-    let usuario = { nombre, contraseña, edad, localidad };
+    let usuario = { nombre, apellido, contraseña, edad, localidad };
     nuevoUsuario.push(usuario);
 
     localStorage.setItem("nuevoUsuario", JSON.stringify(nuevoUsuario));
+    localStorage.setItem("loggedInUser", JSON.stringify(usuario));
     mostrarHome(usuario);
   };
 
@@ -77,22 +80,25 @@ document.addEventListener("DOMContentLoaded", () => {
     home.style.display = "block";
     home.classList.add("d-flex");
 
-    let nav = document.getElementById("nav");
-    nav.innerHTML = `<nav id="nav">
-        <div class="logo">
-          <img src="../multimedia/logoMostaza.png" alt="Logo Exzo" />
-        </div>
-        <ul class="navLinks">
-          <li><a href="./index.html" id="navHome">Home</a></li>
-          <li><a href="./pages/informacion.html" id="navInfo">Información</a></li>
-          <li><a href="./pages/perfil.html" id="navPerfil">Perfil</a></li>
-        </ul>
-        <div>
-          <button class="btnInSesion" id="miCuenta">Mi Cuenta</button>
-          <button class="btnRegist" id="cerrarSesion">Cerrar Sesión</button>
-        </div>
-      </nav>`;
+    let userButtons = document.getElementById("userButtons");
+    userButtons.innerHTML = `
+    <button class="btnInSesion" id="miCuenta">Mi Cuenta</button>
+    <button class="btnRegist" id="cerrarSesion">Cerrar Sesión</button>`;
+
+    let btnMiCuenta = document.getElementById("miCuenta");
+    btnMiCuenta.addEventListener("click",(mostrarFormularioLogin = () => {
+      miCuenta();
+    })
+  );
   };
+
+    let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
+
+      if (usuarioRegistrado) {
+          document.getElementById('nombreReg').innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
+          document.getElementById('apellidoReg').innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
+          
+      }
 
   let mostrarMensajeError = (mensajeErrorUsuario, mensajeErrorCont) => {
     let nombre = document.getElementById("nombre").value;
@@ -115,19 +121,15 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let btnIniciarSesion = document.getElementById("btnIniciarSesion");
-  btnIniciarSesion.addEventListener(
-    "click",
-    (mostrarFormularioLogin = () => {
+  btnIniciarSesion.addEventListener("click",(mostrarFormularioLogin = () => {
       home.style.display = "none";
-      loginForm.style.display = "block";
       registroForm.style.display = "none";
+      loginForm.style.display = "block";
     })
   );
 
   let btnRegist = document.getElementById("btnRegist");
-  btnRegist.addEventListener(
-    "click",
-    (mostrarFormularioLogin = () => {
+  btnRegist.addEventListener("click",(mostrarFormularioLogin = () => {
       home.style.display = "none";
       registroForm.style.display = "block";
       loginForm.style.display = "none";
@@ -151,10 +153,21 @@ document.addEventListener("DOMContentLoaded", () => {
     loginUsuario();
   });
 
+  let isLoggedIn = () => {
+    return localStorage.getItem("loggedInUser") !== null;
+  };
+
   let btnComprar = document.querySelectorAll(".btnComprar");
 
   btnComprar.forEach((boton) => {
     boton.addEventListener("click", function (event) {
+      if (!isLoggedIn()) {
+        home.style.display = "none";
+        loginForm.style.display = "block";
+        registroForm.style.display = "none";
+        return;
+      }
+
       let fila = event.target.closest("tr");
       let titulo = fila.querySelector(".subtituloTable").textContent.trim();
       let precioString = fila.querySelector(".precio").textContent.trim();
@@ -163,37 +176,27 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       document.getElementById("modal-titulo").textContent = titulo;
-      document.getElementById(
-        "modal-precio"
-      ).textContent = `Precio: ${precioString}`;
+      document.getElementById("modal-precio").textContent = `Precio: ${precioString}`;
 
-      document
-        .getElementById("cantidadCompra")
-        .addEventListener("input", function () {
+      document.getElementById("cantidadCompra").addEventListener("input", function () {
           let cantidad = parseInt(this.value);
           if (!isNaN(cantidad) && cantidad > 0) {
             let cotizacion = (precio * cantidad).toLocaleString("es-AR", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             });
-            document.getElementById(
-              "cotizacionValor"
-            ).textContent = `$${cotizacion} ARS`;
-          } else {
-            document.getElementById("cotizacionValor").textContent = "";
+            document.getElementById("cotizacionValor").textContent = `$${cotizacion} ARS`;
+          } 
+          else {document.getElementById("cotizacionValor").textContent = "";
           }
         });
 
       let modal = new bootstrap.Modal(document.getElementById("modal-compra"));
       modal.show();
 
-      document
-        .getElementById("confirmarCompra")
-        .addEventListener("click", function () {
+      document.getElementById("confirmarCompra").addEventListener("click", function () {
           let formaPago = document.getElementById("formaPago").value;
-          let cantidad = parseInt(
-            document.getElementById("cantidadCompra").value
-          );
+          let cantidad = parseInt(document.getElementById("cantidadCompra").value);
 
           Swal.fire({
             title: "Procesando compra...",
@@ -216,4 +219,20 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
   });
+
+
+  let miCuenta = () => {
+    document.getElementById("homeSec").classList.add("invisible");
+    perfilSec.style.display = "block";
+
+    };
+  
+
+  
+
+
+
+
+
+
 });

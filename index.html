@@ -30,14 +30,14 @@
           <li><a href="./index.html" id="navHome">Home</a></li>
           <li><a href="./pages/informacion.html" id="navInfo">Información</a></li>
         </ul>
-        <div>
+        <div id="userButtons">
           <button class="btnInSesion" id="btnIniciarSesion">Iniciar Sesión</button>
           <button class="btnRegist" id="btnRegist">Registrate</button>
         </div>
       </nav>
     </header>
-    <main class="container-fluid">
-      <div class="row" id="home">
+    <main class="container-fluid" id="homeSec">
+      <section class="row" id="home">
         <div class="col-md-8">
           <div class="main-container">
             <table class="table table-hover mercado">
@@ -163,9 +163,8 @@
                   </div>
               </section>
           </div>
-
           </div>
-        </div>
+        </section>
       </div>
 
       <!-- Formulario de inicio de sesión -->
@@ -199,31 +198,24 @@
       <section class="registroForm" id="registroForm" style="display: none;">
         <h1>¡A un paso de tu futuro financiero!</h1>
         <form id="formRegistro">
-          <label for="nombreReg">Usuario</label>
-          <span id="mensajeErrorNombre" style="display: none;" class="error">*El nombre debe tener mínimo 4 caracteres.</span
-          >
+          <label for="nombreReg">Nombre</label>
+          <span id="mensajeErrorNombre" style="display: none;" class="error">*El nombre debe tener mínimo 4 caracteres.</span>
           <input type="text" id="nombreReg" name="nombreReg" required />
 
+          <label for="apellidoReg">Apellido</label>
+          <input type="text" id="apellidoReg" name="apellidoReg" required />
+
           <label for="passReg">Contraseña</label>
-          <span id="mensajeErrorPass" style="display: none;" class="error">*La contraseña debe tener mínimo 8 caracteres.</span
-          >
-          <input
-            type="password"
-            id="passReg"
-            name="passReg"
-            required
-            autocomplete="current-password"
-          />
+          <span id="mensajeErrorPass" style="display: none;" class="error">*La contraseña debe tener mínimo 8 caracteres.</span>
+          <input type="password" id="passReg" name="passReg" required autocomplete="current-password"/>
 
           <label for="edad">Edad</label>
-          <span id="mensajeErrorEdad" style="display: none;" class="error">*Debes ser mayor de 18 años para registrarte.</span
-          >
-          <input type="number" id="edad" name="edad" required />
+          <span id="mensajeErrorEdad" style="display: none;" class="error">*Debes ser mayor de 18 años para registrarte.</span>
+          <input type="number" id="edad" name="edad" required/>
 
           <label for="localidad">Localidad</label>
-          <span id="mensajeErrorLocalidad" style="display: none;" class="error">*Por favor ingrese una Localidad válida.</span
-          >
-          <input type="text" id="localidad" name="localidad" required />
+          <span id="mensajeErrorLocalidad" style="display: none;" class="error">*Por favor ingrese una Localidad válida.</span>
+          <input type="text" id="localidad" name="localidad" required/>
 
           <button type="submit" id="btnRegistrar">Registrarme</button>
         </form>
@@ -259,6 +251,91 @@
     </div>
   </div>
 </div>
+
+
+<!-- Perfil Sec -->
+<section id="perfilSec" class="mt-4" style="display: none;">
+  <div class="container">
+      <div class="row">
+          <!-- Datos Personales -->
+          <div class="col-md-12">
+              <div id="datosPersonales">
+                  <h2>Datos Personales</h2>
+                  <div class="perfilFoto">
+                      <img src="../multimedia/usuarioDefaultImg.png" alt="Foto de perfil por default" class="img-fluid me-3">
+                      <div id="datosUsuario" class="datosUsuario">
+                          <h4 id="nombreReg"><strong>Nombre: </strong></h4>
+                          <h4 id="apellidoReg"><strong>Apellido: </strong></h4>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Balance -->
+          <div class="col-md-4">
+              <div id="balanceSec">
+                  <h2>Balance</h2>
+                  <p>Saldo actual: <span id="saldoActual">****</span></p>
+                  <div class="d-flex justify-content-center">
+                      <button id="btnDepositarPerfil" class="btn btn-sm">Depositar</button>
+                      <button id="btnRetirar" class="btn btn-sm ms-4">Retirar</button>
+                  </div>
+              </div>
+          </div>
+
+          <!-- Movimientos de Compras -->
+          <div class="aside-container col-md-4">
+              <div id="movimientosCompra">
+                  <h2>Movimientos de Compras</h2>
+                  <ul class="list-unstyled">
+                      <li>No hay movimientos aún</li>
+                  </ul>
+              </div>
+          </div>
+
+          <!-- Movimientos de Ventas -->
+          <div class="aside-container col-md-4">
+              <div id="movimientosVenta">
+                  <h2>Movimientos de Ventas</h2>
+                  <ul class="list-unstyled">
+                      <li>No hay movimientos aún</li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<!-- Modal para depósito (oculto) -->
+<section class="modal fade" id="modalDeposito" tabindex="-1" aria-labelledby="modalDepositoLabel" aria-hidden="true" style="display: none;">
+<div class="modal-dialog">
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title" id="modalDepositoLabel">Depositar fondos</h5>
+    <button type="button" class="btnClose" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <form id="formDeposito">
+      <div class="mb3">
+        <label for="montoDeposito" class="formLabel">Monto a depositar</label>
+        <input type="number" class="formControl" id="montoDeposito" required>
+      </div>
+      <div class="mb3">
+        <label for="metodoPago" class="formLabel">Método de pago</label>
+        <select class="formSelect" id="metodoPago" required>
+          <option value="cuentaBancaria">Cuenta Bancaria</option>
+          <option value="mercadoPago">MercadoPago</option>
+        </select>
+      </div>
+    </form>
+  </div>
+  <div class="modalFooter">
+    <button type="button" class="btnSecondary" data-bs-dismiss="modal">Cancelar</button>
+    <button type="button" class="btnPrimary" id="btnAceptarDeposito">Aceptar</button>
+  </div>
+</div>
+</div>
+</section>
 
 
 
