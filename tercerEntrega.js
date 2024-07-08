@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let homeSec = document.getElementById("homeSec");
   let loginForm = document.getElementById("loginForm");
   let registroForm = document.getElementById("registroForm");
+  let perfilSec = document.getElementById("perfilSec");
 
   let isLoggedIn = () => {
     return localStorage.getItem("loggedInUser") !== null;
@@ -42,9 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let mensajeErrorNombre = document.getElementById("mensajeErrorNombre");
     let mensajeErrorPass = document.getElementById("mensajeErrorPass");
     let mensajeErrorEdad = document.getElementById("mensajeErrorEdad");
-    let mensajeErrorLocalidad = document.getElementById(
-      "mensajeErrorLocalidad"
-    );
+    let mensajeErrorLocalidad = document.getElementById("mensajeErrorLocalidad");
 
     if (nombre.length < 4) {
       mensajeErrorNombre.style.display = "block";
@@ -82,24 +81,38 @@ document.addEventListener("DOMContentLoaded", () => {
     mostrarHome(usuario);
   };
 
-  let mostrarHome = () => {
+  let mostrarHome = (usuario) => {
     registroForm.style.display = "none";
     loginForm.style.display = "none";
     home.style.display = "block";
     home.classList.add("d-flex");
 
+    if (usuario) {
+      mostrarBotonesUsuario();
+    }
+  };
+
+  document.getElementById("navHome").addEventListener("click", () => {
+    let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    if (usuarioRegistrado) {
+      homeSec.style.display = "block";
+      perfilSec.style.display = "none";
+      mostrarBotonesUsuario(usuarioRegistrado);
+    } else {
+      window.location.href = "./index.html"; 
+    }
+  });
+
+  const mostrarBotonesUsuario = () => {
     let userButtons = document.getElementById("userButtons");
     userButtons.innerHTML = `
-    <button class="btnInSesion" id="miCuenta">Mi Cuenta</button>
-    <button class="btnRegist" id="cerrarSesion">Cerrar Sesión</button>`;
+      <button class="btnInSesion" id="miCuenta">Mi Cuenta</button>
+      <button class="btnRegist" id="cerrarSesion">Cerrar Sesión</button>`;
 
     let btnMiCuenta = document.getElementById("miCuenta");
-    btnMiCuenta.addEventListener(
-      "click",
-      (perfil = () => {
-        miCuenta();
-      })
-    );
+    btnMiCuenta.addEventListener("click", miCuenta);
+
 
     let btnCerrarSesion = document.getElementById("cerrarSesion");
     btnCerrarSesion.addEventListener("click", () => {
@@ -136,9 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let btnIniciarSesion = document.getElementById("btnIniciarSesion");
-  btnIniciarSesion.addEventListener(
-    "click",
-    (mostrarFormularioLogin = () => {
+  btnIniciarSesion.addEventListener("click", (mostrarFormularioLogin = () => {
       home.style.display = "none";
       registroForm.style.display = "none";
       loginForm.style.display = "block";
@@ -187,9 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       document.getElementById("modal-titulo").textContent = titulo;
-      document.getElementById(
-        "modal-precio"
-      ).textContent = `Precio: ${precioString}`;
+      document.getElementById("modal-precio").textContent = `Precio: ${precioString}`;
 
       document.getElementById("cantidadCompra").addEventListener("input", function () {
           let cantidad = parseInt(this.value);
@@ -211,9 +220,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
       document.getElementById("confirmarCompra").addEventListener("click", function () {
           let formaPago = document.getElementById("formaPago").value;
-          let cantidad = parseInt(
-            document.getElementById("cantidadCompra").value
-          );
+  let cantidad = parseInt(document.getElementById("cantidadCompra").value);
+
+  let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
+  let totalCompra = precio * cantidad;
+
+  if (totalCompra > saldoActual) {
+    Swal.fire({
+      title: "Error",
+      text: "Saldo insuficiente para realizar esta compra",
+      icon: "error",
+    });
+    return;
+  }
+
+          saldoActual -= totalCompra; 
+
+          localStorage.setItem("saldoActual", saldoActual.toString());
+          actualizarSaldo(saldoActual);
+
+          agregarMovimientoCompra(titulo, cantidad, totalCompra);
 
           Swal.fire({
             title: "Procesando compra...",
@@ -230,6 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   showConfirmButton: false,
                 });
                 modal.hide();
+                miCuenta();
               }, 2500);
             },
           });
@@ -240,9 +267,23 @@ document.addEventListener("DOMContentLoaded", () => {
   let miCuenta = () => {
     document.getElementById("homeSec").classList.add("invisible");
     perfilSec.style.display = "block";
+
+    let movimientosHtml = "";
+    movimientos.forEach((movimiento) => {
+      movimientosHtml += `
+        <tr>
+          <td>${movimiento.titulo}</td>
+          <td>${movimiento.cantidad}</td>
+          <td>$${movimiento.total.toLocaleString("es-AR")} ARS</td>
+          <td>${movimiento.fecha}</td>
+        </tr>`;
+    });
     
+    document.getElementById("movimientosTabla").innerHTML = movimientosHtml;
+
   };
 
+  
 
 
 function actualizarSaldo(saldo) {
@@ -354,6 +395,34 @@ document.getElementById("btnRetirar").addEventListener("click", function () {
 });
 
 
+let movimientos = JSON.parse(localStorage.getItem("movimientosCompra")) || [];
+
+const agregarMovimientoCompra = (titulo, cantidad, total) => {
+  let nuevoMovimiento = {
+    titulo: titulo,
+    cantidad: cantidad,
+    total: total,
+    fecha: new Date().toLocaleString("es-AR"),
+  };
+
+  movimientos.push(nuevoMovimiento);
+  localStorage.setItem("movimientosCompra", JSON.stringify(movimientos));
+};
+
+let btnVolver = document.getElementById("btnVolver");
+btnVolver.addEventListener("click", () => {
+  let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (loggedInUser) {
+    let home = document.getElementById("home");
+    let perfilSec = document.getElementById("perfilSec");
+
+    homeSec.classList.remove("invisible");
+    perfilSec.style.display = "none";
+  } else {
+    alert("no anda");
+  }
+});
 
 
 });

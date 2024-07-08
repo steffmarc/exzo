@@ -9,6 +9,7 @@
     display: none;
 }
 
+
 body {
     display: flex;
     flex-direction: column;
@@ -277,18 +278,22 @@ p{
 }
 
 #balanceSec {
-    background-color: #ffffff; 
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 20px;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
 }
 
-#balanceSec, #perfilSec, #movimientosCompra, #movimientosVenta, h2 {
-    color: #333333; 
+#balanceSec,
+#perfilSec,
+#movimientosCompra,
+#movimientosVenta,
+h2 {
+    color: #333333;
     font-size: 20px;
     font-weight: 600;
-    margin: 0 0 15px 0;
+    margin: 0 0 10px 0;
 }
 
 #balanceSec p {
@@ -297,44 +302,74 @@ p{
     margin-bottom: 20px;
 }
 
-.btnDepositar, .btnRetirar {
+.btnDepositar,
+.btnRetirar {
     display: flex;
     flex-direction: row;
     padding: 10px 20px;
     font-size: 14px;
     font-weight: 600;
-    background-color: #FDCE8B; 
+    background-color: #FDCE8B;
     color: #333333;
     border: none;
     border-radius: 50px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
-    margin-right: 10px;
 }
 
-.btnDepositar:hover, .btnRetirar:hover {
-    background-color: #D56A15; 
+.btnDepositar:hover,
+.btnRetirar:hover {
+    background-color: #D56A15;
     color: #ffffff;
 }
 
-#movimientosCompra, #movimientosVenta {
+#movimientosCompra,
+#movimientosVenta {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
 
-#movimientosCompra ul, #movimientosVenta ul {
+#movimientosCompra ul,
+#movimientosVenta ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-#movimientosCompra ul li, #movimientosVenta ul li {
-    color: #555555; 
+#movimientosCompra ul li,
+#movimientosVenta ul li {
+    color: #555555;
     font-size: 16px;
     margin-bottom: 10px;
+}
+
+#movimientosCompra table th,
+#movimientosCompra table td {
+    padding: 8px;
+    text-align: center;
+    font-size: 14px; 
+}
+
+#movimientosCompra p {
+    font-size: 14px;
+}
+
+#btnVolver{
+    background-color: #fff;
+    color: #D56A15;
+    display: flex;
+    justify-content: flex-start;
+    border: none;
+    margin-bottom: 50px;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+#btnVolver:hover{
+    color: #333333;
 }
 
 
