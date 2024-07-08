@@ -264,8 +264,8 @@
                   <div class="perfilFoto">
                       <img src="../multimedia/usuarioDefaultImg.png" alt="Foto de perfil por default" class="img-fluid me-3">
                       <div id="datosUsuario" class="datosUsuario">
-                          <h4 id="nombreReg"><strong>Nombre: </strong></h4>
-                          <h4 id="apellidoReg"><strong>Apellido: </strong></h4>
+                          <h4 id="nombrePerfil"><strong>Nombre: </strong></h4>
+                          <h4 id="apellidoPerfil"><strong>Apellido: </strong></h4>
                       </div>
                   </div>
               </div>
@@ -307,35 +307,73 @@
 </section>
 
 <!-- Modal para depósito (oculto) -->
-<section class="modal fade" id="modalDeposito" tabindex="-1" aria-labelledby="modalDepositoLabel" aria-hidden="true" style="display: none;">
-<div class="modal-dialog">
-<div class="modal-content">
-  <div class="modal-header">
-    <h5 class="modal-title" id="modalDepositoLabel">Depositar fondos</h5>
-    <button type="button" class="btnClose" data-bs-dismiss="modal" aria-label="Close"></button>
-  </div>
-  <div class="modal-body">
-    <form id="formDeposito">
-      <div class="mb3">
-        <label for="montoDeposito" class="formLabel">Monto a depositar</label>
-        <input type="number" class="formControl" id="montoDeposito" required>
+<section class="modal fade" id="modalDeposito" tabindex="-1" aria-labelledby="modalDepositoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalDepositoLabel">Depositar fondos</h5>
+        <button type="button" class="btnClose" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="mb3">
-        <label for="metodoPago" class="formLabel">Método de pago</label>
-        <select class="formSelect" id="metodoPago" required>
-          <option value="cuentaBancaria">Cuenta Bancaria</option>
-          <option value="mercadoPago">MercadoPago</option>
-        </select>
+      <div class="modal-body">
+        <form id="formDeposito">
+          <div class="mb-3">
+            <label for="montoDeposito" class="form-label">Monto a depositar</label>
+            <input type="number" class="form-control" id="montoDeposito" required>
+          </div>
+          <div class="mb-3">
+            <label for="metodoPago" class="form-label">Método de pago</label>
+            <select class="form-select" id="metodoPago" required>
+              <option value="" selected disabled>Seleccione un método</option>
+              <option value="cuentaBancaria">Cuenta Bancaria</option>
+              <option value="mercadoPago">MercadoPago</option>
+            </select>
+          </div>
+        </form>
       </div>
-    </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnAceptarDeposito">Aceptar</button>
+      </div>
+    </div>
   </div>
-  <div class="modalFooter">
-    <button type="button" class="btnSecondary" data-bs-dismiss="modal">Cancelar</button>
-    <button type="button" class="btnPrimary" id="btnAceptarDeposito">Aceptar</button>
-  </div>
-</div>
-</div>
 </section>
+
+<!-- Modal para retiro (oculto) -->
+<section class="modal fade" id="modalRetiro" tabindex="-1" aria-labelledby="modalRetiroLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalRetiroLabel">Retirar fondos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="saldoActualModal">Saldo actual: <span id="saldoActualValor"></span></p>
+
+        <form id="formRetiro">
+          <div class="mb-3">
+            <label for="montoRetiro" class="form-label">Monto a retirar</label>
+            <input type="number" class="form-control" id="montoRetiro" required>
+          </div>
+          <div class="mb-3">
+            <label for="metodoRetiro" class="form-label">Cuenta receptora</label>
+            <select class="form-select" id="metodoRetiro" required>
+              <option value="" selected disabled>Seleccione una cuenta</option>
+              <option value="cuentaBancaria">Cuenta Bancaria</option>
+              <option value="mercadoPago">MercadoPago</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnAceptarRetiro">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 
 
 

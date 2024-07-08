@@ -1,6 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
   let nuevoUsuario = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
 
+  let homeSec = document.getElementById("homeSec");
+  let loginForm = document.getElementById("loginForm");
+  let registroForm = document.getElementById("registroForm");
+
+  let isLoggedIn = () => {
+    return localStorage.getItem("loggedInUser") !== null;
+  };
+
+
   let loginUsuario = () => {
     let nombre = document.getElementById("nombre").value;
     let contraseña = document.getElementById("pass").value;
@@ -68,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let usuario = { nombre, apellido, contraseña, edad, localidad };
     nuevoUsuario.push(usuario);
-
     localStorage.setItem("nuevoUsuario", JSON.stringify(nuevoUsuario));
     localStorage.setItem("loggedInUser", JSON.stringify(usuario));
     mostrarHome(usuario);
@@ -86,19 +94,26 @@ document.addEventListener("DOMContentLoaded", () => {
     <button class="btnRegist" id="cerrarSesion">Cerrar Sesión</button>`;
 
     let btnMiCuenta = document.getElementById("miCuenta");
-    btnMiCuenta.addEventListener("click",(mostrarFormularioLogin = () => {
-      miCuenta();
-    })
-  );
+    btnMiCuenta.addEventListener(
+      "click",
+      (perfil = () => {
+        miCuenta();
+      })
+    );
+
+    let btnCerrarSesion = document.getElementById("cerrarSesion");
+    btnCerrarSesion.addEventListener("click", () => {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "./index.html";
+    });
   };
 
-    let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
+  let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
 
-      if (usuarioRegistrado) {
-          document.getElementById('nombreReg').innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
-          document.getElementById('apellidoReg').innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
-          
-      }
+  if (usuarioRegistrado) {
+    document.getElementById("nombrePerfil").innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
+    document.getElementById("apellidoPerfil").innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
+  }
 
   let mostrarMensajeError = (mensajeErrorUsuario, mensajeErrorCont) => {
     let nombre = document.getElementById("nombre").value;
@@ -121,7 +136,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let btnIniciarSesion = document.getElementById("btnIniciarSesion");
-  btnIniciarSesion.addEventListener("click",(mostrarFormularioLogin = () => {
+  btnIniciarSesion.addEventListener(
+    "click",
+    (mostrarFormularioLogin = () => {
       home.style.display = "none";
       registroForm.style.display = "none";
       loginForm.style.display = "block";
@@ -129,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   let btnRegist = document.getElementById("btnRegist");
-  btnRegist.addEventListener("click",(mostrarFormularioLogin = () => {
+  btnRegist.addEventListener("click",(mostrarFormularioRegistro = () => {
       home.style.display = "none";
       registroForm.style.display = "block";
       loginForm.style.display = "none";
@@ -141,9 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mostrarFormularioRegistro();
   });
 
-  document
-    .getElementById("formRegistro")
-    .addEventListener("submit", (event) => {
+  document.getElementById("formRegistro").addEventListener("submit", (event) => {
       event.preventDefault();
       registroUsuarios();
     });
@@ -153,18 +168,14 @@ document.addEventListener("DOMContentLoaded", () => {
     loginUsuario();
   });
 
-  let isLoggedIn = () => {
-    return localStorage.getItem("loggedInUser") !== null;
-  };
+  
 
   let btnComprar = document.querySelectorAll(".btnComprar");
 
   btnComprar.forEach((boton) => {
     boton.addEventListener("click", function (event) {
       if (!isLoggedIn()) {
-        home.style.display = "none";
-        loginForm.style.display = "block";
-        registroForm.style.display = "none";
+        mostrarFormularioLogin();
         return;
       }
 
@@ -176,7 +187,9 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       document.getElementById("modal-titulo").textContent = titulo;
-      document.getElementById("modal-precio").textContent = `Precio: ${precioString}`;
+      document.getElementById(
+        "modal-precio"
+      ).textContent = `Precio: ${precioString}`;
 
       document.getElementById("cantidadCompra").addEventListener("input", function () {
           let cantidad = parseInt(this.value);
@@ -185,9 +198,11 @@ document.addEventListener("DOMContentLoaded", () => {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             });
-            document.getElementById("cotizacionValor").textContent = `$${cotizacion} ARS`;
-          } 
-          else {document.getElementById("cotizacionValor").textContent = "";
+            document.getElementById(
+              "cotizacionValor"
+            ).textContent = `$${cotizacion} ARS`;
+          } else {
+            document.getElementById("cotizacionValor").textContent = "";
           }
         });
 
@@ -196,7 +211,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       document.getElementById("confirmarCompra").addEventListener("click", function () {
           let formaPago = document.getElementById("formaPago").value;
-          let cantidad = parseInt(document.getElementById("cantidadCompra").value);
+          let cantidad = parseInt(
+            document.getElementById("cantidadCompra").value
+          );
 
           Swal.fire({
             title: "Procesando compra...",
@@ -220,17 +237,121 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-
   let miCuenta = () => {
     document.getElementById("homeSec").classList.add("invisible");
     perfilSec.style.display = "block";
-
-    };
-  
-
-  
+    
+  };
 
 
+
+function actualizarSaldo(saldo) {
+  const saldoActualElem = document.getElementById("saldoActual");
+  if (saldoActualElem) {
+    saldoActualElem.textContent = `$${saldo.toLocaleString("es-AR")} ARS`;
+  }
+
+  const saldoActualModalRetiro = document.getElementById("saldoActualValor"); 
+  if (saldoActualModalRetiro) {
+    saldoActualModalRetiro.textContent = `$${saldo.toLocaleString("es-AR")} ARS`;
+  }
+}
+
+
+function actualizarSaldoDesdeLocalStorage() {
+  const saldoGuardado = localStorage.getItem("saldoActual");
+  if (saldoGuardado) {
+    const saldoActual = parseFloat(saldoGuardado);
+    actualizarSaldo(saldoActual);
+  }
+}
+
+actualizarSaldoDesdeLocalStorage();
+
+
+document.getElementById("btnDepositarPerfil").addEventListener("click", function () {
+  const modalDeposito = new bootstrap.Modal(document.getElementById("modalDeposito"));
+  modalDeposito.show();
+
+  const btnAceptarDeposito = document.getElementById("btnAceptarDeposito");
+  btnAceptarDeposito.addEventListener("click", function () {
+    const montoDeposito = parseFloat(document.getElementById("montoDeposito").value);
+    const metodoPago = document.getElementById("metodoPago").value;
+
+    if (!montoDeposito || metodoPago === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Por favor complete todos los campos",
+      });
+      return;
+    }
+
+    let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
+    saldoActual += montoDeposito;
+
+    localStorage.setItem("saldoActual", saldoActual.toString());
+
+    actualizarSaldo(saldoActual);
+
+    modalDeposito.hide();
+
+    Swal.fire({
+      title: "Éxito",
+      text: "Depósito realizado correctamente",
+      icon: "success",
+      background: "#333333",
+      color: "white",
+    });
+  });
+});
+
+
+document.getElementById("btnRetirar").addEventListener("click", function () {
+  const modalRetiro = new bootstrap.Modal(document.getElementById("modalRetiro"));
+  modalRetiro.show();
+
+  const btnAceptarRetiro = document.getElementById("btnAceptarRetiro");
+  btnAceptarRetiro.addEventListener("click", function () {
+    const montoRetiro = parseFloat(document.getElementById("montoRetiro").value);
+
+    if (!montoRetiro || isNaN(montoRetiro)) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Por favor ingrese un monto válido para el retiro",
+      });
+      return;
+    }
+
+    let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
+
+    if (montoRetiro > saldoActual) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Fondos insuficientes",
+      });
+      return;
+    }
+
+    saldoActual -= montoRetiro;
+
+    localStorage.setItem("saldoActual", saldoActual.toString());
+
+    actualizarSaldo(saldoActual);
+
+    Swal.fire({
+      title: "Éxito",
+      text: "Retiro realizado correctamente",
+      icon: "success",
+      background: "#333333",
+      color: "white",
+    });
+
+    modalRetiro.hide();
+  });
+});
 
 
 
