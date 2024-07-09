@@ -34,13 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let registroUsuarios = () => {
-    let nombre = document.getElementById("nombreReg").value;
-    let apellido = document.getElementById("apellidoReg").value;
-    let contraseña = document.getElementById("passReg").value;
-    let edad = document.getElementById("edad").value;
-    let localidad = document.getElementById("localidad").value;
+    let nombre = document.getElementById("nombreReg").value.trim();
+    let apellido = document.getElementById("apellidoReg").value.trim();
+    let contraseña = document.getElementById("passReg").value.trim();
+    let edad = document.getElementById("edad").value.trim();
+    let localidad = document.getElementById("localidad").value.trim();
 
     let mensajeErrorNombre = document.getElementById("mensajeErrorNombre");
+    let mensajeErrorApellido = document.getElementById("mensajeErrorApellido");
     let mensajeErrorPass = document.getElementById("mensajeErrorPass");
     let mensajeErrorEdad = document.getElementById("mensajeErrorEdad");
     let mensajeErrorLocalidad = document.getElementById("mensajeErrorLocalidad");
@@ -50,6 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     } else {
       mensajeErrorNombre.style.display = "none";
+    }
+
+    if (apellido.length < 4) {
+      mensajeErrorApellido.style.display = "block";
+      return;
+    } else {
+      mensajeErrorApellido.style.display = "none";
     }
 
     if (contraseña.length < 8) {
@@ -67,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
       mensajeErrorEdad.style.display = "none";
     }
 
-    if (!localidad.match(/^[a-zA-Z\s]*$/)) {
+    if (!localidad.match(/^[a-zA-Z\s]*$/) || localidad === "") {
       mensajeErrorLocalidad.style.display = "block";
       return;
     } else {
