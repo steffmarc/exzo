@@ -245,7 +245,8 @@ p{
 }
 
 .swal2-popup {
-    background-color: #D56A15; 
+    background-color: #333333; 
+    color: #fff;
 }
 
 /* Perfil */
