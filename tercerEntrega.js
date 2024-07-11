@@ -129,12 +129,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
+  let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser")) || JSON.parse(localStorage.getItem("nuevoUsuario"));
 
-  if (usuarioRegistrado) {
-    document.getElementById("nombrePerfil").innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
-    document.getElementById("apellidoPerfil").innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
-  }
+if (usuarioRegistrado) {
+  document.getElementById("nombrePerfil").innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
+  document.getElementById("apellidoPerfil").innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
+}
+
 
   let mostrarMensajeError = (mensajeErrorUsuario, mensajeErrorCont) => {
     let nombre = document.getElementById("nombre").value;
