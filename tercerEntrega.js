@@ -128,14 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "./index.html";
     });
   };
-
-  let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser")) || JSON.parse(localStorage.getItem("nuevoUsuario"));
-
-if (usuarioRegistrado) {
-  document.getElementById("nombrePerfil").innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
-  document.getElementById("apellidoPerfil").innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
-}
-
+  
 
   let mostrarMensajeError = (mensajeErrorUsuario, mensajeErrorCont) => {
     let nombre = document.getElementById("nombre").value;
@@ -277,20 +270,29 @@ if (usuarioRegistrado) {
     document.getElementById("homeSec").classList.add("invisible");
     perfilSec.style.display = "block";
 
-    let movimientosHtml = "";
-    movimientos.forEach((movimiento) => {
-      movimientosHtml += `
-        <tr>
-          <td>${movimiento.titulo}</td>
-          <td>${movimiento.cantidad}</td>
-          <td>$${movimiento.total.toLocaleString("es-AR")} ARS</td>
-          <td>${movimiento.fecha}</td>
-        </tr>`;
-    });
-    
-    document.getElementById("movimientosTabla").innerHTML = movimientosHtml;
+    let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
 
-  };
+    if (usuarioRegistrado) {
+        document.getElementById("nombrePerfil").innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
+        document.getElementById("apellidoPerfil").innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
+
+        let movimientosHtml = "";
+        usuarioRegistrado.movimientos.forEach((movimiento) => {
+            movimientosHtml += `
+                <tr>
+                    <td>${movimiento.titulo}</td>
+                    <td>${movimiento.cantidad}</td>
+                    <td>$${movimiento.total.toLocaleString("es-AR")} ARS</td>
+                    <td>${movimiento.fecha}</td>
+                </tr>`;
+        });
+
+        document.getElementById("movimientosTabla").innerHTML = movimientosHtml;
+    } else {
+        console.log("No hay un usuario registrado actualmente.");
+    }
+};
+
 
   
 
