@@ -104,8 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const mostrarBotonesUsuario = () => {
     let userButtons = document.getElementById("userButtons");
     userButtons.innerHTML = `
-          <button class="btnInSesion" id="miCuenta">Mi Cuenta</button>
-          <button class="btnRegist" id="cerrarSesion">Cerrar Sesión</button>`;
+          <button class="btn btn-outline-primary btnInSesion" id="miCuenta">Mi Cuenta</button>
+          <button class="btn btn-primary btnRegist" id="cerrarSesion">Cerrar Sesión</button>`;
 
     let btnMiCuenta = document.getElementById("miCuenta");
     btnMiCuenta.addEventListener("click", miCuenta);
@@ -345,10 +345,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   btnComprar.forEach((boton) => {
     boton.addEventListener("click", function (event) {
-      if (!isLoggedIn()) {
-        mostrarFormularioLogin();
-        return;
-      }
+        let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+        function isLoggedInUser() {
+            return loggedInUser !== null; 
+          }
+
+        if (!isLoggedInUser()) {
+            mostrarFormularioLogin();
+            return;
+        }
 
       let fila = event.target.closest("tr");
       let titulo = fila.querySelector(".subtituloTable").textContent.trim();

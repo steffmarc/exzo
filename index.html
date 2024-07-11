@@ -8,107 +8,146 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- Bootstrap -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"  crossorigin="anonymous"
     />
-    <!-- Style -->
+    <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+
+    <!-- Font awsome -->
+    <script src="https://kit.fontawesome.com/c26596940f.js" crossorigin="anonymous"></script>
+
+    <!-- Tu archivo de estilos personalizados -->
     <link rel="stylesheet" href="style.css" />
     <title>Exzo - Invierte en el futuro con confianza</title>
   </head>
   <body>
     <header id="header">
-      <nav id="nav">
-        <div class="logo">
-          <img src="./multimedia/logoMostaza.png" alt="Logo Exzo" />
-        </div>
-        <ul class="navLinks">
-          <li><a href="./index.html" id="navHome"></a></li>
-        </ul>
-        <div id="userButtons">
-          <button class="btnInSesion" id="btnIniciarSesion">Iniciar Sesión</button>
-          <button class="btnRegist" id="btnRegist">Registrate</button>
-        </div>
-      </nav>
-    </header>
+        <nav id="nav" class="navbar navbar-expand-sm navbar-light bg-light">
+            <div class="container-fluid">
+              <a class="navbar-brand logo" href="#">
+                <img src="./multimedia/logoMostaza.png" alt="Logo Exzo" style="height: 25px;">
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse justify-content-end custom-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav navLinks">
+                  <li class="nav-item active">
+                    <a class="nav-link" href="./index.html" id="navHome"></a>
+                  </li>
+                </ul>
+                <div id="userButtons" class="d-flex justify-content-end align-items-end">
+                  <button class="btn btn-outline-primary btnInSesion" id="btnIniciarSesion">Iniciar Sesión</button>
+                  <button class="btn btn-primary btnRegist" id="btnRegist">Registrate</button>
+                </div>
+              </div>
+            </div>
+          </nav>
+      </header>
+      
     <main class="container-fluid" id="homeSec">
       <section class="row" id="home">
         <div class="col-md-8">
           <div class="main-container">
-            <table class="table table-hover mercado">
-                <thead>
-                    <h2>Mercado</h2>
-                  <tr>
-                    <th scope="col" class="tituloTable">Nombre</th>
-                    <th scope="col" class="tituloTable">Precio</th>
-                    <th scope="col" class="tituloTable">Variación</th>
-                    <th scope="col" class="tituloTable">Capitalización</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="align-middle">
-                    <th scope="row" class="subtituloTable">Bitcoin (BTC)</th>
-                    <td class="precio">$55.196.843,89 ARS</td>
-                    <td class="porcentage">+3,9%</td>
-                    <td class="capMercado">$1,092.2 BARS</td>
-                    <th><button type="button" class="btn btn-light btnComprar" data-swal-template="#my-template">Comprar</button></th>
-                  </tr>
-                  <tr class="align-middle">
-                    <th scope="row" class="subtituloTable">Ethereum (ETH)</th>
-                    <td class="precio">$3.061.165,93 ARS</td>
-                    <td class="porcentageRed">-2,80%</td>
-                    <td class="capMercado">$364,7 BARS</td>
-                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
-                  </tr>
-                  <tr class="align-middle">
-                    <th scope="row" class="subtituloTable">Theather (USDT)</th>
-                    <td class="precio">$913,93 ARS</td>
-                    <td class="porcentageRed">-0,03%</td>
-                    <td class="capMercado">$103,0 BARS</td>
-                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
-                  </tr>
-                  <tr class="align-middle">
-                    <th scope="row" class="subtituloTable">BNB (BNB)</th>
-                    <td class="precio">$511.294,48 ARS</td>
-                    <td class="porcentageRed">-2,97%</td>
-                    <td class="capMercado">$75,4 BARS</td>
-                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
-                  </tr>
-                  <tr class="align-middle">
-                    <th scope="row" class="subtituloTable">Solana (SOL)</th>
-                    <td class="precio">$130.052,05 ARS</td>
-                    <td class="porcentageRed">-3,80%</td>
-                    <td class="capMercado">$60,4 BARS</td>
-                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
-                  </tr>
-                  <tr class="align-middle">
-                    <th scope="row" class="subtituloTable">USDC (USDC)</th>
-                    <td class="precio">$915,25 ARS</td>
-                    <td></td>
-                    <td class="capMercado">$29,8 BARS</td>
-                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
-                  </tr>
-                  <tr class="align-middle">
-                    <th scope="row" class="subtituloTable">XRP (XRP)</th>
-                    <td class="precio">$428,38 ARS</td>
-                    <td class="porcentageRed">-2,80%</td>
-                    <td class="capMercado">$23,9 BARS</td>
-                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
-                  </tr>
-                  <tr class="align-middle">
-                    <th scope="row" class="subtituloTable">Toncoin (TON)</th>
-                    <td class="precio">$7.201,75 ARS</td>
-                    <td class="porcentageRed">-2,28%</td>
-                    <td class="capMercado">$17,7 BARS</td>
-                    <th><button type="button" class="btn btn-light btnComprar">Comprar</button></th>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="table-responsive">
+                <table class="table table-hover mercado">
+                    <thead>
+                        <h2>Mercado</h2>
+                      <tr>
+                        <th scope="col" class="tituloTable">Nombre</th>
+                        <th scope="col" class="tituloTable">Precio</th>
+                        <th scope="col" class="tituloTable">Variación</th>
+                        <th scope="col" class="tituloTable capMercado">Capitalización</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="align-middle">
+                        <th scope="row" class="subtituloTable">Bitcoin (BTC)</th>
+                        <td class="precio">$55.196.843,89 ARS</td>
+                        <td class="porcentage">+3,9%</td>
+                        <td class="capMercado">$1,092.2 BARS</td>
+                        <th>
+                            <button type="button" class="btn btn-light btnComprar">
+                            <span class="desktop-tablet">Comprar</span>
+                            <span class="mobile">+</span>
+                        </button>
+                        </th>
+                      </tr>
+                      <tr class="align-middle">
+                        <th scope="row" class="subtituloTable">Ethereum (ETH)</th>
+                        <td class="precio">$3.061.165,93 ARS</td>
+                        <td class="porcentageRed">-2,80%</td>
+                        <td class="capMercado">$364,7 BARS</td>
+                        <th><button type="button" class="btn btn-light btnComprar">
+                            <span class="desktop-tablet">Comprar</span>
+                            <span class="mobile">+</span>
+                        </button></th>
+                      </tr>
+                      <tr class="align-middle">
+                        <th scope="row" class="subtituloTable">Theather (USDT)</th>
+                        <td class="precio">$913,93 ARS</td>
+                        <td class="porcentageRed">-0,03%</td>
+                        <td class="capMercado">$103,0 BARS</td>
+                        <th><button type="button" class="btn btn-light btnComprar">
+                            <span class="desktop-tablet">Comprar</span>
+                            <span class="mobile">+</span>
+                        </button></th>
+                      </tr>
+                      <tr class="align-middle">
+                        <th scope="row" class="subtituloTable">BNB (BNB)</th>
+                        <td class="precio">$511.294,48 ARS</td>
+                        <td class="porcentageRed">-2,97%</td>
+                        <td class="capMercado">$75,4 BARS</td>
+                        <th><button type="button" class="btn btn-light btnComprar">
+                            <span class="desktop-tablet">Comprar</span>
+                            <span class="mobile">+</span>
+                        </button></th>
+                      </tr>
+                      <tr class="align-middle">
+                        <th scope="row" class="subtituloTable">Solana (SOL)</th>
+                        <td class="precio">$130.052,05 ARS</td>
+                        <td class="porcentageRed">-3,80%</td>
+                        <td class="capMercado">$60,4 BARS</td>
+                        <th><button type="button" class="btn btn-light btnComprar">
+                            <span class="desktop-tablet">Comprar</span>
+                            <span class="mobile">+</span>
+                        </button></th>
+                      </tr>
+                      <tr class="align-middle">
+                        <th scope="row" class="subtituloTable">USDC (USDC)</th>
+                        <td class="precio">$915,25 ARS</td>
+                        <td></td>
+                        <td class="capMercado">$29,8 BARS</td>
+                        <th><button type="button" class="btn btn-light btnComprar">
+                            <span class="desktop-tablet">Comprar</span>
+                            <span class="mobile">+</span>
+                        </button></th>
+                      </tr>
+                      <tr class="align-middle">
+                        <th scope="row" class="subtituloTable">XRP (XRP)</th>
+                        <td class="precio">$428,38 ARS</td>
+                        <td class="porcentageRed">-2,80%</td>
+                        <td class="capMercado">$23,9 BARS</td>
+                        <th><button type="button" class="btn btn-light btnComprar">
+                            <span class="desktop-tablet">Comprar</span>
+                            <span class="mobile">+</span>
+                        </button></th>
+                      </tr>
+                      <tr class="align-middle">
+                        <th scope="row" class="subtituloTable">Toncoin (TON)</th>
+                        <td class="precio">$7.201,75 ARS</td>
+                        <td class="porcentageRed">-2,28%</td>
+                        <td class="capMercado">$17,7 BARS</td>
+                        <th><button type="button" class="btn btn-light btnComprar">
+                            <span class="desktop-tablet">Comprar</span>
+                            <span class="mobile">+</span>
+                        </button></th>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>            
           </div>
         </div>
 
