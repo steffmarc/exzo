@@ -86,6 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     nuevoUsuario.push(usuario);
     localStorage.setItem("nuevoUsuario", JSON.stringify(nuevoUsuario));
     localStorage.setItem("loggedInUser", JSON.stringify(usuario));
+    actualizarSaldo(0);
     mostrarHome(usuario);
   };
 
@@ -128,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "./index.html";
     });
   };
-  
+
 
   let mostrarMensajeError = (mensajeErrorUsuario, mensajeErrorCont) => {
     let nombre = document.getElementById("nombre").value;
@@ -236,65 +237,61 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-          saldoActual -= totalCompra; 
+    saldoActual -= totalCompra; 
 
-          localStorage.setItem("saldoActual", saldoActual.toString());
+    localStorage.setItem("saldoActual", saldoActual.toString());
           actualizarSaldo(saldoActual);
 
-          agregarMovimientoCompra(titulo, cantidad, totalCompra);
+    agregarMovimientoCompra(titulo, cantidad, totalCompra);
 
-          Swal.fire({
-            title: "Procesando compra...",
-            allowOutsideClick: false,
-            showConfirmButton: false,
+    Swal.fire({
+        title: "Procesando compra...",
+        allowOutsideClick: false,
+        showConfirmButton: false,
             didOpen: () => {
-              setTimeout(() => {
+            setTimeout(() => {
                 Swal.close();
                 Swal.fire({
-                  title: "¡Compra realizada con éxito!",
-                  icon: "success",
-                  timer: 2000,
-                  timerProgressBar: true,
-                  showConfirmButton: false,
+                title: "¡Compra realizada con éxito!",
+                icon: "success",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
                 });
                 modal.hide();
                 miCuenta();
-              }, 2500);
+            }, 2500);
             },
           });
         });
     });
   });
 
+  let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (usuarioRegistrado) {
+    document.getElementById("nombrePerfil").innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
+    document.getElementById("apellidoPerfil").innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
+  }
+
   let miCuenta = () => {
     document.getElementById("homeSec").classList.add("invisible");
     perfilSec.style.display = "block";
-
-    let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
-
-    if (usuarioRegistrado) {
-        document.getElementById("nombrePerfil").innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
-        document.getElementById("apellidoPerfil").innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
-
-        let movimientosHtml = "";
-        usuarioRegistrado.movimientos.forEach((movimiento) => {
-            movimientosHtml += `
-                <tr>
-                    <td>${movimiento.titulo}</td>
-                    <td>${movimiento.cantidad}</td>
-                    <td>$${movimiento.total.toLocaleString("es-AR")} ARS</td>
-                    <td>${movimiento.fecha}</td>
-                </tr>`;
-        });
-
-        document.getElementById("movimientosTabla").innerHTML = movimientosHtml;
-    } else {
-        console.log("No hay un usuario registrado actualmente.");
-    }
-};
+    let movimientosHtml = "";
+    movimientos.forEach((movimiento) => {
+      movimientosHtml += `
+        <tr>
+          <td>${movimiento.titulo}</td>
+          <td>${movimiento.cantidad}</td>
+          <td>$${movimiento.total.toLocaleString("es-AR")} ARS</td>
+          <td>${movimiento.fecha}</td>
+        </tr>`;
+    });
+    
+    document.getElementById("movimientosTabla").innerHTML = movimientosHtml;
+  };
 
 
-  
+
 
 
 function actualizarSaldo(saldo) {
@@ -425,14 +422,12 @@ btnVolver.addEventListener("click", () => {
   let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
   if (loggedInUser) {
-    let home = document.getElementById("home");
+    let homeSec = document.getElementById("homeSec");
     let perfilSec = document.getElementById("perfilSec");
 
     homeSec.classList.remove("invisible");
     perfilSec.style.display = "none";
-  } else {
-    alert("no anda");
-  }
+  } 
 });
 
 
