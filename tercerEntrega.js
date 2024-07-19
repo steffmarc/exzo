@@ -341,101 +341,204 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  let btnComprar = document.querySelectorAll(".btnComprar");
 
-  btnComprar.forEach((boton) => {
+
+  const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,usd-coin,ripple,toncoin&vs_currencies=usd&include_24hr_change=true';
+
+async function fetchCryptoPrices() {
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    updatePrices(data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+function formatPrice(price) {
+  if (price === 'N/A') return 'N/A';
+  return `$${parseFloat(price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
+}
+
+function formatPercentageChange(change) {
+  if (change === 'N/A') return 'N/A';
+  return `${parseFloat(change).toFixed(2)}%`;
+}
+
+function updatePrices(data) {
+  const prices = {
+    BTC: {
+      price: data.bitcoin ? data.bitcoin.usd : 'N/A',
+      change: data.bitcoin ? data.bitcoin.usd_24h_change : 'N/A'
+    },
+    ETH: {
+      price: data.ethereum ? data.ethereum.usd : 'N/A',
+      change: data.ethereum ? data.ethereum.usd_24h_change : 'N/A'
+    },
+    USDT: {
+      price: data.tether ? data.tether.usd : 'N/A',
+      change: data.tether ? data.tether.usd_24h_change : 'N/A'
+    },
+    BNB: {
+      price: data.binancecoin ? data.binancecoin.usd : 'N/A',
+      change: data.binancecoin ? data.binancecoin.usd_24h_change : 'N/A'
+    },
+    SOL: {
+      price: data.solana ? data.solana.usd : 'N/A',
+      change: data.solana ? data.solana.usd_24h_change : 'N/A'
+    },
+    USDC: {
+      price: data['usd-coin'] ? data['usd-coin'].usd : 'N/A',
+      change: data['usd-coin'] ? data['usd-coin'].usd_24h_change : 'N/A'
+    },
+    XRP: {
+      price: data.ripple ? data.ripple.usd : 'N/A',
+      change: data.ripple ? data.ripple.usd_24h_change : 'N/A'
+    },
+  };
+
+  updateCryptoElement('BTC', prices.BTC.price, prices.BTC.change);
+  updateCryptoElement('ETH', prices.ETH.price, prices.ETH.change);
+  updateCryptoElement('USDT', prices.USDT.price, prices.USDT.change);
+  updateCryptoElement('BNB', prices.BNB.price, prices.BNB.change);
+  updateCryptoElement('SOL', prices.SOL.price, prices.SOL.change);
+  updateCryptoElement('USDC', prices.USDC.price, prices.USDC.change);
+  updateCryptoElement('XRP', prices.XRP.price, prices.XRP.change);
+}
+
+function updateCryptoElement(crypto, price, change) {
+  const priceElement = document.querySelector(`tr[data-crypto="${crypto}"] .precio`);
+  const changeElement = document.querySelector(`tr[data-crypto="${crypto}"] .porcentage, tr[data-crypto="${crypto}"] .porcentageRed`);
+
+  if (priceElement) {
+    priceElement.textContent = formatPrice(price);
+  }
+
+  if (changeElement) {
+    changeElement.textContent = formatPercentageChange(change);
+    if (parseFloat(change) < 0) {
+      changeElement.classList.add('porcentageRed');
+      changeElement.classList.remove('porcentage');
+    } else {
+      changeElement.classList.add('porcentage');
+      changeElement.classList.remove('porcentageRed');
+    }
+  }
+}
+
+fetchCryptoPrices();
+
+
+
+
+
+
+
+
+
+
+
+
+
+let btnComprar = document.querySelectorAll(".btnComprar");
+
+btnComprar.forEach((boton) => {
     boton.addEventListener("click", function (event) {
         let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
         function isLoggedInUser() {
             return loggedInUser !== null; 
-          }
+        }
 
         if (!isLoggedInUser()) {
             mostrarFormularioLogin();
             return;
         }
 
-      let fila = event.target.closest("tr");
-      let titulo = fila.querySelector(".subtituloTable").textContent.trim();
-      let precioString = fila.querySelector(".precio").textContent.trim();
-      let precio = parseFloat(
-        precioString.replace(/[^0-9,-]+/g, "").replace(",", ".")
-      );
+        let fila = event.target.closest("tr");
+        let titulo = fila.querySelector(".subtituloTable").textContent.trim();
+        let precioString = fila.querySelector(".precio").textContent.trim();
+        let precio = parseFloat(
+            precioString.replace(/[^0-9,-]+/g, "").replace(",", ".")
+        );
 
-      document.getElementById("modal-titulo").textContent = titulo;
-      document.getElementById(
-        "modal-precio"
-      ).textContent = `Precio: ${precioString}`;
+        document.getElementById("modal-titulo").textContent = titulo;
+        document.getElementById(
+            "modal-precio"
+        ).textContent = `Precio: ${precioString}`;
 
-      document
-        .getElementById("cantidadCompra")
-        .addEventListener("input", function () {
-          let cantidad = parseInt(this.value);
-          if (!isNaN(cantidad) && cantidad > 0) {
-            let cotizacion = (precio * cantidad).toLocaleString("es-AR", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
+        document
+            .getElementById("cantidadCompra")
+            .addEventListener("input", function () {
+                let cantidad = parseInt(this.value);
+                if (!isNaN(cantidad) && cantidad > 0) {
+                    let cotizacion = (precio * cantidad).toLocaleString("es-AR", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    });
+                    document.getElementById(
+                        "cotizacionValor"
+                    ).textContent = `$${cotizacion} ARS`;
+                } else {
+                    document.getElementById("cotizacionValor").textContent = "";
+                }
             });
-            document.getElementById(
-              "cotizacionValor"
-            ).textContent = `$${cotizacion} ARS`;
-          } else {
-            document.getElementById("cotizacionValor").textContent = "";
-          }
-        });
 
-      let modal = new bootstrap.Modal(document.getElementById("modal-compra"));
-      modal.show();
+        let modal = new bootstrap.Modal(document.getElementById("modal-compra"));
+        modal.show();
 
-      document.getElementById("confirmarCompra").addEventListener("click", function () {
-          let formaPago = document.getElementById("formaPago").value;
-          let cantidad = parseInt(
-            document.getElementById("cantidadCompra").value
-          );
+        document.getElementById("confirmarCompra").addEventListener("click", function () {
+            let formaPago = document.getElementById("formaPago").value;
+            let cantidad = parseInt(
+                document.getElementById("cantidadCompra").value
+            );
 
-          let saldoActual =
-            parseFloat(localStorage.getItem("saldoActual")) || 0;
-          let totalCompra = precio * cantidad;
+            let saldoActual =
+                parseFloat(localStorage.getItem("saldoActual")) || 0;
+            let totalCompra = precio * cantidad;
 
-          if (totalCompra > saldoActual) {
-            Swal.fire({
-              title: "Error",
-              text: "Saldo insuficiente para realizar esta compra, podes recargar tu saldo desde Mi Cuenta.",
-              icon: "error",
-            });
-            return;
-          }
-
-          saldoActual -= totalCompra;
-
-          localStorage.setItem("saldoActual", saldoActual.toString());
-          actualizarSaldo(saldoActual);
-
-          agregarMovimientoCompra(titulo, cantidad, totalCompra);
-
-          Swal.fire({
-            title: "Procesando compra...",
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            didOpen: () => {
-              setTimeout(() => {
-                Swal.close();
+            if (totalCompra > saldoActual) {
                 Swal.fire({
-                  title: "¡Compra realizada con éxito!",
-                  icon: "success",
-                  timer: 2000,
-                  timerProgressBar: true,
-                  showConfirmButton: false,
+                    title: "Error",
+                    text: "Saldo insuficiente para realizar esta compra, podes recargar tu saldo desde Mi Cuenta.",
+                    icon: "error",
                 });
-                modal.hide();
-                miCuenta();
-              }, 2500);
-            },
-          });
+                return;
+            }
+
+            saldoActual -= totalCompra;
+
+            localStorage.setItem("saldoActual", saldoActual.toString());
+            actualizarSaldo(saldoActual);
+
+            agregarMovimientoCompra(titulo, cantidad, totalCompra);
+
+            Swal.fire({
+                title: "Procesando compra...",
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    setTimeout(() => {
+                        Swal.close();
+                        Swal.fire({
+                            title: "¡Compra realizada con éxito!",
+                            icon: "success",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        });
+                        modal.hide();
+                        miCuenta();
+                    }, 2500);
+                },
+            });
         });
     });
-  });
+});
+
 
   let movimientos = JSON.parse(localStorage.getItem("movimientosCompra")) || [];
 
