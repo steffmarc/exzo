@@ -11,14 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let loginUsuario = () => {
-    let nombre = document.getElementById("nombre").value;
+    let dni = document.getElementById("dni").value;
     let contraseña = document.getElementById("pass").value;
 
     let getDatos = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
 
     let usuario = getDatos.find(
       (usuario) =>
-        usuario.nombre === nombre && usuario.contraseña === contraseña
+        usuario.dni === dni && usuario.contraseña === contraseña
     );
 
     let mensajeErrorUsuario = document.getElementById("mensajeErrorUsuario");
@@ -33,12 +33,14 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let registroUsuarios = () => {
+    let dni = document.getElementById("dniReg").value.trim();
     let nombre = document.getElementById("nombreReg").value.trim();
     let apellido = document.getElementById("apellidoReg").value.trim();
     let contraseña = document.getElementById("passReg").value.trim();
     let edad = document.getElementById("edad").value.trim();
     let localidad = document.getElementById("localidad").value.trim();
 
+    let mensajeErrorDni = document.getElementById("mensajeErrorDni");
     let mensajeErrorNombre = document.getElementById("mensajeErrorNombre");
     let mensajeErrorApellido = document.getElementById("mensajeErrorApellido");
     let mensajeErrorPass = document.getElementById("mensajeErrorPass");
@@ -46,6 +48,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let mensajeErrorLocalidad = document.getElementById(
       "mensajeErrorLocalidad"
     );
+
+    if (!/^\d{8,9}$/.test(dni)) {
+      mensajeErrorDni.style.display = "block";
+      return;
+    } else {
+      mensajeErrorDni.style.display = "none";
+    }
 
     if (nombre.length < 4) {
       mensajeErrorNombre.style.display = "block";
@@ -83,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
       mensajeErrorLocalidad.style.display = "none";
     }
 
-    let usuario = { nombre, apellido, contraseña, edad, localidad };
+    let usuario = { dni, nombre, apellido, contraseña, edad, localidad };
     nuevoUsuario.push(usuario);
     localStorage.setItem("nuevoUsuario", JSON.stringify(nuevoUsuario));
     localStorage.setItem("loggedInUser", JSON.stringify(usuario));
@@ -118,15 +127,15 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let mostrarMensajeError = (mensajeErrorUsuario, mensajeErrorCont) => {
-    let nombre = document.getElementById("nombre").value;
+    let dni = document.getElementById("dni").value;
     let contraseña = document.getElementById("pass").value;
 
-    if (!nombre || !contraseña) {
+    if (!dni || !contraseña) {
       return;
     }
 
     let getDatos = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
-    let usuario = getDatos.find((usuario) => usuario.nombre === nombre);
+    let usuario = getDatos.find((usuario) => usuario.dni === dni);
 
     if (!usuario) {
       mensajeErrorUsuario.style.display = "block";

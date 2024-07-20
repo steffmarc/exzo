@@ -191,14 +191,12 @@
       <section class="loginForm" id="loginForm" style="display: none;">
         <h1>Iniciar sesión</h1>
         <form id="formLogin">
-          <label for="nombre">Usuario</label>
-          <span id="mensajeErrorUsuario" style="display: none;" class="error">*El nombre de usuario no existe o esta mal escrito</span
-          >
-          <input type="text" id="nombre" name="nombre" required />
+          <label for="dni">DNI</label>
+          <span id="mensajeErrorUsuario" style="display: none;" class="error">*El DNI no se encuentra registrado o esta mal escrito</span>
+          <input type="number" id="dni" name="dni" required />
 
           <label for="pass">Contraseña</label>
-          <span id="mensajeErrorCont" style="display: none;" class="error">*Contraseña incorrecta</span
-          >
+          <span id="mensajeErrorCont" style="display: none;" class="error">*Contraseña incorrecta</span>
           <input
             type="password"
             id="pass"
@@ -218,6 +216,7 @@
       <section class="registroForm" id="registroForm" style="display: none;">
         <h1>¡A un paso de tu futuro financiero!</h1>
         <form id="formRegistro">
+
           <label for="nombreReg">Nombre</label>
           <span id="mensajeErrorNombre" style="display: none;" class="error">*El nombre debe tener mínimo 4 caracteres.</span>
           <input type="text" id="nombreReg" name="nombreReg" required />
@@ -225,6 +224,10 @@
           <label for="apellidoReg">Apellido</label>
           <span id="mensajeErrorApellido" style="display: none;" class="error">*El apellido debe tener mínimo 4 caracteres.</span>
           <input type="text" id="apellidoReg" name="apellidoReg" required />
+
+          <label for="dniReg">DNI</label>
+          <span id="mensajeErrorDni" style="display: none;" class="error">*Debes ingresar un DNI válido.</span>
+          <input type="number" id="dniReg" name="dniReg" required />
 
           <label for="passReg">Contraseña</label>
           <span id="mensajeErrorPass" style="display: none;" class="error">*La contraseña debe tener mínimo 8 caracteres.</span>
