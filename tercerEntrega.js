@@ -27,8 +27,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (usuario) {
       localStorage.setItem("loggedInUser", JSON.stringify(usuario));
       mostrarHome(usuario);
+      actualizarSaldoDesdeLocalStorage();
     } else {
-      mostrarMensajeError(mensajeErrorUsuario, mensajeErrorCont);
+      mostrarMensajeError(dni, contraseña, getDatos, mensajeErrorUsuario, mensajeErrorCont);
+    }
+  };
+
+  let mostrarMensajeError = (dni, contraseña, getDatos, mensajeErrorUsuario, mensajeErrorCont) => {
+    if (!dni || !contraseña) {
+      return;
+    }
+  
+    let usuario = getDatos.find((usuario) => usuario.dni === dni);
+  
+    if (!usuario) {
+      mensajeErrorUsuario.style.display = "block";
+      mensajeErrorCont.style.display = "none";
+    } else if (usuario.contraseña !== contraseña) {
+      mensajeErrorCont.style.display = "block";
+      mensajeErrorUsuario.style.display = "none";
     }
   };
 
@@ -39,65 +56,68 @@ document.addEventListener("DOMContentLoaded", () => {
     let contraseña = document.getElementById("passReg").value.trim();
     let edad = document.getElementById("edad").value.trim();
     let localidad = document.getElementById("localidad").value.trim();
-
+  
     let mensajeErrorDni = document.getElementById("mensajeErrorDni");
     let mensajeErrorNombre = document.getElementById("mensajeErrorNombre");
     let mensajeErrorApellido = document.getElementById("mensajeErrorApellido");
     let mensajeErrorPass = document.getElementById("mensajeErrorPass");
     let mensajeErrorEdad = document.getElementById("mensajeErrorEdad");
-    let mensajeErrorLocalidad = document.getElementById(
-      "mensajeErrorLocalidad"
-    );
-
+    let mensajeErrorLocalidad = document.getElementById("mensajeErrorLocalidad");
+  
+    let valid = true;
+  
     if (!/^\d{8,9}$/.test(dni)) {
       mensajeErrorDni.style.display = "block";
-      return;
+      valid = false;
     } else {
       mensajeErrorDni.style.display = "none";
     }
-
+  
     if (nombre.length < 4) {
       mensajeErrorNombre.style.display = "block";
-      return;
+      valid = false;
     } else {
       mensajeErrorNombre.style.display = "none";
     }
-
+  
     if (apellido.length < 4) {
       mensajeErrorApellido.style.display = "block";
-      return;
+      valid = false;
     } else {
       mensajeErrorApellido.style.display = "none";
     }
-
+  
     if (contraseña.length < 8) {
       mensajeErrorPass.style.display = "block";
-      return;
+      valid = false;
     } else {
       mensajeErrorPass.style.display = "none";
     }
-
+  
     let edadNum = parseInt(edad);
     if (isNaN(edadNum) || edadNum <= 18) {
       mensajeErrorEdad.style.display = "block";
-      return;
+      valid = false;
     } else {
       mensajeErrorEdad.style.display = "none";
     }
-
-    if (!localidad.match(/^[a-zA-Z\s]*$/) || localidad === "") {
+  
+    if (!/^[a-zA-Z\s]+$/.test(localidad) || localidad === "") {
       mensajeErrorLocalidad.style.display = "block";
-      return;
+      valid = false;
     } else {
       mensajeErrorLocalidad.style.display = "none";
     }
-
+  
+    if (!valid) return;
+  
     let usuario = { dni, nombre, apellido, contraseña, edad, localidad };
     nuevoUsuario.push(usuario);
     localStorage.setItem("nuevoUsuario", JSON.stringify(nuevoUsuario));
     localStorage.setItem("loggedInUser", JSON.stringify(usuario));
     mostrarHome(usuario);
   };
+  
 
   let mostrarHome = (usuario) => {
     registroForm.style.display = "none";
@@ -121,30 +141,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let btnCerrarSesion = document.getElementById("cerrarSesion");
     btnCerrarSesion.addEventListener("click", () => {
+
       localStorage.removeItem("loggedInUser");
+      localStorage.removeItem("saldoActual");
+
       window.location.href = "./index.html";
     });
   };
 
-  let mostrarMensajeError = (mensajeErrorUsuario, mensajeErrorCont) => {
-    let dni = document.getElementById("dni").value;
-    let contraseña = document.getElementById("pass").value;
 
-    if (!dni || !contraseña) {
-      return;
-    }
-
-    let getDatos = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
-    let usuario = getDatos.find((usuario) => usuario.dni === dni);
-
-    if (!usuario) {
-      mensajeErrorUsuario.style.display = "block";
-      mensajeErrorCont.style.display = "none";
-    } else if (usuario.contraseña !== contraseña) {
-      mensajeErrorCont.style.display = "block";
-      mensajeErrorUsuario.style.display = "none";
-    }
-  };
 
   let btnIniciarSesion = document.getElementById("btnIniciarSesion");
   btnIniciarSesion.addEventListener(
@@ -209,146 +214,152 @@ document.addEventListener("DOMContentLoaded", () => {
   let miCuenta = () => {
     document.getElementById("homeSec").classList.add("invisible");
     perfilSec.style.display = "block";
-
+  
     let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
-
+  
     if (usuarioRegistrado) {
-      document.getElementById(
-        "nombrePerfil"
-      ).innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
-      document.getElementById(
-        "apellidoPerfil"
-      ).innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
+      document.getElementById("nombrePerfil").innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
+      document.getElementById("apellidoPerfil").innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
+  
+      document.getElementById("movimientosTabla").innerHTML = "";
+  
+      let movimientos = usuarioRegistrado.movimientos || [];
+      let movimientosHtml = "";
+      movimientos.forEach((movimiento) => {
+        movimientosHtml += `
+          <tr>
+            <td>${movimiento.titulo}</td>
+            <td>${movimiento.cantidad}</td>
+            <td>$${movimiento.total.toLocaleString("es-AR")} ARS</td>
+            <td>${movimiento.fecha}</td>
+          </tr>`;
+      });
+      document.getElementById("movimientosTabla").innerHTML = movimientosHtml;
+  
+      actualizarSaldoDesdeLocalStorage();
     }
-
-    let movimientosHtml = "";
-    movimientos.forEach((movimiento) => {
-      movimientosHtml += `
-            <tr>
-              <td>${movimiento.titulo}</td>
-              <td>${movimiento.cantidad}</td>
-              <td>$${movimiento.total.toLocaleString("es-AR")} ARS</td>
-              <td>${movimiento.fecha}</td>
-            </tr>`;
-    });
-
-    document.getElementById("movimientosTabla").innerHTML = movimientosHtml;
   };
+  
+  
 
   function actualizarSaldo(saldo) {
     const saldoActualElem = document.getElementById("saldoActual");
     if (saldoActualElem) {
       saldoActualElem.textContent = `$${saldo.toLocaleString("es-AR")} ARS`;
     }
-
+  
     const saldoActualModalRetiro = document.getElementById("saldoActualValor");
     if (saldoActualModalRetiro) {
-      saldoActualModalRetiro.textContent = `$${saldo.toLocaleString(
-        "es-AR"
-      )} ARS`;
+      saldoActualModalRetiro.textContent = `$${saldo.toLocaleString("es-AR")} ARS`;
     }
   }
-
+  
   function actualizarSaldoDesdeLocalStorage() {
     const saldoGuardado = localStorage.getItem("saldoActual");
     if (saldoGuardado) {
       const saldoActual = parseFloat(saldoGuardado);
-      actualizarSaldo(saldoActual);
+      if (!isNaN(saldoActual)) {
+        actualizarSaldo(saldoActual);
+      } else {
+        actualizarSaldo(0);
+      }
+    } else {
+      actualizarSaldo(0);
     }
   }
-
+  
+  
   actualizarSaldoDesdeLocalStorage();
+  
 
   document.getElementById("btnDepositarPerfil").addEventListener("click", function () {
-      const modalDeposito = new bootstrap.Modal(
-        document.getElementById("modalDeposito")
-      );
-      modalDeposito.show();
+    const modalDeposito = new bootstrap.Modal(document.getElementById("modalDeposito"));
+    modalDeposito.show();
+});
 
-      const btnAceptarDeposito = document.getElementById("btnAceptarDeposito");
-      btnAceptarDeposito.addEventListener("click", function () {
-        const montoDeposito = parseFloat(
-          document.getElementById("montoDeposito").value
-        );
-        const metodoPago = document.getElementById("metodoPago").value;
+document.getElementById("btnAceptarDeposito").addEventListener("click", function () {
+    const montoDeposito = parseFloat(document.getElementById("montoDeposito").value);
+    const metodoPago = document.getElementById("metodoPago").value;
 
-        if (!montoDeposito || metodoPago === "") {
-          Swal.fire({
+    if (isNaN(montoDeposito) || montoDeposito <= 0 || metodoPago === "") {
+        Swal.fire({
             icon: "error",
             title: "Error",
-            text: "Por favor complete todos los campos",
-          });
-          return;
-        }
-
-        let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
-        saldoActual += montoDeposito;
-
-        localStorage.setItem("saldoActual", saldoActual.toString());
-
-        actualizarSaldo(saldoActual);
-
-        modalDeposito.hide();
-
-        Swal.fire({
-          title: "Éxito",
-          text: "Depósito realizado correctamente",
-          icon: "success",
-          background: "#333333",
-          color: "white",
-        });
-      });
-    });
-
-  document.getElementById("btnRetirar").addEventListener("click", function () {
-    const modalRetiro = new bootstrap.Modal(
-      document.getElementById("modalRetiro")
-    );
-    modalRetiro.show();
-
-    const btnAceptarRetiro = document.getElementById("btnAceptarRetiro");
-    btnAceptarRetiro.addEventListener("click", function () {
-      const montoRetiro = parseFloat(
-        document.getElementById("montoRetiro").value
-      );
-
-      if (!montoRetiro || isNaN(montoRetiro)) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Por favor ingrese un monto válido para el retiro",
+            text: "Por favor complete todos los campos correctamente",
         });
         return;
-      }
+    }
 
-      let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
+    let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
+    saldoActual += montoDeposito;
 
-      if (montoRetiro > saldoActual) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Fondos insuficientes",
-        });
-        return;
-      }
+    localStorage.setItem("saldoActual", saldoActual.toString());
 
-      saldoActual -= montoRetiro;
+    actualizarSaldo(saldoActual);
 
-      localStorage.setItem("saldoActual", saldoActual.toString());
+    const modalDeposito = bootstrap.Modal.getInstance(document.getElementById("modalDeposito"));
+    modalDeposito.hide();
 
-      actualizarSaldo(saldoActual);
-
-      Swal.fire({
+    Swal.fire({
         title: "Éxito",
-        text: "Retiro realizado correctamente",
+        text: "Depósito realizado correctamente",
         icon: "success",
         background: "#333333",
         color: "white",
-      });
-
-      modalRetiro.hide();
     });
+});
+
+
+
+document.getElementById("btnRetirar").addEventListener("click", function () {
+  const modalRetiro = new bootstrap.Modal(document.getElementById("modalRetiro"));
+  modalRetiro.show();
+});
+
+document.getElementById("btnAceptarRetiro").addEventListener("click", function () {
+  const montoRetiro = parseFloat(document.getElementById("montoRetiro").value);
+
+  if (!montoRetiro || isNaN(montoRetiro)) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Por favor ingrese un monto válido para el retiro",
+    });
+    return;
+  }
+
+  let saldoActual = parseFloat(localStorage.getItem("saldoActual"));
+  if (isNaN(saldoActual)) {
+    saldoActual = 0; 
+  }
+
+  if (montoRetiro > saldoActual) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Fondos insuficientes",
+    });
+    return;
+  }
+
+  saldoActual -= montoRetiro;
+
+  localStorage.setItem("saldoActual", saldoActual.toString());
+
+  actualizarSaldo(saldoActual);
+
+  Swal.fire({
+    title: "Éxito",
+    text: "Retiro realizado correctamente",
+    icon: "success",
+    background: "#333333",
+    color: "white",
   });
+
+  const modalRetiro = bootstrap.Modal.getInstance(document.getElementById("modalRetiro"));
+  modalRetiro.hide();
+});
+
 
 
 
@@ -429,26 +440,17 @@ function updateCryptoElement(crypto, price, change) {
   if (changeElement) {
     changeElement.textContent = formatPercentageChange(change);
     if (parseFloat(change) < 0) {
-      changeElement.classList.add('porcentageRed');
-      changeElement.classList.remove('porcentage');
+      changeElement.classList.toggle('porcentageRed', true);
+      changeElement.classList.toggle('porcentage', false);
     } else {
-      changeElement.classList.add('porcentage');
-      changeElement.classList.remove('porcentageRed');
+      changeElement.classList.toggle('porcentage', true);
+      changeElement.classList.toggle('porcentageRed', false);
     }
   }
 }
 
+
 fetchCryptoPrices();
-
-
-
-
-
-
-
-
-
-
 
 
 
