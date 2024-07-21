@@ -220,8 +220,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("nombrePerfil").innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
       document.getElementById("apellidoPerfil").innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
   
-      document.getElementById("movimientosTabla").innerHTML = "";
-  
       let movimientos = usuarioRegistrado.movimientos || [];
       let movimientosHtml = "";
       movimientos.forEach((movimiento) => {
@@ -238,6 +236,7 @@ document.addEventListener("DOMContentLoaded", () => {
       actualizarSaldoDesdeLocalStorage();
     }
   };
+  
   
   
   
@@ -457,113 +456,116 @@ fetchCryptoPrices();
 let btnComprar = document.querySelectorAll(".btnComprar");
 
 btnComprar.forEach((boton) => {
-    boton.addEventListener("click", function (event) {
-        let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+  boton.addEventListener("click", function (event) {
+    event.stopPropagation(); // Evita la propagación del evento si es necesario
 
-        function isLoggedInUser() {
-            return loggedInUser !== null; 
-        }
+    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
-        if (!isLoggedInUser()) {
-            mostrarFormularioLogin();
-            return;
-        }
+    if (!loggedInUser) {
+      mostrarFormularioLogin();
+      return;
+    }
 
-        let fila = event.target.closest("tr");
-        let titulo = fila.querySelector(".subtituloTable").textContent.trim();
-        let precioString = fila.querySelector(".precio").textContent.trim();
-        let precio = parseFloat(precioString.replace(/[^0-9,-]+/g, "").replace(",", "."));
+    let fila = event.target.closest("tr");
+    let titulo = fila.querySelector(".subtituloTable").textContent.trim();
+    let precioString = fila.querySelector(".precio").textContent.trim();
+    let precio = parseFloat(precioString.replace(/[^0-9,-]+/g, "").replace(",", "."));
 
-        document.getElementById("modal-titulo").textContent = titulo;
-        document.getElementById("modal-precio").textContent = `Precio: ${precioString}`;
+    document.getElementById("modal-titulo").textContent = titulo;
+    document.getElementById("modal-precio").textContent = `Precio: ${precioString}`;
 
-        document.getElementById("cantidadCompra").addEventListener("input", function () {
-            let cantidad = parseInt(this.value);
-            if (!isNaN(cantidad) && cantidad > 0) {
-                let cotizacion = (precio * cantidad).toLocaleString("es-AR", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                });
-                document.getElementById("cotizacionValor").textContent = `$${cotizacion} ARS`;
-            } else {
-                document.getElementById("cotizacionValor").textContent = "";
-            }
+    document.getElementById("cantidadCompra").addEventListener("input", function () {
+      let cantidad = parseInt(this.value);
+      if (!isNaN(cantidad) && cantidad > 0) {
+        let cotizacion = (precio * cantidad).toLocaleString("es-AR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
         });
-
-        let modal = new bootstrap.Modal(document.getElementById("modal-compra"));
-        modal.show();
-
-        document.getElementById("confirmarCompra").addEventListener("click", function () {
-            let cantidad = parseInt(document.getElementById("cantidadCompra").value);
-            if (isNaN(cantidad) || cantidad <= 0) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "Ingrese una cantidad válida",
-                });
-                return;
-            }
-
-            let precioString = document.getElementById("modal-precio").textContent;
-            let precio = parseFloat(precioString.replace(/[^0-9,-]+/g, "").replace(",", "."));
-            let totalCompra = precio * cantidad;
-
-            let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
-
-            if (totalCompra > saldoActual) {
-                Swal.fire({
-                    title: "Error",
-                    text: "Saldo insuficiente para realizar esta compra, podes recargar tu saldo desde Mi Cuenta.",
-                    icon: "error",
-                });
-                return;
-            }
-
-            saldoActual -= totalCompra;
-            localStorage.setItem("saldoActual", saldoActual.toString());
-
-            let movimientos = loggedInUser.movimientos || [];
-            movimientos.push({
-                titulo: document.getElementById("modal-titulo").textContent,
-                cantidad: cantidad,
-                total: totalCompra,
-                fecha: new Date().toLocaleDateString()
-            });
-            loggedInUser.movimientos = movimientos;
-            localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
-
-            miCuenta();
-
-            const modalInstance = bootstrap.Modal.getInstance(document.getElementById("modal-compra"));
-            modalInstance.hide();
-
-            Swal.fire({
-                title: "Éxito",
-                text: "Compra realizada correctamente",
-                icon: "success",
-                background: "#333333",
-                color: "white",
-            });
-        });
-
+        document.getElementById("cotizacionValor").textContent = `$${cotizacion} ARS`;
+      } else {
+        document.getElementById("cotizacionValor").textContent = "";
+      }
     });
+
+    let modal = new bootstrap.Modal(document.getElementById("modal-compra"));
+    modal.show();
+  });
 });
 
+function actualizarMovimientos(usuario, nuevoMovimiento) {
+  let movimientos = usuario.movimientos || [];
+  movimientos.push(nuevoMovimiento);
 
+  let usuarios = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
+  let index = usuarios.findIndex((u) => u.dni === usuario.dni);
 
-  let movimientos = JSON.parse(localStorage.getItem("movimientosCompra")) || [];
+  if (index !== -1) {
+    usuarios[index].movimientos = movimientos;
+    localStorage.setItem("nuevoUsuario", JSON.stringify(usuarios));
+  }
+}
 
-  const agregarMovimientoCompra = (titulo, cantidad, total) => {
-    let nuevoMovimiento = {
-      titulo: titulo,
+document.getElementById("confirmarCompra").addEventListener("click", function () {
+  let cantidad = parseInt(document.getElementById("cantidadCompra").value);
+  let precioString = document.getElementById("modal-precio").textContent.replace('Precio: ', '');
+  let precio = parseFloat(precioString.replace(/[^0-9,-]+/g, "").replace(",", "."));
+
+  if (isNaN(cantidad) || cantidad <= 0) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Por favor, ingrese una cantidad válida",
+    });
+    return;
+  }
+
+  let total = precio * cantidad;
+
+  let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (loggedInUser) {
+    let movimientos = loggedInUser.movimientos || [];
+    movimientos.push({
+      titulo: document.getElementById("modal-titulo").textContent,
       cantidad: cantidad,
       total: total,
-      fecha: new Date().toLocaleString("es-AR"),
-    };
+      fecha: new Date().toLocaleDateString(),
+    });
+    loggedInUser.movimientos = movimientos;
+    localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
 
-    movimientos.push(nuevoMovimiento);
-    localStorage.setItem("movimientosCompra", JSON.stringify(movimientos));
+
+    let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
+    saldoActual -= total;
+    localStorage.setItem("saldoActual", saldoActual.toString());
+
+    actualizarSaldo(saldoActual);
+  }
+
+  Swal.fire({
+    title: "Éxito",
+    text: "Compra realizada correctamente",
+    icon: "success",
+    background: "#333333",
+    color: "white",
+  });
+
+  const modal = bootstrap.Modal.getInstance(document.getElementById("modal-compra"));
+  modal.hide();
+});
+
+let movimientos = JSON.parse(localStorage.getItem("movimientosCompra")) || [];
+
+const agregarMovimientoCompra = (titulo, cantidad, total) => {
+  let nuevoMovimiento = {
+    titulo: titulo,
+    cantidad: cantidad,
+    total: total,
+    fecha: new Date().toLocaleString("es-AR"),
   };
+
+  movimientos.push(nuevoMovimiento);
+  localStorage.setItem("movimientosCompra", JSON.stringify(movimientos));
+};
 
 
 });
