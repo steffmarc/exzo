@@ -237,9 +237,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
   
-  
-  
-  
 
   function actualizarSaldo(saldo) {
     const saldoActualElem = document.getElementById("saldoActual");
@@ -266,7 +263,6 @@ document.addEventListener("DOMContentLoaded", () => {
       actualizarSaldo(0);
     }
   }
-  
   
   actualizarSaldoDesdeLocalStorage();
   
@@ -341,23 +337,29 @@ document.getElementById("btnAceptarRetiro").addEventListener("click", function (
     return;
   }
 
-  saldoActual -= montoRetiro;
-
   localStorage.setItem("saldoActual", saldoActual.toString());
-
-  actualizarSaldo(saldoActual);
-
-  Swal.fire({
-    title: "Éxito",
-    text: "Retiro realizado correctamente",
-    icon: "success",
-    background: "#333333",
-    color: "white",
-  });
-
-  const modalRetiro = bootstrap.Modal.getInstance(document.getElementById("modalRetiro"));
-  modalRetiro.hide();
-});
+          actualizarSaldo(saldoActual);
+          agregarMovimientoCompra(titulo, cantidad, totalCompra);
+          Swal.fire({
+            title: "Procesando compra...",
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+              setTimeout(() => {
+                Swal.close();
+                Swal.fire({
+                  title: "¡Compra realizada con éxito!",
+                  icon: "success",
+                  timer: 2000,
+                  timerProgressBar: true,
+                  showConfirmButton: false,
+                });
+                modal.hide();
+                miCuenta();
+              }, 2500);
+            },
+          });
+        });
 
 
 
@@ -457,7 +459,7 @@ let btnComprar = document.querySelectorAll(".btnComprar");
 
 btnComprar.forEach((boton) => {
   boton.addEventListener("click", function (event) {
-    event.stopPropagation(); // Evita la propagación del evento si es necesario
+    event.stopPropagation(); 
 
     let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
@@ -555,17 +557,27 @@ document.getElementById("confirmarCompra").addEventListener("click", function ()
 
 let movimientos = JSON.parse(localStorage.getItem("movimientosCompra")) || [];
 
-const agregarMovimientoCompra = (titulo, cantidad, total) => {
-  let nuevoMovimiento = {
-    titulo: titulo,
-    cantidad: cantidad,
-    total: total,
-    fecha: new Date().toLocaleString("es-AR"),
-  };
+function agregarMovimientoCompra(titulo, cantidad, total) {
+  let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (usuarioRegistrado) {
+      let nuevoMovimiento = {
+          titulo: titulo,
+          cantidad: cantidad,
+          total: total,
+          fecha: new Date().toLocaleDateString()
+      };
 
-  movimientos.push(nuevoMovimiento);
-  localStorage.setItem("movimientosCompra", JSON.stringify(movimientos));
-};
+      let usuarios = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
+      let index = usuarios.findIndex(u => u.dni === usuarioRegistrado.dni);
+      if (index !== -1) {
+          let movimientos = usuarios[index].movimientos || [];
+          movimientos.push(nuevoMovimiento);
+          usuarios[index].movimientos = movimientos;
+          localStorage.setItem("nuevoUsuario", JSON.stringify(usuarios));
+      }
+  }
+}
+
 
 
 });
