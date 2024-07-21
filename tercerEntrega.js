@@ -478,66 +478,77 @@ btnComprar.forEach((boton) => {
         document.getElementById("modal-precio").textContent = `Precio: ${precioString}`;
 
         document.getElementById("cantidadCompra").addEventListener("input", function () {
-                let cantidad = parseInt(this.value);
-                if (!isNaN(cantidad) && cantidad > 0) {
-                    let cotizacion = (precio * cantidad).toLocaleString("es-AR", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                    });
-                    document.getElementById("cotizacionValor").textContent = `$${cotizacion} ARS`;
-                } else {
-                    document.getElementById("cotizacionValor").textContent = "";
-                }
-            });
+            let cantidad = parseInt(this.value);
+            if (!isNaN(cantidad) && cantidad > 0) {
+                let cotizacion = (precio * cantidad).toLocaleString("es-AR", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+                document.getElementById("cotizacionValor").textContent = `$${cotizacion} ARS`;
+            } else {
+                document.getElementById("cotizacionValor").textContent = "";
+            }
+        });
 
         let modal = new bootstrap.Modal(document.getElementById("modal-compra"));
         modal.show();
 
         document.getElementById("confirmarCompra").addEventListener("click", function () {
-          let cantidad = parseInt(document.getElementById("cantidadCompra").value);
-          if (isNaN(cantidad) || cantidad <= 0) {
-              Swal.fire({
-                  icon: "error",
-                  title: "Error",
-                  text: "Ingrese una cantidad válida",
-              });
-              return;
-          }
-      
-          let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-          let precioString = document.getElementById("modal-precio").textContent;
-          let precio = parseFloat(precioString.replace(/[^0-9,-]+/g, "").replace(",", "."));
-      
-          let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
-          saldoActual -= precio * cantidad;
-          localStorage.setItem("saldoActual", saldoActual.toString());
-      
-          let movimientos = loggedInUser.movimientos || [];
-          movimientos.push({
-              titulo: document.getElementById("modal-titulo").textContent,
-              cantidad: cantidad,
-              total: precio * cantidad,
-              fecha: new Date().toLocaleDateString()
-          });
-          loggedInUser.movimientos = movimientos;
-          localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
-      
-          miCuenta();
-      
-          const modal = bootstrap.Modal.getInstance(document.getElementById("modal-compra"));
-          modal.hide();
-      
-          Swal.fire({
-              title: "Éxito",
-              text: "Compra realizada correctamente",
-              icon: "success",
-              background: "#333333",
-              color: "white",
-          });
-      });
-      
+            let cantidad = parseInt(document.getElementById("cantidadCompra").value);
+            if (isNaN(cantidad) || cantidad <= 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Ingrese una cantidad válida",
+                });
+                return;
+            }
+
+            let precioString = document.getElementById("modal-precio").textContent;
+            let precio = parseFloat(precioString.replace(/[^0-9,-]+/g, "").replace(",", "."));
+            let totalCompra = precio * cantidad;
+
+            let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
+
+            if (totalCompra > saldoActual) {
+                Swal.fire({
+                    title: "Error",
+                    text: "Saldo insuficiente para realizar esta compra, podes recargar tu saldo desde Mi Cuenta.",
+                    icon: "error",
+                });
+                return;
+            }
+
+            saldoActual -= totalCompra;
+            localStorage.setItem("saldoActual", saldoActual.toString());
+
+            let movimientos = loggedInUser.movimientos || [];
+            movimientos.push({
+                titulo: document.getElementById("modal-titulo").textContent,
+                cantidad: cantidad,
+                total: totalCompra,
+                fecha: new Date().toLocaleDateString()
+            });
+            loggedInUser.movimientos = movimientos;
+            localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+
+            miCuenta();
+
+            const modalInstance = bootstrap.Modal.getInstance(document.getElementById("modal-compra"));
+            modalInstance.hide();
+
+            Swal.fire({
+                title: "Éxito",
+                text: "Compra realizada correctamente",
+                icon: "success",
+                background: "#333333",
+                color: "white",
+            });
+        });
+
     });
 });
+
 
 
   let movimientos = JSON.parse(localStorage.getItem("movimientosCompra")) || [];
