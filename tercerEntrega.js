@@ -309,32 +309,42 @@ document.getElementById("btnAceptarRetiro").addEventListener("click", function (
 
 
 
-  const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,usd-coin,ripple,toncoin&vs_currencies=usd&include_24hr_change=true';
+const cryptoApiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,usd-coin,ripple,toncoin&vs_currencies=usd&include_24hr_change=true';
+const exchangeApiUrl = 'https://api.exchangerate-api.com/v4/latest/USD';
+
+async function fetchExchangeRate() {
+  try {
+    const response = await fetch(exchangeApiUrl);
+    if (!response.ok) {
+      throw new Error('Failed to fetch exchange rate');
+    }
+    const data = await response.json();
+    return data.rates.ARS; // Devuelve la tasa de cambio USD/ARS
+  } catch (error) {
+    console.error('Error fetching exchange rate:', error);
+    return 1; // Retorna 1 en caso de error para evitar cálculos incorrectos
+  }
+}
 
 async function fetchCryptoPrices() {
   try {
-    const response = await fetch(apiUrl);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+    const [cryptoResponse, exchangeRate] = await Promise.all([
+      fetch(cryptoApiUrl),
+      fetchExchangeRate()
+    ]);
+
+    if (!cryptoResponse.ok) {
+      throw new Error('Failed to fetch crypto prices');
     }
-    const data = await response.json();
-    updatePrices(data);
+
+    const cryptoData = await cryptoResponse.json();
+    updatePrices(cryptoData, exchangeRate);
   } catch (error) {
     console.error('Error fetching data:', error);
   }
 }
 
-function formatPrice(price) {
-  if (price === 'N/A') return 'N/A';
-  return `$${parseFloat(price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
-}
-
-function formatPercentageChange(change) {
-  if (change === 'N/A') return 'N/A';
-  return `${parseFloat(change).toFixed(2)}%`;
-}
-
-function updatePrices(data) {
+function updatePrices(data, exchangeRate) {
   const prices = {
     BTC: {
       price: data.bitcoin ? data.bitcoin.usd : 'N/A',
@@ -366,18 +376,16 @@ function updatePrices(data) {
     },
   };
 
-  updateCryptoElement('BTC', prices.BTC.price, prices.BTC.change);
-  updateCryptoElement('ETH', prices.ETH.price, prices.ETH.change);
-  updateCryptoElement('USDT', prices.USDT.price, prices.USDT.change);
-  updateCryptoElement('BNB', prices.BNB.price, prices.BNB.change);
-  updateCryptoElement('SOL', prices.SOL.price, prices.SOL.change);
-  updateCryptoElement('USDC', prices.USDC.price, prices.USDC.change);
-  updateCryptoElement('XRP', prices.XRP.price, prices.XRP.change);
+  for (const [crypto, { price, change }] of Object.entries(prices)) {
+    const priceInARS = price !== 'N/A' ? (parseFloat(price) * exchangeRate).toFixed(2) : 'N/A';
+    updateCryptoElement(crypto, price, change, priceInARS);
+  }
 }
 
-function updateCryptoElement(crypto, price, change) {
+function updateCryptoElement(crypto, price, change, priceInARS) {
   const priceElement = document.querySelector(`tr[data-crypto="${crypto}"] .precio`);
   const changeElement = document.querySelector(`tr[data-crypto="${crypto}"] .porcentage, tr[data-crypto="${crypto}"] .porcentageRed`);
+  const priceInARSElement = document.querySelector(`tr[data-crypto="${crypto}"] .precioARS`);
 
   if (priceElement) {
     priceElement.textContent = formatPrice(price);
@@ -393,8 +401,21 @@ function updateCryptoElement(crypto, price, change) {
       changeElement.classList.toggle('porcentageRed', false);
     }
   }
+
+  if (priceInARSElement) {
+    priceInARSElement.textContent = formatPrice(priceInARS) + ' ARS';
+  }
 }
 
+function formatPrice(price) {
+  if (price === 'N/A') return 'N/A';
+  return `$${parseFloat(price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USD`;
+}
+
+function formatPercentageChange(change) {
+  if (change === 'N/A') return 'N/A';
+  return `${parseFloat(change).toFixed(2)}%`;
+}
 
 fetchCryptoPrices();
 
@@ -413,11 +434,6 @@ btnComprar.forEach((boton) => {
       function isLoggedInUser() {
           return loggedInUser !== null; 
         }
-
-      if (!isLoggedInUser()) {
-          mostrarFormularioLogin();
-          return;
-      }
 
     let fila = event.target.closest("tr");
     let titulo = fila.querySelector(".subtituloTable").textContent.trim();
