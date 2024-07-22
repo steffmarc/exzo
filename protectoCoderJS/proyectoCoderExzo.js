@@ -567,8 +567,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  let logo = document.getElementById("logo");
+  logo.addEventListener("click", () => {
+    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (loggedInUser) {
+      let homeSec = document.getElementById("homeSec");
+      let perfilSec = document.getElementById("perfilSec");
+      homeSec.classList.remove("invisible");
+      perfilSec.style.display = "none";
+    }
+  });
+
   if (isLoggedIn()) {
     let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
     mostrarHome(usuarioRegistrado);
   }
+
+
 });
