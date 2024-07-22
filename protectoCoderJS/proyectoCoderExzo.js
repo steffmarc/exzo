@@ -452,7 +452,6 @@ document.addEventListener("DOMContentLoaded", () => {
       let titulo = fila.querySelector(".subtituloTable").textContent.trim();
       let precioString = fila.querySelector(".precio").textContent.trim();
       let precio = 0;
-      // Extraer el precio del string (Ej: $1,234.56 USD -> 1234.56)
       const match = precioString.match(/(\d+\.\d+)/);
       if (match) {
         precio = parseFloat(match[1]);
@@ -482,7 +481,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let cantidad = parseInt(document.getElementById("cantidadCompra").value);
     let precioString = document.getElementById("modal-precio").textContent.replace("Precio: ", "");
     let precio = 0;
-    // Extraer el precio del string (Ej: $1,234.56 USD -> 1234.56)
+    
     const match = precioString.match(/(\d+\.\d+)/);
     if (match) {
       precio = parseFloat(match[1]);
