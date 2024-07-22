@@ -12,13 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let loginUsuario = () => {
     let dni = document.getElementById("dni").value;
-    let contraseña = document.getElementById("pass").value;
+    let contrasea = document.getElementById("pass").value;
 
     let getDatos = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
 
     let usuario = getDatos.find(
       (usuario) =>
-        usuario.dni === dni && usuario.contraseña === contraseña
+        usuario.dni === dni && usuario.contrasea === contrasea
     );
 
     let mensajeErrorUsuario = document.getElementById("mensajeErrorUsuario");
@@ -29,12 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
       mostrarHome(usuario);
       actualizarSaldoDesdeLocalStorage();
     } else {
-      mostrarMensajeError(dni, contraseña, getDatos, mensajeErrorUsuario, mensajeErrorCont);
+      mostrarMensajeError(dni, contrasea, getDatos, mensajeErrorUsuario, mensajeErrorCont);
     }
   };
 
-  let mostrarMensajeError = (dni, contraseña, getDatos, mensajeErrorUsuario, mensajeErrorCont) => {
-    if (!dni || !contraseña) {
+  let mostrarMensajeError = (dni, contrasea, getDatos, mensajeErrorUsuario, mensajeErrorCont) => {
+    if (!dni || !contrasea) {
       return;
     }
   
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!usuario) {
       mensajeErrorUsuario.style.display = "block";
       mensajeErrorCont.style.display = "none";
-    } else if (usuario.contraseña !== contraseña) {
+    } else if (usuario.contrasea !== contrasea) {
       mensajeErrorCont.style.display = "block";
       mensajeErrorUsuario.style.display = "none";
     }
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let dni = document.getElementById("dniReg").value.trim();
     let nombre = document.getElementById("nombreReg").value.trim();
     let apellido = document.getElementById("apellidoReg").value.trim();
-    let contraseña = document.getElementById("passReg").value.trim();
+    let contrasea = document.getElementById("passReg").value.trim();
     let edad = document.getElementById("edad").value.trim();
     let localidad = document.getElementById("localidad").value.trim();
   
@@ -64,54 +64,28 @@ document.addEventListener("DOMContentLoaded", () => {
     let mensajeErrorEdad = document.getElementById("mensajeErrorEdad");
     let mensajeErrorLocalidad = document.getElementById("mensajeErrorLocalidad");
   
+    const mensajesError = {
+      mensajeErrorDni: { elem: document.getElementById("mensajeErrorDni"), condition: !/^\d{8,9}$/.test(dni) },
+      mensajeErrorNombre: { elem: document.getElementById("mensajeErrorNombre"), condition: nombre.length < 4 },
+      mensajeErrorApellido: { elem: document.getElementById("mensajeErrorApellido"), condition: apellido.length < 4 },
+      mensajeErrorPass: { elem: document.getElementById("mensajeErrorPass"), condition: contrasea.length < 8 },
+      mensajeErrorEdad: { elem: document.getElementById("mensajeErrorEdad"), condition: isNaN(parseInt(edad)) || parseInt(edad) <= 18 },
+      mensajeErrorLocalidad: { elem: document.getElementById("mensajeErrorLocalidad"), condition: !/^[a-zA-Z\s]+$/.test(localidad) || localidad === "" }
+    };
+
     let valid = true;
-  
-    if (!/^\d{8,9}$/.test(dni)) {
-      mensajeErrorDni.style.display = "block";
-      valid = false;
-    } else {
-      mensajeErrorDni.style.display = "none";
-    }
-  
-    if (nombre.length < 4) {
-      mensajeErrorNombre.style.display = "block";
-      valid = false;
-    } else {
-      mensajeErrorNombre.style.display = "none";
-    }
-  
-    if (apellido.length < 4) {
-      mensajeErrorApellido.style.display = "block";
-      valid = false;
-    } else {
-      mensajeErrorApellido.style.display = "none";
-    }
-  
-    if (contraseña.length < 8) {
-      mensajeErrorPass.style.display = "block";
-      valid = false;
-    } else {
-      mensajeErrorPass.style.display = "none";
-    }
-  
-    let edadNum = parseInt(edad);
-    if (isNaN(edadNum) || edadNum <= 18) {
-      mensajeErrorEdad.style.display = "block";
-      valid = false;
-    } else {
-      mensajeErrorEdad.style.display = "none";
-    }
-  
-    if (!/^[a-zA-Z\s]+$/.test(localidad) || localidad === "") {
-      mensajeErrorLocalidad.style.display = "block";
-      valid = false;
-    } else {
-      mensajeErrorLocalidad.style.display = "none";
-    }
-  
+    Object.values(mensajesError).forEach(msg => {
+      if (msg.condition) {
+        msg.elem.style.display = "block";
+        valid = false;
+      } else {
+        msg.elem.style.display = "none";
+      }
+    });
+
     if (!valid) return;
-  
-    let usuario = { dni, nombre, apellido, contraseña, edad, localidad };
+
+    let usuario = { dni, nombre, apellido, contrasea, edad, localidad };
     nuevoUsuario.push(usuario);
     localStorage.setItem("nuevoUsuario", JSON.stringify(nuevoUsuario));
     localStorage.setItem("loggedInUser", JSON.stringify(usuario));
@@ -125,8 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     home.style.display = "block";
     home.classList.add("d-flex");
 
-    if (usuario) {
-      mostrarBotonesUsuario();
+    if (usuario) {mostrarBotonesUsuario();
     }
   };
 
@@ -141,19 +114,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let btnCerrarSesion = document.getElementById("cerrarSesion");
     btnCerrarSesion.addEventListener("click", () => {
-
       localStorage.removeItem("loggedInUser");
-
       window.location.href = "./index.html";
     });
   };
 
-
-
   let btnIniciarSesion = document.getElementById("btnIniciarSesion");
-  btnIniciarSesion.addEventListener(
-    "click",
-    (mostrarFormularioLogin = () => {
+  btnIniciarSesion.addEventListener("click", (mostrarFormularioLogin = () => {
       home.style.display = "none";
       registroForm.style.display = "none";
       loginForm.style.display = "block";
@@ -161,9 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   let btnRegist = document.getElementById("btnRegist");
-  btnRegist.addEventListener(
-    "click",
-    (mostrarFormularioRegistro = () => {
+  btnRegist.addEventListener("click", (mostrarFormularioRegistro = () => {
       home.style.display = "none";
       registroForm.style.display = "block";
       loginForm.style.display = "none";
@@ -197,14 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
     mostrarFormularioRegistro();
   });
 
-  let btnVolver = document.getElementById("btnVolver");
-  btnVolver.addEventListener("click", () => {
+  document.getElementById("btnVolver").addEventListener("click", () => {
     let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-
     if (loggedInUser) {
-      let homeSec = document.getElementById("homeSec");
-      let perfilSec = document.getElementById("perfilSec");
-
       homeSec.classList.remove("invisible");
       perfilSec.style.display = "none";
     }
@@ -220,19 +180,15 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("nombrePerfil").innerHTML = `<strong>Nombre: </strong>${usuarioRegistrado.nombre}`;
       document.getElementById("apellidoPerfil").innerHTML = `<strong>Apellido: </strong>${usuarioRegistrado.apellido}`;
   
-      let movimientos = usuarioRegistrado.movimientos || [];
-      let movimientosHtml = "";
-      movimientos.forEach((movimiento) => {
-        movimientosHtml += `
-          <tr>
-            <td>${movimiento.titulo}</td>
-            <td>${movimiento.cantidad}</td>
-            <td>$${movimiento.total.toLocaleString("es-AR")} ARS</td>
-            <td>${movimiento.fecha}</td>
-          </tr>`;
-      });
+      let movimientosHtml = (usuarioRegistrado.movimientos || []).map(movimiento => `
+        <tr>
+          <td>${movimiento.titulo}</td>
+          <td>${movimiento.cantidad}</td>
+          <td>$${movimiento.total.toLocaleString("es-AR")} ARS</td>
+          <td>${movimiento.fecha}</td>
+        </tr>`).join("");
       document.getElementById("movimientosTabla").innerHTML = movimientosHtml;
-  
+
       actualizarSaldoDesdeLocalStorage();
     }
   };
@@ -243,27 +199,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (saldoActualElem) {
       saldoActualElem.textContent = `$${saldo.toLocaleString("es-AR")} ARS`;
     }
-  
     const saldoActualModalRetiro = document.getElementById("saldoActualValor");
     if (saldoActualModalRetiro) {
-      saldoActualModalRetiro.textContent = `$${saldo.toLocaleString("es-AR")} ARS`;
+      saldoActualModalRetiro.textContent = `$${saldo.toLocaleString(
+        "es-AR"
+      )} ARS`;
     }
   }
-  
   function actualizarSaldoDesdeLocalStorage() {
     const saldoGuardado = localStorage.getItem("saldoActual");
     if (saldoGuardado) {
       const saldoActual = parseFloat(saldoGuardado);
-      if (!isNaN(saldoActual)) {
-        actualizarSaldo(saldoActual);
-      } else {
-        actualizarSaldo(0);
-      }
-    } else {
-      actualizarSaldo(0);
+      actualizarSaldo(saldoActual);
     }
   }
-  
   actualizarSaldoDesdeLocalStorage();
   
 
@@ -286,11 +235,9 @@ document.getElementById("btnAceptarDeposito").addEventListener("click", function
     }
 
     let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
-    saldoActual += montoDeposito;
-
-    localStorage.setItem("saldoActual", saldoActual.toString());
-
-    actualizarSaldo(saldoActual);
+        saldoActual += montoDeposito;
+        localStorage.setItem("saldoActual", saldoActual.toString());
+        actualizarSaldo(saldoActual);
 
     const modalDeposito = bootstrap.Modal.getInstance(document.getElementById("modalDeposito"));
     modalDeposito.hide();
@@ -303,8 +250,6 @@ document.getElementById("btnAceptarDeposito").addEventListener("click", function
         color: "white",
     });
 });
-
-
 
 document.getElementById("btnRetirar").addEventListener("click", function () {
   const modalRetiro = new bootstrap.Modal(document.getElementById("modalRetiro"));
@@ -322,12 +267,7 @@ document.getElementById("btnAceptarRetiro").addEventListener("click", function (
     });
     return;
   }
-
-  let saldoActual = parseFloat(localStorage.getItem("saldoActual"));
-  if (isNaN(saldoActual)) {
-    saldoActual = 0; 
-  }
-
+  let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
   if (montoRetiro > saldoActual) {
     Swal.fire({
       icon: "error",
@@ -336,32 +276,21 @@ document.getElementById("btnAceptarRetiro").addEventListener("click", function (
     });
     return;
   }
-
+  saldoActual -= montoRetiro;
   localStorage.setItem("saldoActual", saldoActual.toString());
-          actualizarSaldo(saldoActual);
-          agregarMovimientoCompra(titulo, cantidad, totalCompra);
-          Swal.fire({
-            title: "Procesando compra...",
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            didOpen: () => {
-              setTimeout(() => {
-                Swal.close();
-                Swal.fire({
-                  title: "¡Compra realizada con éxito!",
-                  icon: "success",
-                  timer: 2000,
-                  timerProgressBar: true,
-                  showConfirmButton: false,
-                });
-                modal.hide();
-                miCuenta();
-              }, 2500);
-            },
-          });
-        });
+  actualizarSaldo(saldoActual);
 
+  Swal.fire({
+    title: "Retiro realizado con éxito",
+    icon: "success",
+    timer: 2000,
+    timerProgressBar: true,
+    showConfirmButton: false,
+  });
 
+  const modalRetiro = bootstrap.Modal.getInstance(document.getElementById("modalRetiro"));
+  modalRetiro.hide();
+});
 
 
   const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,usd-coin,ripple,toncoin&vs_currencies=usd&include_24hr_change=true';
@@ -459,55 +388,122 @@ let btnComprar = document.querySelectorAll(".btnComprar");
 
 btnComprar.forEach((boton) => {
   boton.addEventListener("click", function (event) {
-    event.stopPropagation(); 
-
-    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-
-    if (!loggedInUser) {
+    if (!isLoggedIn()) {
       mostrarFormularioLogin();
       return;
     }
+      let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+      function isLoggedInUser() {
+          return loggedInUser !== null; 
+        }
+
+      if (!isLoggedInUser()) {
+          mostrarFormularioLogin();
+          return;
+      }
 
     let fila = event.target.closest("tr");
     let titulo = fila.querySelector(".subtituloTable").textContent.trim();
     let precioString = fila.querySelector(".precio").textContent.trim();
-    let precio = parseFloat(precioString.replace(/[^0-9,-]+/g, "").replace(",", "."));
-
+    let precio = parseFloat(
+      precioString.replace(/[^0-9,-]+/g, "").replace(",", ".")
+    );
     document.getElementById("modal-titulo").textContent = titulo;
-    document.getElementById("modal-precio").textContent = `Precio: ${precioString}`;
-
-    document.getElementById("cantidadCompra").addEventListener("input", function () {
-      let cantidad = parseInt(this.value);
-      if (!isNaN(cantidad) && cantidad > 0) {
-        let cotizacion = (precio * cantidad).toLocaleString("es-AR", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        });
-        document.getElementById("cotizacionValor").textContent = `$${cotizacion} ARS`;
-      } else {
-        document.getElementById("cotizacionValor").textContent = "";
-      }
-    });
-
+    document.getElementById(
+      "modal-precio"
+    ).textContent = `Precio: ${precioString}`;
+    document
+      .getElementById("cantidadCompra")
+      .addEventListener("input", function () {
+        let cantidad = parseInt(this.value);
+        if (!isNaN(cantidad) && cantidad > 0) {
+          let cotizacion = (precio * cantidad).toLocaleString("es-AR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+          document.getElementById(
+            "cotizacionValor"
+          ).textContent = `$${cotizacion} ARS`;
+        } else {
+          document.getElementById("cotizacionValor").textContent = "";
+        }
+      });
     let modal = new bootstrap.Modal(document.getElementById("modal-compra"));
     modal.show();
+    document.getElementById("confirmarCompra").addEventListener("click", function () {
+        let formaPago = document.getElementById("formaPago").value;
+        let cantidad = parseInt(
+          document.getElementById("cantidadCompra").value
+        );
+        let saldoActual =
+          parseFloat(localStorage.getItem("saldoActual")) || 0;
+        let totalCompra = precio * cantidad;
+        if (totalCompra > saldoActual) {
+          Swal.fire({
+            title: "Error",
+            text: "Saldo insuficiente para realizar esta compra, podes recargar tu saldo desde Mi Cuenta.",
+            icon: "error",
+          });
+          return;
+        }
+        saldoActual -= totalCompra;
+        localStorage.setItem("saldoActual", saldoActual.toString());
+        actualizarSaldo(saldoActual);
+        agregarMovimientoCompra(titulo, cantidad, totalCompra);
+        Swal.fire({
+          title: "Procesando compra...",
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            setTimeout(() => {
+              Swal.close();
+              Swal.fire({
+                title: "¡Compra realizada con éxito!",
+                icon: "success",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+              });
+              modal.hide();
+              miCuenta();
+            }, 2500);
+          },
+        });
+      });
   });
 });
 
-function actualizarMovimientos(usuario, nuevoMovimiento) {
-  let movimientos = usuario.movimientos || [];
-  movimientos.push(nuevoMovimiento);
+function agregarMovimientoCompra(titulo, cantidad, totalCompra) {
+  let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (!usuarioRegistrado.movimientos) {
+    usuarioRegistrado.movimientos = [];
+  }
 
+  const fecha = new Date().toLocaleString("es-AR");
+  const movimiento = {
+    titulo,
+    cantidad,
+    total: totalCompra,
+    fecha,
+  };
+
+  usuarioRegistrado.movimientos.push(movimiento);
+  localStorage.setItem("loggedInUser", JSON.stringify(usuarioRegistrado));
+}
+
+
+function actualizarMovimientos(usuario, nuevoMovimiento) {
   let usuarios = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
-  let index = usuarios.findIndex((u) => u.dni === usuario.dni);
+  let index = usuarios.findIndex(u => u.dni === usuario.dni);
 
   if (index !== -1) {
-    usuarios[index].movimientos = movimientos;
+    usuarios[index].movimientos = [...(usuarios[index].movimientos || []), nuevoMovimiento];
     localStorage.setItem("nuevoUsuario", JSON.stringify(usuarios));
   }
 }
 
-document.getElementById("confirmarCompra").addEventListener("click", function () {
+document.getElementById("confirmarCompra").addEventListener("click", () => {
   let cantidad = parseInt(document.getElementById("cantidadCompra").value);
   let precioString = document.getElementById("modal-precio").textContent.replace('Precio: ', '');
   let precio = parseFloat(precioString.replace(/[^0-9,-]+/g, "").replace(",", "."));
@@ -522,61 +518,49 @@ document.getElementById("confirmarCompra").addEventListener("click", function ()
   }
 
   let total = precio * cantidad;
-
   let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
   if (loggedInUser) {
-    let movimientos = loggedInUser.movimientos || [];
-    movimientos.push({
+    let nuevoMovimiento = {
       titulo: document.getElementById("modal-titulo").textContent,
       cantidad: cantidad,
       total: total,
-      fecha: new Date().toLocaleDateString(),
+      fecha: new Date().toLocaleString()
+    };
+
+    actualizarMovimientos(loggedInUser, nuevoMovimiento);
+    Swal.fire({
+      icon: "success",
+      title: "Compra exitosa",
+      text: `Ha comprado ${cantidad} ${document.getElementById("modal-titulo").textContent} por un total de $${total.toLocaleString("es-AR")} ARS`,
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
     });
-    loggedInUser.movimientos = movimientos;
-    localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
 
-
-    let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
-    saldoActual -= total;
-    localStorage.setItem("saldoActual", saldoActual.toString());
-
-    actualizarSaldo(saldoActual);
+    bootstrap.Modal.getInstance(document.getElementById("modal-compra")).hide();
   }
-
-  Swal.fire({
-    title: "Éxito",
-    text: "Compra realizada correctamente",
-    icon: "success",
-    background: "#333333",
-    color: "white",
-  });
-
-  const modal = bootstrap.Modal.getInstance(document.getElementById("modal-compra"));
-  modal.hide();
 });
 
-let movimientos = JSON.parse(localStorage.getItem("movimientosCompra")) || [];
-
-function agregarMovimientoCompra(titulo, cantidad, total) {
-  let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
-  if (usuarioRegistrado) {
-      let nuevoMovimiento = {
-          titulo: titulo,
-          cantidad: cantidad,
-          total: total,
-          fecha: new Date().toLocaleDateString()
-      };
-
-      let usuarios = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
-      let index = usuarios.findIndex(u => u.dni === usuarioRegistrado.dni);
-      if (index !== -1) {
-          let movimientos = usuarios[index].movimientos || [];
-          movimientos.push(nuevoMovimiento);
-          usuarios[index].movimientos = movimientos;
-          localStorage.setItem("nuevoUsuario", JSON.stringify(usuarios));
-      }
-  }
+function mostrarFormularioLogin() {
+  document.getElementById("loginSec").classList.remove("invisible");
+  document.getElementById("homeSec").classList.add("invisible");
 }
+
+function volverAHome() {
+  document.getElementById("loginSec").classList.add("invisible");
+  document.getElementById("homeSec").classList.remove("invisible");
+}
+
+document.querySelector("#cerrarSesion").addEventListener("click", () => {
+  localStorage.removeItem("loggedInUser");
+  volverAHome();
+});
+
+document.querySelector("#volver").addEventListener("click", () => {
+  perfilSec.style.display = "none";
+  document.getElementById("homeSec").classList.remove("invisible");
+});
 
 
 
