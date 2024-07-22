@@ -13,25 +13,26 @@ document.addEventListener("DOMContentLoaded", () => {
   let loginUsuario = () => {
     let dni = document.getElementById("dni").value;
     let contrasea = document.getElementById("pass").value;
-
+  
     let getDatos = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
-
+  
     let usuario = getDatos.find(
       (usuario) =>
         usuario.dni === dni && usuario.contrasea === contrasea
     );
-
+  
     let mensajeErrorUsuario = document.getElementById("mensajeErrorUsuario");
     let mensajeErrorCont = document.getElementById("mensajeErrorCont");
-
+  
     if (usuario) {
       localStorage.setItem("loggedInUser", JSON.stringify(usuario));
       mostrarHome(usuario);
-      actualizarSaldoDesdeLocalStorage();
     } else {
       mostrarMensajeError(dni, contrasea, getDatos, mensajeErrorUsuario, mensajeErrorCont);
     }
   };
+  
+  
 
   let mostrarMensajeError = (dni, contrasea, getDatos, mensajeErrorUsuario, mensajeErrorCont) => {
     if (!dni || !contrasea) {
@@ -57,13 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let edad = document.getElementById("edad").value.trim();
     let localidad = document.getElementById("localidad").value.trim();
   
-    let mensajeErrorDni = document.getElementById("mensajeErrorDni");
-    let mensajeErrorNombre = document.getElementById("mensajeErrorNombre");
-    let mensajeErrorApellido = document.getElementById("mensajeErrorApellido");
-    let mensajeErrorPass = document.getElementById("mensajeErrorPass");
-    let mensajeErrorEdad = document.getElementById("mensajeErrorEdad");
-    let mensajeErrorLocalidad = document.getElementById("mensajeErrorLocalidad");
-  
     const mensajesError = {
       mensajeErrorDni: { elem: document.getElementById("mensajeErrorDni"), condition: !/^\d{8,9}$/.test(dni) },
       mensajeErrorNombre: { elem: document.getElementById("mensajeErrorNombre"), condition: nombre.length < 4 },
@@ -85,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!valid) return;
 
-    let usuario = { dni, nombre, apellido, contrasea, edad, localidad };
+    let usuario = { dni, nombre, apellido, contrasea, edad, localidad, saldo: 0 };
     nuevoUsuario.push(usuario);
     localStorage.setItem("nuevoUsuario", JSON.stringify(nuevoUsuario));
     localStorage.setItem("loggedInUser", JSON.stringify(usuario));
@@ -98,8 +92,10 @@ document.addEventListener("DOMContentLoaded", () => {
     loginForm.style.display = "none";
     home.style.display = "block";
     home.classList.add("d-flex");
-
-    if (usuario) {mostrarBotonesUsuario();
+  
+    if (usuario) {
+      mostrarBotonesUsuario();
+      document.getElementById("saldoActual").textContent = `$${usuario.saldo.toLocaleString("es-AR")} ARS`;
     }
   };
 
@@ -114,9 +110,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let btnCerrarSesion = document.getElementById("cerrarSesion");
     btnCerrarSesion.addEventListener("click", () => {
-      localStorage.removeItem("loggedInUser");
-      window.location.href = "./index.html";
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "./index.html";
     });
+
+
   };
 
   let btnIniciarSesion = document.getElementById("btnIniciarSesion");
@@ -189,31 +187,29 @@ document.addEventListener("DOMContentLoaded", () => {
         </tr>`).join("");
       document.getElementById("movimientosTabla").innerHTML = movimientosHtml;
 
-      actualizarSaldoDesdeLocalStorage();
+      actualizarSaldo(usuarioRegistrado.saldo);
     }
   };
   
 
-  function actualizarSaldo(saldo) {
-    const saldoActualElem = document.getElementById("saldoActual");
-    if (saldoActualElem) {
-      saldoActualElem.textContent = `$${saldo.toLocaleString("es-AR")} ARS`;
+  const actualizarSaldoEnAlmacenamiento = (usuarioActualizado) => {
+    let nuevoUsuario = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
+    nuevoUsuario = nuevoUsuario.map(usuario =>
+      usuario.dni === usuarioActualizado.dni ? usuarioActualizado : usuario
+    );
+    localStorage.setItem("nuevoUsuario", JSON.stringify(nuevoUsuario));
+    localStorage.setItem("loggedInUser", JSON.stringify(usuarioActualizado));
+  };
+  
+  const actualizarSaldo = (nuevoSaldo) => {
+    let usuario = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (usuario) {
+      usuario.saldo = nuevoSaldo;
+      actualizarSaldoEnAlmacenamiento(usuario);
+      document.getElementById("saldoActual").textContent = `$${nuevoSaldo.toLocaleString("es-AR")} ARS`;
     }
-    const saldoActualModalRetiro = document.getElementById("saldoActualValor");
-    if (saldoActualModalRetiro) {
-      saldoActualModalRetiro.textContent = `$${saldo.toLocaleString(
-        "es-AR"
-      )} ARS`;
-    }
-  }
-  function actualizarSaldoDesdeLocalStorage() {
-    const saldoGuardado = localStorage.getItem("saldoActual");
-    if (saldoGuardado) {
-      const saldoActual = parseFloat(saldoGuardado);
-      actualizarSaldo(saldoActual);
-    }
-  }
-  actualizarSaldoDesdeLocalStorage();
+  };
+  
   
 
   document.getElementById("btnDepositarPerfil").addEventListener("click", function () {
@@ -222,34 +218,52 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.getElementById("btnAceptarDeposito").addEventListener("click", function () {
-    const montoDeposito = parseFloat(document.getElementById("montoDeposito").value);
-    const metodoPago = document.getElementById("metodoPago").value;
+  const montoDeposito = parseFloat(document.getElementById("montoDeposito").value);
+  const metodoPago = document.getElementById("metodoPago").value;
 
-    if (isNaN(montoDeposito) || montoDeposito <= 0 || metodoPago === "") {
-        Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Por favor complete todos los campos correctamente",
-        });
-        return;
-    }
-
-    let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
-        saldoActual += montoDeposito;
-        localStorage.setItem("saldoActual", saldoActual.toString());
-        actualizarSaldo(saldoActual);
-
-    const modalDeposito = bootstrap.Modal.getInstance(document.getElementById("modalDeposito"));
-    modalDeposito.hide();
-
+  if (isNaN(montoDeposito) || montoDeposito <= 0 || metodoPago === "") {
     Swal.fire({
-        title: "Éxito",
-        text: "Depósito realizado correctamente",
-        icon: "success",
-        background: "#333333",
-        color: "white",
+      icon: "error",
+      title: "Oops...",
+      text: "Por favor, complete todos los campos correctamente.",
     });
+    return;
+  }
+
+  let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (loggedInUser) {
+    if (loggedInUser) {
+      loggedInUser.saldo += montoDeposito;
+      localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+      actualizarSaldo(loggedInUser.saldo);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Saldo inválido. Por favor, intente nuevamente.",
+      });
+    }
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudo recuperar la información del usuario.",
+    });
+  }
+
+  const modalDeposito = bootstrap.Modal.getInstance(document.getElementById("modalDeposito"));
+  modalDeposito.hide();
+
+  Swal.fire({
+    title: "Éxito",
+    text: "Depósito realizado correctamente",
+    icon: "success",
+    background: "#333333",
+    color: "white",
+  });
 });
+
+
 
 document.getElementById("btnRetirar").addEventListener("click", function () {
   const modalRetiro = new bootstrap.Modal(document.getElementById("modalRetiro"));
@@ -258,7 +272,6 @@ document.getElementById("btnRetirar").addEventListener("click", function () {
 
 document.getElementById("btnAceptarRetiro").addEventListener("click", function () {
   const montoRetiro = parseFloat(document.getElementById("montoRetiro").value);
-
   if (!montoRetiro || isNaN(montoRetiro)) {
     Swal.fire({
       icon: "error",
@@ -267,30 +280,33 @@ document.getElementById("btnAceptarRetiro").addEventListener("click", function (
     });
     return;
   }
-  let saldoActual = parseFloat(localStorage.getItem("saldoActual")) || 0;
-  if (montoRetiro > saldoActual) {
+
+  let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (loggedInUser && loggedInUser.saldo >= montoRetiro) {
+    loggedInUser.saldo -= montoRetiro;
+    localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+    actualizarSaldo(loggedInUser.saldo);
+  } else {
     Swal.fire({
       icon: "error",
-      title: "Error",
-      text: "Fondos insuficientes",
+      title: "Oops...",
+      text: "Saldo insuficiente para realizar el retiro.",
     });
-    return;
   }
-  saldoActual -= montoRetiro;
-  localStorage.setItem("saldoActual", saldoActual.toString());
-  actualizarSaldo(saldoActual);
+
+  const modalRetiro = bootstrap.Modal.getInstance(document.getElementById("modalRetiro"));
+  modalRetiro.hide();
 
   Swal.fire({
-    title: "Retiro realizado con éxito",
+    title: "¡Retiro realizado con éxito!",
     icon: "success",
     timer: 2000,
     timerProgressBar: true,
     showConfirmButton: false,
   });
-
-  const modalRetiro = bootstrap.Modal.getInstance(document.getElementById("modalRetiro"));
-  modalRetiro.hide();
 });
+
+
 
 
   const apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,usd-coin,ripple,toncoin&vs_currencies=usd&include_24hr_change=true';
@@ -431,83 +447,13 @@ btnComprar.forEach((boton) => {
       });
     let modal = new bootstrap.Modal(document.getElementById("modal-compra"));
     modal.show();
-    document.getElementById("confirmarCompra").addEventListener("click", function () {
-        let formaPago = document.getElementById("formaPago").value;
-        let cantidad = parseInt(
-          document.getElementById("cantidadCompra").value
-        );
-        let saldoActual =
-          parseFloat(localStorage.getItem("saldoActual")) || 0;
-        let totalCompra = precio * cantidad;
-        if (totalCompra > saldoActual) {
-          Swal.fire({
-            title: "Error",
-            text: "Saldo insuficiente para realizar esta compra, podes recargar tu saldo desde Mi Cuenta.",
-            icon: "error",
-          });
-          return;
-        }
-        saldoActual -= totalCompra;
-        localStorage.setItem("saldoActual", saldoActual.toString());
-        actualizarSaldo(saldoActual);
-        agregarMovimientoCompra(titulo, cantidad, totalCompra);
-        Swal.fire({
-          title: "Procesando compra...",
-          allowOutsideClick: false,
-          showConfirmButton: false,
-          didOpen: () => {
-            setTimeout(() => {
-              Swal.close();
-              Swal.fire({
-                title: "¡Compra realizada con éxito!",
-                icon: "success",
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-              });
-              modal.hide();
-              miCuenta();
-            }, 2500);
-          },
-        });
-      });
   });
 });
 
-function agregarMovimientoCompra(titulo, cantidad, totalCompra) {
-  let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
-  if (!usuarioRegistrado.movimientos) {
-    usuarioRegistrado.movimientos = [];
-  }
-
-  const fecha = new Date().toLocaleString("es-AR");
-  const movimiento = {
-    titulo,
-    cantidad,
-    total: totalCompra,
-    fecha,
-  };
-
-  usuarioRegistrado.movimientos.push(movimiento);
-  localStorage.setItem("loggedInUser", JSON.stringify(usuarioRegistrado));
-}
-
-
-function actualizarMovimientos(usuario, nuevoMovimiento) {
-  let usuarios = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
-  let index = usuarios.findIndex(u => u.dni === usuario.dni);
-
-  if (index !== -1) {
-    usuarios[index].movimientos = [...(usuarios[index].movimientos || []), nuevoMovimiento];
-    localStorage.setItem("nuevoUsuario", JSON.stringify(usuarios));
-  }
-}
-
-document.getElementById("confirmarCompra").addEventListener("click", () => {
+document.getElementById("confirmarCompra").addEventListener("click", function () {
   let cantidad = parseInt(document.getElementById("cantidadCompra").value);
   let precioString = document.getElementById("modal-precio").textContent.replace('Precio: ', '');
   let precio = parseFloat(precioString.replace(/[^0-9,-]+/g, "").replace(",", "."));
-
   if (isNaN(cantidad) || cantidad <= 0) {
     Swal.fire({
       icon: "error",
@@ -516,51 +462,61 @@ document.getElementById("confirmarCompra").addEventListener("click", () => {
     });
     return;
   }
-
   let total = precio * cantidad;
   let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-
   if (loggedInUser) {
-    let nuevoMovimiento = {
+    let movimientos = loggedInUser.movimientos || [];
+    movimientos.push({
       titulo: document.getElementById("modal-titulo").textContent,
       cantidad: cantidad,
       total: total,
-      fecha: new Date().toLocaleString()
-    };
-
-    actualizarMovimientos(loggedInUser, nuevoMovimiento);
-    Swal.fire({
-      icon: "success",
-      title: "Compra exitosa",
-      text: `Ha comprado ${cantidad} ${document.getElementById("modal-titulo").textContent} por un total de $${total.toLocaleString("es-AR")} ARS`,
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
+      fecha: new Date().toLocaleDateString(),
     });
+    loggedInUser.movimientos = movimientos;
 
-    bootstrap.Modal.getInstance(document.getElementById("modal-compra")).hide();
+    let saldoActual = parseFloat(loggedInUser?.saldoActual) || 0;
+    loggedInUser,saldoActual = saldoActual;
+    saldoActual -= total;
+    actualizarSaldo(saldoActual);
+
+    localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+
+    let usuarios = JSON.parse(localStorage.getItem("nuevoUsuario")) || [];
+    let index = usuarios.findIndex(u => u.dni === loggedInUser.dni);
+    if (index !== -1){
+      usuarios[index].movimientos = movimientos;
+      usuarios[index].saldoActual = saldoActual;
+      localStorage.setItem("nuevoUsuario", JSON.stringify(usuarios));
+    }
   }
+
+  Swal.fire({
+    title: "Éxito",
+    text: "Compra realizada correctamente",
+    icon: "success",
+    background: "#333333",
+    color: "white",
+  });
+  const modal = bootstrap.Modal.getInstance(document.getElementById("modal-compra"));
+  modal.hide();
 });
+
 
 function mostrarFormularioLogin() {
   document.getElementById("loginSec").classList.remove("invisible");
   document.getElementById("homeSec").classList.add("invisible");
 }
 
-function volverAHome() {
-  document.getElementById("loginSec").classList.add("invisible");
-  document.getElementById("homeSec").classList.remove("invisible");
-}
-
-document.querySelector("#cerrarSesion").addEventListener("click", () => {
-  localStorage.removeItem("loggedInUser");
-  volverAHome();
-});
-
-document.querySelector("#volver").addEventListener("click", () => {
-  perfilSec.style.display = "none";
-  document.getElementById("homeSec").classList.remove("invisible");
-});
+let btnVolver = document.getElementById("btnVolver");
+  btnVolver.addEventListener("click", () => {
+    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (loggedInUser) {
+      let homeSec = document.getElementById("homeSec");
+      let perfilSec = document.getElementById("perfilSec");
+      homeSec.classList.remove("invisible");
+      perfilSec.style.display = "none";
+    }
+  });
 
 
 
