@@ -325,6 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+
   const cryptoApiUrl =
     "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,binancecoin,solana,usd-coin,ripple,toncoin&vs_currencies=usd&include_24hr_change=true";
   const exchangeApiUrl = "https://api.exchangerate-api.com/v4/latest/USD";
@@ -439,6 +440,110 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   fetchCryptoPrices();
+
+
+    //ASIDE (lo puse aparte para no romper nadda de lo de arriba)
+  const newCryptoApiUrl = 'https://api.coingecko.com/api/v3/coins/markets';
+const trendingCryptoApiUrl = 'https://api.coingecko.com/api/v3/coins/markets';
+
+async function fetchNewCryptos() {
+  const params = new URLSearchParams({
+    vs_currency: 'usd',
+    order: 'market_cap_desc',
+    per_page: 3,
+    page: 2
+  });
+
+  try {
+    const response = await fetch(`${newCryptoApiUrl}?${params}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch new cryptos');
+    }
+    const newCryptos = await response.json();
+    localStorage.setItem('newCryptos', JSON.stringify(newCryptos));
+    return newCryptos;
+  } catch (error) {
+    console.error('Error al obtener criptomonedas nuevas:', error);
+    return [];
+  }
+}
+
+async function fetchTrendingCryptos() {
+  const params = new URLSearchParams({
+    vs_currency: 'usd',
+    order: 'percent_change_24h_desc',
+    per_page: 3,
+    page: 1
+  });
+
+  try {
+    const response = await fetch(`${trendingCryptoApiUrl}?${params}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch trending cryptos');
+    }
+    const trendingCryptos = await response.json();
+    localStorage.setItem('trendingCryptos', JSON.stringify(trendingCryptos));
+    return trendingCryptos;
+  } catch (error) {
+    console.error('Error al obtener criptomonedas en alza:', error);
+    return [];
+  }
+}
+
+function displayCryptos(newCryptos, trendingCryptos) {
+  const newCryptosContainer = document.getElementById('new-cryptos');
+  const trendingCryptosContainer = document.getElementById('trending-cryptos');
+
+  newCryptosContainer.innerHTML = '';
+  trendingCryptosContainer.innerHTML = '';
+
+  newCryptos.forEach(crypto => {
+    const cryptoDiv = document.createElement('div');
+    cryptoDiv.className = 'criptomoneda';
+    cryptoDiv.innerHTML = `
+      <h4>${crypto.name}</h4>
+      <div class="infoCripto">
+        <p class="price">${formatPrice(crypto.current_price)}</p>
+      </div>
+    `;
+    newCryptosContainer.appendChild(cryptoDiv);
+  });
+
+  trendingCryptos.forEach(crypto => {
+    const cryptoDiv = document.createElement('div');
+    cryptoDiv.className = 'criptomoneda';
+    cryptoDiv.innerHTML = `
+      <h4>${crypto.name}</h4>
+      <div class="infoCripto">
+        <p class="price">${formatPrice(crypto.current_price)}</p>
+      </div>
+    `;
+    trendingCryptosContainer.appendChild(cryptoDiv);
+  });
+}
+
+function formatPrice(price) {
+  if (price === "N/A") return "N/A";
+  return `$${parseFloat(price).toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })} USD`;
+}
+
+async function loadCryptos() {
+  const storedNewCryptos = JSON.parse(localStorage.getItem('newCryptos'));
+  const storedTrendingCryptos = JSON.parse(localStorage.getItem('trendingCryptos'));
+
+  if (storedNewCryptos && storedTrendingCryptos) {
+    displayCryptos(storedNewCryptos, storedTrendingCryptos);
+  } else {
+    const [newCryptos, trendingCryptos] = await Promise.all([fetchNewCryptos(), fetchTrendingCryptos()]);
+    displayCryptos(newCryptos, trendingCryptos);
+  }
+}
+
+loadCryptos();
+
 
   let btnComprar = document.querySelectorAll(".btnComprar");
 
@@ -575,13 +680,15 @@ document.addEventListener("DOMContentLoaded", () => {
       let perfilSec = document.getElementById("perfilSec");
       homeSec.classList.remove("invisible");
       perfilSec.style.display = "none";
+    } else {
+      window.location.href = "./index.html";
     }
   });
 
   if (isLoggedIn()) {
     let usuarioRegistrado = JSON.parse(localStorage.getItem("loggedInUser"));
     mostrarHome(usuarioRegistrado);
-  }
+  } 
 
 
 });
